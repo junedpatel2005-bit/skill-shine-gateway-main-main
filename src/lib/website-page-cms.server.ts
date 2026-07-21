@@ -4,7 +4,7 @@ import { JSDOM } from "jsdom";
 import DOMPurify from "dompurify";
 
 const window = new JSDOM("").window;
-const purify = DOMPurify(window);
+const purify = DOMPurify(window as any);
 
 export type WebsitePageStatus = "DRAFT" | "PUBLISHED";
 export type WebsitePageRecord = {

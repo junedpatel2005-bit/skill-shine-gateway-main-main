@@ -5,7 +5,7 @@ const globalForPrisma = globalThis as typeof globalThis & {
 };
 
 async function createPrismaClient() {
-  const options: ConstructorParameters<typeof PrismaClient>[0] = {
+  const options: any = {
     log: ["warn", "error"],
   };
 
@@ -22,7 +22,7 @@ async function createPrismaClient() {
         authToken: process.env.TURSO_AUTH_TOKEN,
       });
 
-      options.adapter = new PrismaLibSql(libsql);
+      options.adapter = new PrismaLibSql(libsql as any);
     } catch (cause) {
       throw new Error(
         `Failed to load @prisma/adapter-libsql or @libsql/client. Cause: ${cause instanceof Error ? cause.message : String(cause)}`,

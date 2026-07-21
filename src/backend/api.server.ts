@@ -1,4 +1,4 @@
-﻿import { createHash, createHmac, randomUUID, timingSafeEqual } from "node:crypto";
+﻿import { randomBytes, createHash, createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { mkdir, readFile, writeFile, unlink } from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
@@ -6,13 +6,25 @@ import { issueAccessToken, opaqueToken, readAccessToken, tokenHash } from "./aut
 import { getApiDatabase } from "./database.server";
 import { ApiError, body, errorResponse, json } from "./http.server";
 import { sendAccountLink } from "./email.server";
-import { readSessionFromCookieHeader } from "@/lib/auth-session.server";
+import {
+  clearGoogleStateCookie,
+  createSessionCookie,
+  readGoogleStateFromCookieHeader,
+  readSessionFromCookieHeader,
+} from "@/lib/auth-session.server";
+import {
+  buildGoogleAuthorizationUrl,
+  deriveNamesFromGoogleProfile,
+  exchangeCodeForGoogleUser,
+} from "@/lib/google-oauth.server";
 import { hashPassword, verifyPassword } from "@/lib/password.server";
 import {
   createUserRecord,
   findUserByEmail,
   findUserById,
+  recordUserLogin,
   updateUserPasswordByEmail,
+  upsertGoogleUser,
   type PublicUser,
   type UserRole,
 } from "@/lib/user-db.server";
@@ -114,7 +126,7 @@ function escapeHtml(value: unknown) {
 
 export async function handleBackendApi(request: Request): Promise<Response | null> {
   const url = new URL(request.url);
-  if (!url.pathname.startsWith(API_PREFIX)) return null;
+  if (!url.pathname.startsWith("/api/")) return null;
   const startedAt = Date.now();
   const requestId = request.headers.get("x-request-id") || randomUUID();
   try {
@@ -1333,7 +1345,7 @@ async function route(request: Request, url: URL): Promise<Response> {
         });
         await browser.close();
         if (!Buffer.isBuffer(pdfBuffer) || pdfBuffer.length === 0) throw new ApiError(500, 'PDF generation failed (empty)');
-        return new Response(pdfBuffer, { headers: { 'content-type': 'application/pdf', 'content-disposition': `attachment; filename="${(payload.reportName || table).replace(/[^a-z0-9.-]/gi, "_")}.pdf"` } });
+        return new Response(new Uint8Array(pdfBuffer), { headers: { 'content-type': 'application/pdf', 'content-disposition': `attachment; filename="${(payload.reportName || table).replace(/[^a-z0-9.-]/gi, "_")}.pdf"` } });
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         throw new ApiError(500, `Failed to generate PDF. ${msg}`);

@@ -413,9 +413,9 @@ export function getUserNotifications(userId: number, role: "CLIENT" | "PROFESSIO
       return {
         ...notification,
         readAt: notification.readAt ?? state?.readAt ?? null,
-      } satisfies UserNotification;
+      } as UserNotification;
     })
-    .filter((notification): notification is UserNotification => Boolean(notification))
+    .filter((notification): notification is UserNotification => notification !== null)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 }
 

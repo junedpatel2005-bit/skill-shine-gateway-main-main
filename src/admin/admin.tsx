@@ -21,9 +21,12 @@ import {
   Zap,
   Command,
   LayoutTemplate,
+  Clock3,
+  MapPin,
 } from "lucide-react";
 
 import { AppShell } from "@/components/AppShell";
+import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
 import { verifyPassword } from "@/lib/password.server";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
