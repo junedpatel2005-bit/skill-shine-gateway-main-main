@@ -9,253 +9,58 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WebsiteCmsRouteImport } from './routes/website-cms'
-import { Route as WebEditorRouteImport } from './routes/web-editor'
-import { Route as VerifyRouteImport } from './routes/verify'
-import { Route as VerificationManagementRouteImport } from './routes/verification-management'
-import { Route as VerificationRouteImport } from './routes/verification'
-import { Route as UserManagementRouteImport } from './routes/user-management'
-import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
-import { Route as SignupRouteImport } from './routes/signup'
-import { Route as ServicesRouteImport } from './routes/services'
-import { Route as ReportsRouteImport } from './routes/reports'
-import { Route as ProjectsRouteImport } from './routes/projects'
-import { Route as ProfileSetupRouteImport } from './routes/profile-setup'
-import { Route as ProfessionalStatsRouteImport } from './routes/professional-stats'
-import { Route as ProfessionalReportsRouteImport } from './routes/professional-reports'
-import { Route as ProfessionalProfileRouteImport } from './routes/professional-profile'
-import { Route as ProfessionalMessagesRouteImport } from './routes/professional-messages'
-import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as PricingRouteImport } from './routes/pricing'
-import { Route as PostJobRouteImport } from './routes/post-job'
-import { Route as NotificationsRouteImport } from './routes/notifications'
-import { Route as MyInfoRouteImport } from './routes/my-info'
-import { Route as MessagesRouteImport } from './routes/messages'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as JobManagementRouteImport } from './routes/job-management'
-import { Route as HowItWorksRouteImport } from './routes/how-it-works'
-import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
-import { Route as ForProfessionalsRouteImport } from './routes/for-professionals'
-import { Route as ForClientsRouteImport } from './routes/for-clients'
-import { Route as FaqRouteImport } from './routes/faq'
-import { Route as EarningsReportsRouteImport } from './routes/earnings-reports'
-import { Route as EarningsRouteImport } from './routes/earnings'
-import { Route as DiscoverRouteImport } from './routes/discover'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as ContactUsRouteImport } from './routes/contact-us'
-import { Route as ClientReportsRouteImport } from './routes/client-reports'
-import { Route as AdminReportsRouteImport } from './routes/admin-reports'
-import { Route as AdminNotificationsRouteImport } from './routes/admin-notifications'
-import { Route as AdminCategoriesRouteImport } from './routes/admin-categories'
-import { Route as AdminRouteImport } from './routes/admin'
-import { Route as AboutUsRouteImport } from './routes/about-us'
-import { Route as LegalPageSlugRouteImport } from './routes/$legalPageSlug'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ProjectProjectIdRouteImport } from './routes/project.$projectId'
-import { Route as ProjectTrackTrackingIdRouteImport } from './routes/project-track.$trackingId'
-import { Route as ProfessionalStatsSectionRouteImport } from './routes/professional-stats.$section'
-import { Route as ProProIdRouteImport } from './routes/pro.$proId'
-import { Route as JobJobIdRouteImport } from './routes/job.$jobId'
+import { Route as LegalPageSlugRouteImport } from './routes/$legalPageSlug'
+import { Route as AboutUsRouteImport } from './routes/about-us'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AdminCategoriesRouteImport } from './routes/admin-categories'
+import { Route as AdminNotificationsRouteImport } from './routes/admin-notifications'
+import { Route as AdminReportsRouteImport } from './routes/admin-reports'
+import { Route as ClientReportsRouteImport } from './routes/client-reports'
+import { Route as ContactUsRouteImport } from './routes/contact-us'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as DiscoverRouteImport } from './routes/discover'
+import { Route as EarningsRouteImport } from './routes/earnings'
+import { Route as EarningsReportsRouteImport } from './routes/earnings-reports'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ForClientsRouteImport } from './routes/for-clients'
+import { Route as ForProfessionalsRouteImport } from './routes/for-professionals'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as JobManagementRouteImport } from './routes/job-management'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MessagesRouteImport } from './routes/messages'
+import { Route as MyInfoRouteImport } from './routes/my-info'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as PostJobRouteImport } from './routes/post-job'
+import { Route as PricingRouteImport } from './routes/pricing'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as ProfessionalMessagesRouteImport } from './routes/professional-messages'
+import { Route as ProfessionalProfileRouteImport } from './routes/professional-profile'
+import { Route as ProfessionalReportsRouteImport } from './routes/professional-reports'
+import { Route as ProfessionalStatsRouteImport } from './routes/professional-stats'
+import { Route as ProfileSetupRouteImport } from './routes/profile-setup'
+import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as ReportsRouteImport } from './routes/reports'
+import { Route as ServicesRouteImport } from './routes/services'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as TermsAndConditionsRouteImport } from './routes/terms-and-conditions'
+import { Route as UserManagementRouteImport } from './routes/user-management'
+import { Route as VerificationRouteImport } from './routes/verification'
+import { Route as VerificationManagementRouteImport } from './routes/verification-management'
+import { Route as VerifyRouteImport } from './routes/verify'
+import { Route as WebEditorRouteImport } from './routes/web-editor'
+import { Route as WebsiteCmsRouteImport } from './routes/website-cms'
 import { Route as HireProIdRouteImport } from './routes/hire.$proId'
+import { Route as JobJobIdRouteImport } from './routes/job.$jobId'
+import { Route as ProProIdRouteImport } from './routes/pro.$proId'
+import { Route as ProfessionalStatsSectionRouteImport } from './routes/professional-stats.$section'
+import { Route as ProjectTrackTrackingIdRouteImport } from './routes/project-track.$trackingId'
+import { Route as ProjectProjectIdRouteImport } from './routes/project.$projectId'
 
-const WebsiteCmsRoute = WebsiteCmsRouteImport.update({
-  id: '/website-cms',
-  path: '/website-cms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const WebEditorRoute = WebEditorRouteImport.update({
-  id: '/web-editor',
-  path: '/web-editor',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const VerifyRoute = VerifyRouteImport.update({
-  id: '/verify',
-  path: '/verify',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const VerificationManagementRoute = VerificationManagementRouteImport.update({
-  id: '/verification-management',
-  path: '/verification-management',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const VerificationRoute = VerificationRouteImport.update({
-  id: '/verification',
-  path: '/verification',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const UserManagementRoute = UserManagementRouteImport.update({
-  id: '/user-management',
-  path: '/user-management',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
-  id: '/terms-and-conditions',
-  path: '/terms-and-conditions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SignupRoute = SignupRouteImport.update({
-  id: '/signup',
-  path: '/signup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ReportsRoute = ReportsRouteImport.update({
-  id: '/reports',
-  path: '/reports',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProjectsRoute = ProjectsRouteImport.update({
-  id: '/projects',
-  path: '/projects',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileSetupRoute = ProfileSetupRouteImport.update({
-  id: '/profile-setup',
-  path: '/profile-setup',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfessionalStatsRoute = ProfessionalStatsRouteImport.update({
-  id: '/professional-stats',
-  path: '/professional-stats',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfessionalReportsRoute = ProfessionalReportsRouteImport.update({
-  id: '/professional-reports',
-  path: '/professional-reports',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfessionalProfileRoute = ProfessionalProfileRouteImport.update({
-  id: '/professional-profile',
-  path: '/professional-profile',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfessionalMessagesRoute = ProfessionalMessagesRouteImport.update({
-  id: '/professional-messages',
-  path: '/professional-messages',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PricingRoute = PricingRouteImport.update({
-  id: '/pricing',
-  path: '/pricing',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PostJobRoute = PostJobRouteImport.update({
-  id: '/post-job',
-  path: '/post-job',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NotificationsRoute = NotificationsRouteImport.update({
-  id: '/notifications',
-  path: '/notifications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MyInfoRoute = MyInfoRouteImport.update({
-  id: '/my-info',
-  path: '/my-info',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MessagesRoute = MessagesRouteImport.update({
-  id: '/messages',
-  path: '/messages',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JobManagementRoute = JobManagementRouteImport.update({
-  id: '/job-management',
-  path: '/job-management',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HowItWorksRoute = HowItWorksRouteImport.update({
-  id: '/how-it-works',
-  path: '/how-it-works',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForProfessionalsRoute = ForProfessionalsRouteImport.update({
-  id: '/for-professionals',
-  path: '/for-professionals',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ForClientsRoute = ForClientsRouteImport.update({
-  id: '/for-clients',
-  path: '/for-clients',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FaqRoute = FaqRouteImport.update({
-  id: '/faq',
-  path: '/faq',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EarningsReportsRoute = EarningsReportsRouteImport.update({
-  id: '/earnings-reports',
-  path: '/earnings-reports',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EarningsRoute = EarningsRouteImport.update({
-  id: '/earnings',
-  path: '/earnings',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DiscoverRoute = DiscoverRouteImport.update({
-  id: '/discover',
-  path: '/discover',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContactUsRoute = ContactUsRouteImport.update({
-  id: '/contact-us',
-  path: '/contact-us',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ClientReportsRoute = ClientReportsRouteImport.update({
-  id: '/client-reports',
-  path: '/client-reports',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminReportsRoute = AdminReportsRouteImport.update({
-  id: '/admin-reports',
-  path: '/admin-reports',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminNotificationsRoute = AdminNotificationsRouteImport.update({
-  id: '/admin-notifications',
-  path: '/admin-notifications',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
-  id: '/admin-categories',
-  path: '/admin-categories',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutUsRoute = AboutUsRouteImport.update({
-  id: '/about-us',
-  path: '/about-us',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LegalPageSlugRoute = LegalPageSlugRouteImport.update({
@@ -263,19 +68,219 @@ const LegalPageSlugRoute = LegalPageSlugRouteImport.update({
   path: '/$legalPageSlug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AboutUsRoute = AboutUsRouteImport.update({
+  id: '/about-us',
+  path: '/about-us',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectProjectIdRoute = ProjectProjectIdRouteImport.update({
-  id: '/project/$projectId',
-  path: '/project/$projectId',
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjectTrackTrackingIdRoute = ProjectTrackTrackingIdRouteImport.update({
-  id: '/project-track/$trackingId',
-  path: '/project-track/$trackingId',
+const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
+  id: '/admin-categories',
+  path: '/admin-categories',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNotificationsRoute = AdminNotificationsRouteImport.update({
+  id: '/admin-notifications',
+  path: '/admin-notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/admin-reports',
+  path: '/admin-reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClientReportsRoute = ClientReportsRouteImport.update({
+  id: '/client-reports',
+  path: '/client-reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactUsRoute = ContactUsRouteImport.update({
+  id: '/contact-us',
+  path: '/contact-us',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiscoverRoute = DiscoverRouteImport.update({
+  id: '/discover',
+  path: '/discover',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EarningsRoute = EarningsRouteImport.update({
+  id: '/earnings',
+  path: '/earnings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EarningsReportsRoute = EarningsReportsRouteImport.update({
+  id: '/earnings-reports',
+  path: '/earnings-reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForClientsRoute = ForClientsRouteImport.update({
+  id: '/for-clients',
+  path: '/for-clients',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForProfessionalsRoute = ForProfessionalsRouteImport.update({
+  id: '/for-professionals',
+  path: '/for-professionals',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobManagementRoute = JobManagementRouteImport.update({
+  id: '/job-management',
+  path: '/job-management',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MessagesRoute = MessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MyInfoRoute = MyInfoRouteImport.update({
+  id: '/my-info',
+  path: '/my-info',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PostJobRoute = PostJobRouteImport.update({
+  id: '/post-job',
+  path: '/post-job',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfessionalMessagesRoute = ProfessionalMessagesRouteImport.update({
+  id: '/professional-messages',
+  path: '/professional-messages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfessionalProfileRoute = ProfessionalProfileRouteImport.update({
+  id: '/professional-profile',
+  path: '/professional-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfessionalReportsRoute = ProfessionalReportsRouteImport.update({
+  id: '/professional-reports',
+  path: '/professional-reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfessionalStatsRoute = ProfessionalStatsRouteImport.update({
+  id: '/professional-stats',
+  path: '/professional-stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileSetupRoute = ProfileSetupRouteImport.update({
+  id: '/profile-setup',
+  path: '/profile-setup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProjectsRoute = ProjectsRouteImport.update({
+  id: '/projects',
+  path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportsRoute = ReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsAndConditionsRoute = TermsAndConditionsRouteImport.update({
+  id: '/terms-and-conditions',
+  path: '/terms-and-conditions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UserManagementRoute = UserManagementRouteImport.update({
+  id: '/user-management',
+  path: '/user-management',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerificationRoute = VerificationRouteImport.update({
+  id: '/verification',
+  path: '/verification',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerificationManagementRoute = VerificationManagementRouteImport.update({
+  id: '/verification-management',
+  path: '/verification-management',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const VerifyRoute = VerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebEditorRoute = WebEditorRouteImport.update({
+  id: '/web-editor',
+  path: '/web-editor',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WebsiteCmsRoute = WebsiteCmsRouteImport.update({
+  id: '/website-cms',
+  path: '/website-cms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HireProIdRoute = HireProIdRouteImport.update({
+  id: '/hire/$proId',
+  path: '/hire/$proId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JobJobIdRoute = JobJobIdRouteImport.update({
+  id: '/job/$jobId',
+  path: '/job/$jobId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProProIdRoute = ProProIdRouteImport.update({
+  id: '/pro/$proId',
+  path: '/pro/$proId',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfessionalStatsSectionRoute =
@@ -284,19 +289,14 @@ const ProfessionalStatsSectionRoute =
     path: '/$section',
     getParentRoute: () => ProfessionalStatsRoute,
   } as any)
-const ProProIdRoute = ProProIdRouteImport.update({
-  id: '/pro/$proId',
-  path: '/pro/$proId',
+const ProjectTrackTrackingIdRoute = ProjectTrackTrackingIdRouteImport.update({
+  id: '/project-track/$trackingId',
+  path: '/project-track/$trackingId',
   getParentRoute: () => rootRouteImport,
 } as any)
-const JobJobIdRoute = JobJobIdRouteImport.update({
-  id: '/job/$jobId',
-  path: '/job/$jobId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HireProIdRoute = HireProIdRouteImport.update({
-  id: '/hire/$proId',
-  path: '/hire/$proId',
+const ProjectProjectIdRoute = ProjectProjectIdRouteImport.update({
+  id: '/project/$projectId',
+  path: '/project/$projectId',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -656,284 +656,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/website-cms': {
-      id: '/website-cms'
-      path: '/website-cms'
-      fullPath: '/website-cms'
-      preLoaderRoute: typeof WebsiteCmsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/web-editor': {
-      id: '/web-editor'
-      path: '/web-editor'
-      fullPath: '/web-editor'
-      preLoaderRoute: typeof WebEditorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/verify': {
-      id: '/verify'
-      path: '/verify'
-      fullPath: '/verify'
-      preLoaderRoute: typeof VerifyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/verification-management': {
-      id: '/verification-management'
-      path: '/verification-management'
-      fullPath: '/verification-management'
-      preLoaderRoute: typeof VerificationManagementRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/verification': {
-      id: '/verification'
-      path: '/verification'
-      fullPath: '/verification'
-      preLoaderRoute: typeof VerificationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/user-management': {
-      id: '/user-management'
-      path: '/user-management'
-      fullPath: '/user-management'
-      preLoaderRoute: typeof UserManagementRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms-and-conditions': {
-      id: '/terms-and-conditions'
-      path: '/terms-and-conditions'
-      fullPath: '/terms-and-conditions'
-      preLoaderRoute: typeof TermsAndConditionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/signup': {
-      id: '/signup'
-      path: '/signup'
-      fullPath: '/signup'
-      preLoaderRoute: typeof SignupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reports': {
-      id: '/reports'
-      path: '/reports'
-      fullPath: '/reports'
-      preLoaderRoute: typeof ReportsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projects': {
-      id: '/projects'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof ProjectsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile-setup': {
-      id: '/profile-setup'
-      path: '/profile-setup'
-      fullPath: '/profile-setup'
-      preLoaderRoute: typeof ProfileSetupRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/professional-stats': {
-      id: '/professional-stats'
-      path: '/professional-stats'
-      fullPath: '/professional-stats'
-      preLoaderRoute: typeof ProfessionalStatsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/professional-reports': {
-      id: '/professional-reports'
-      path: '/professional-reports'
-      fullPath: '/professional-reports'
-      preLoaderRoute: typeof ProfessionalReportsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/professional-profile': {
-      id: '/professional-profile'
-      path: '/professional-profile'
-      fullPath: '/professional-profile'
-      preLoaderRoute: typeof ProfessionalProfileRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/professional-messages': {
-      id: '/professional-messages'
-      path: '/professional-messages'
-      fullPath: '/professional-messages'
-      preLoaderRoute: typeof ProfessionalMessagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/pricing': {
-      id: '/pricing'
-      path: '/pricing'
-      fullPath: '/pricing'
-      preLoaderRoute: typeof PricingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/post-job': {
-      id: '/post-job'
-      path: '/post-job'
-      fullPath: '/post-job'
-      preLoaderRoute: typeof PostJobRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/notifications': {
-      id: '/notifications'
-      path: '/notifications'
-      fullPath: '/notifications'
-      preLoaderRoute: typeof NotificationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/my-info': {
-      id: '/my-info'
-      path: '/my-info'
-      fullPath: '/my-info'
-      preLoaderRoute: typeof MyInfoRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/messages': {
-      id: '/messages'
-      path: '/messages'
-      fullPath: '/messages'
-      preLoaderRoute: typeof MessagesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/job-management': {
-      id: '/job-management'
-      path: '/job-management'
-      fullPath: '/job-management'
-      preLoaderRoute: typeof JobManagementRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/how-it-works': {
-      id: '/how-it-works'
-      path: '/how-it-works'
-      fullPath: '/how-it-works'
-      preLoaderRoute: typeof HowItWorksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/forgot-password': {
-      id: '/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/forgot-password'
-      preLoaderRoute: typeof ForgotPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/for-professionals': {
-      id: '/for-professionals'
-      path: '/for-professionals'
-      fullPath: '/for-professionals'
-      preLoaderRoute: typeof ForProfessionalsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/for-clients': {
-      id: '/for-clients'
-      path: '/for-clients'
-      fullPath: '/for-clients'
-      preLoaderRoute: typeof ForClientsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/faq': {
-      id: '/faq'
-      path: '/faq'
-      fullPath: '/faq'
-      preLoaderRoute: typeof FaqRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/earnings-reports': {
-      id: '/earnings-reports'
-      path: '/earnings-reports'
-      fullPath: '/earnings-reports'
-      preLoaderRoute: typeof EarningsReportsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/earnings': {
-      id: '/earnings'
-      path: '/earnings'
-      fullPath: '/earnings'
-      preLoaderRoute: typeof EarningsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/discover': {
-      id: '/discover'
-      path: '/discover'
-      fullPath: '/discover'
-      preLoaderRoute: typeof DiscoverRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/contact-us': {
-      id: '/contact-us'
-      path: '/contact-us'
-      fullPath: '/contact-us'
-      preLoaderRoute: typeof ContactUsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/client-reports': {
-      id: '/client-reports'
-      path: '/client-reports'
-      fullPath: '/client-reports'
-      preLoaderRoute: typeof ClientReportsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin-reports': {
-      id: '/admin-reports'
-      path: '/admin-reports'
-      fullPath: '/admin-reports'
-      preLoaderRoute: typeof AdminReportsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin-notifications': {
-      id: '/admin-notifications'
-      path: '/admin-notifications'
-      fullPath: '/admin-notifications'
-      preLoaderRoute: typeof AdminNotificationsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin-categories': {
-      id: '/admin-categories'
-      path: '/admin-categories'
-      fullPath: '/admin-categories'
-      preLoaderRoute: typeof AdminCategoriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about-us': {
-      id: '/about-us'
-      path: '/about-us'
-      fullPath: '/about-us'
-      preLoaderRoute: typeof AboutUsRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$legalPageSlug': {
@@ -943,39 +670,291 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LegalPageSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/about-us': {
+      id: '/about-us'
+      path: '/about-us'
+      fullPath: '/about-us'
+      preLoaderRoute: typeof AboutUsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/project/$projectId': {
-      id: '/project/$projectId'
-      path: '/project/$projectId'
-      fullPath: '/project/$projectId'
-      preLoaderRoute: typeof ProjectProjectIdRouteImport
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/project-track/$trackingId': {
-      id: '/project-track/$trackingId'
-      path: '/project-track/$trackingId'
-      fullPath: '/project-track/$trackingId'
-      preLoaderRoute: typeof ProjectTrackTrackingIdRouteImport
+    '/admin-categories': {
+      id: '/admin-categories'
+      path: '/admin-categories'
+      fullPath: '/admin-categories'
+      preLoaderRoute: typeof AdminCategoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/professional-stats/$section': {
-      id: '/professional-stats/$section'
-      path: '/$section'
-      fullPath: '/professional-stats/$section'
-      preLoaderRoute: typeof ProfessionalStatsSectionRouteImport
-      parentRoute: typeof ProfessionalStatsRoute
+    '/admin-notifications': {
+      id: '/admin-notifications'
+      path: '/admin-notifications'
+      fullPath: '/admin-notifications'
+      preLoaderRoute: typeof AdminNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/pro/$proId': {
-      id: '/pro/$proId'
-      path: '/pro/$proId'
-      fullPath: '/pro/$proId'
-      preLoaderRoute: typeof ProProIdRouteImport
+    '/admin-reports': {
+      id: '/admin-reports'
+      path: '/admin-reports'
+      fullPath: '/admin-reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/client-reports': {
+      id: '/client-reports'
+      path: '/client-reports'
+      fullPath: '/client-reports'
+      preLoaderRoute: typeof ClientReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact-us': {
+      id: '/contact-us'
+      path: '/contact-us'
+      fullPath: '/contact-us'
+      preLoaderRoute: typeof ContactUsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/discover': {
+      id: '/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof DiscoverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/earnings': {
+      id: '/earnings'
+      path: '/earnings'
+      fullPath: '/earnings'
+      preLoaderRoute: typeof EarningsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/earnings-reports': {
+      id: '/earnings-reports'
+      path: '/earnings-reports'
+      fullPath: '/earnings-reports'
+      preLoaderRoute: typeof EarningsReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-clients': {
+      id: '/for-clients'
+      path: '/for-clients'
+      fullPath: '/for-clients'
+      preLoaderRoute: typeof ForClientsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/for-professionals': {
+      id: '/for-professionals'
+      path: '/for-professionals'
+      fullPath: '/for-professionals'
+      preLoaderRoute: typeof ForProfessionalsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/job-management': {
+      id: '/job-management'
+      path: '/job-management'
+      fullPath: '/job-management'
+      preLoaderRoute: typeof JobManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/messages': {
+      id: '/messages'
+      path: '/messages'
+      fullPath: '/messages'
+      preLoaderRoute: typeof MessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/my-info': {
+      id: '/my-info'
+      path: '/my-info'
+      fullPath: '/my-info'
+      preLoaderRoute: typeof MyInfoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/post-job': {
+      id: '/post-job'
+      path: '/post-job'
+      fullPath: '/post-job'
+      preLoaderRoute: typeof PostJobRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/professional-messages': {
+      id: '/professional-messages'
+      path: '/professional-messages'
+      fullPath: '/professional-messages'
+      preLoaderRoute: typeof ProfessionalMessagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/professional-profile': {
+      id: '/professional-profile'
+      path: '/professional-profile'
+      fullPath: '/professional-profile'
+      preLoaderRoute: typeof ProfessionalProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/professional-reports': {
+      id: '/professional-reports'
+      path: '/professional-reports'
+      fullPath: '/professional-reports'
+      preLoaderRoute: typeof ProfessionalReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/professional-stats': {
+      id: '/professional-stats'
+      path: '/professional-stats'
+      fullPath: '/professional-stats'
+      preLoaderRoute: typeof ProfessionalStatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile-setup': {
+      id: '/profile-setup'
+      path: '/profile-setup'
+      fullPath: '/profile-setup'
+      preLoaderRoute: typeof ProfileSetupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/projects': {
+      id: '/projects'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reports': {
+      id: '/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof ReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-and-conditions': {
+      id: '/terms-and-conditions'
+      path: '/terms-and-conditions'
+      fullPath: '/terms-and-conditions'
+      preLoaderRoute: typeof TermsAndConditionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/user-management': {
+      id: '/user-management'
+      path: '/user-management'
+      fullPath: '/user-management'
+      preLoaderRoute: typeof UserManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verification': {
+      id: '/verification'
+      path: '/verification'
+      fullPath: '/verification'
+      preLoaderRoute: typeof VerificationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verification-management': {
+      id: '/verification-management'
+      path: '/verification-management'
+      fullPath: '/verification-management'
+      preLoaderRoute: typeof VerificationManagementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/verify': {
+      id: '/verify'
+      path: '/verify'
+      fullPath: '/verify'
+      preLoaderRoute: typeof VerifyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/web-editor': {
+      id: '/web-editor'
+      path: '/web-editor'
+      fullPath: '/web-editor'
+      preLoaderRoute: typeof WebEditorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/website-cms': {
+      id: '/website-cms'
+      path: '/website-cms'
+      fullPath: '/website-cms'
+      preLoaderRoute: typeof WebsiteCmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hire/$proId': {
+      id: '/hire/$proId'
+      path: '/hire/$proId'
+      fullPath: '/hire/$proId'
+      preLoaderRoute: typeof HireProIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/job/$jobId': {
@@ -985,11 +964,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JobJobIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/hire/$proId': {
-      id: '/hire/$proId'
-      path: '/hire/$proId'
-      fullPath: '/hire/$proId'
-      preLoaderRoute: typeof HireProIdRouteImport
+    '/pro/$proId': {
+      id: '/pro/$proId'
+      path: '/pro/$proId'
+      fullPath: '/pro/$proId'
+      preLoaderRoute: typeof ProProIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/professional-stats/$section': {
+      id: '/professional-stats/$section'
+      path: '/$section'
+      fullPath: '/professional-stats/$section'
+      preLoaderRoute: typeof ProfessionalStatsSectionRouteImport
+      parentRoute: typeof ProfessionalStatsRoute
+    }
+    '/project-track/$trackingId': {
+      id: '/project-track/$trackingId'
+      path: '/project-track/$trackingId'
+      fullPath: '/project-track/$trackingId'
+      preLoaderRoute: typeof ProjectTrackTrackingIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/project/$projectId': {
+      id: '/project/$projectId'
+      path: '/project/$projectId'
+      fullPath: '/project/$projectId'
+      preLoaderRoute: typeof ProjectProjectIdRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
