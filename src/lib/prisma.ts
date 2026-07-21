@@ -11,10 +11,28 @@ async function createPrismaClient() {
 
   if (process.env.PRISMA_ACCELERATE_URL) {
     options.accelerateUrl = process.env.PRISMA_ACCELERATE_URL;
+  } else if (process.env.TURSO_DATABASE_URL) {
+    // Turso / LibSQL adapter for cloud persistence (e.g. Vercel)
+    try {
+      const { createClient } = await import("@libsql/client");
+      const { PrismaLibSQL } = await import("@prisma/adapter-libsql");
+
+      const libsql = createClient({
+        url: process.env.TURSO_DATABASE_URL,
+        authToken: process.env.TURSO_AUTH_TOKEN,
+      });
+
+      options.adapter = new PrismaLibSQL(libsql);
+    } catch (cause) {
+      throw new Error(
+        `Failed to load @prisma/adapter-libsql or @libsql/client. Cause: ${cause instanceof Error ? cause.message : String(cause)}`,
+      );
+    }
   } else {
+    // Local SQLite adapter
     const databaseUrl = process.env.DATABASE_URL;
     if (!databaseUrl) {
-      throw new Error("DATABASE_URL is required for Prisma SQLite adapter initialization.");
+      throw new Error("DATABASE_URL or TURSO_DATABASE_URL is required for Prisma adapter initialization.");
     }
 
     try {
