@@ -1,4 +1,4 @@
-git pushimport { createClient } from '@libsql/client';
+import { createClient } from '@libsql/client';
 import { execSync } from 'child_process';
 import dotenv from 'dotenv';
 
