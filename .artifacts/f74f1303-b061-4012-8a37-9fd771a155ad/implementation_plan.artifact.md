@@ -1,49 +1,45 @@
-# Implementation Plan: Deploying to Vercel with a Managed Database (Turso)
+# Implementation Plan: Fix Vercel 404 NOT_FOUND
 
-The goal is to deploy the "Skill Shine Gateway" project to Vercel while replacing the local SQLite database with a managed **Turso** (LibSQL) database to ensure data persistence.
+This plan resolves the `404: NOT_FOUND` error by bridging your full-stack TanStack Start application to Vercel's serverless architecture.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> **Turso Setup**: You will need to create a free account at [turso.tech](https://turso.tech), create a database, and get a **Database URL** and **Auth Token**.
->
-> **File Storage**: This plan only covers the **Database**. Local file uploads (in `storage/` or `public/uploads`) will still be lost on Vercel. For persistent files, you should migrate to a service like AWS S3 or Cloudflare R2 later.
+> **Vercel Settings**: After applying these changes, you must ensure that in the Vercel Dashboard, your **Framework Preset** is set to **Other** (not Vite) and the **Output Directory** is set to `dist/client`.
+
+> [!WARNING]
+> **Database Check**: Since we are moving to serverless functions, the Turso database configuration we set up earlier is **mandatory**. Ensure `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` are set in Vercel.
+
+## Root Cause Analysis
+
+1.  **Framework Mismatch**: The project is built as a standalone Node.js server (using `http-server.mjs`), which Vercel doesn't run natively for "Frontend" deployments.
+2.  **Static Servicing**: Vercel is looking for static files in the `dist` folder. Because this is an SSR app, the "entry point" isn't a static `index.html` but a server-side function.
+3.  **Missing Routing**: There is no configuration telling Vercel to send incoming web requests to your SSR logic.
 
 ## Proposed Changes
 
-### 1. Dependency Updates
+### 1. Vercel Function Bridge
 
-- Install the LibSQL adapter for Prisma.
-- `npm install @libsql/client @prisma/adapter-libsql`
+We will create a serverless function that acts as the entry point for Vercel.
 
-### 2. Code Modifications
+#### [NEW] [api/server.js](file:///D:/skill-shine-gateway-main-main/api/server.js)
+- This file will import your built SSR handler and bridge it to Vercel's Node.js runtime.
 
-#### [MODIFY] [prisma/schema.prisma](file:///D:/skill-shine-gateway-main-main/prisma/schema.prisma)
-- Ensure the schema is ready for the LibSQL driver (usually no changes needed to the `provider = "sqlite"` line, but we must use the adapter in code).
+### 2. Configuration
 
-#### [MODIFY] [src/lib/prisma.ts](file:///D:/skill-shine-gateway-main-main/src/lib/prisma.ts)
-- Update the `createPrismaClient` function to detect and use the `LibSQL` adapter when the appropriate environment variables are set.
+#### [MODIFY] [vercel.json](file:///D:/skill-shine-gateway-main-main/vercel.json)
+- Add rewrites to route all traffic to the new serverless function.
+- Configure the function runtime.
 
-### 3. Deployment Steps
+### 3. Build Optimization
 
-1. **Create Turso Database**:
-   - Install Turso CLI: `curl -sSfL https://get.turso.tech/install.sh | bash`
-   - Login: `turso auth login`
-   - Create DB: `turso db create skill-shine`
-   - Get URL: `turso db show skill-shine --url`
-   - Get Token: `turso db tokens create skill-shine`
-2. **Push Schema**:
-   - `export DATABASE_URL=libsql://...`
-   - `npx prisma db push` (to create tables in Turso).
-3. **Configure Vercel**:
-   - Add `TURSO_DATABASE_URL` and `TURSO_AUTH_TOKEN` to Vercel Project Settings.
-   - Add other required env vars from `.env.example`.
-4. **Deploy**:
-   - Push to GitHub and import to Vercel.
+#### [MODIFY] [package.json](file:///D:/skill-shine-gateway-main-main/package.json)
+- Ensure the build script produces the necessary assets in a location Vercel can find.
 
 ## Verification Plan
 
 ### Manual Verification
-- Verify that the app connects to the remote Turso database.
-- Perform a sign-up or data entry and verify it persists after a page refresh or redeploy.
-- Check Vercel logs for any Prisma connection errors.
+- Deploy to Vercel.
+- Verify the homepage loads (confirming SSR is working).
+- Verify API routes like `/api/health` return JSON.
+- Check Vercel Function logs to ensure no runtime errors.

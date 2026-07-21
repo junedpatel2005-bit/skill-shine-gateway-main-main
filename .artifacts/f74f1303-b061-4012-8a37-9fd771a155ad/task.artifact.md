@@ -10,3 +10,7 @@
     - `[x]` Verify local build with new dependencies
     - `[x]` Initialize Turso database (Pushed schema successfully)
     - `[x]` Provide deployment instructions for Turso CLI and Vercel dashboard
+- `[x]` Fix Vercel 404 NOT_FOUND
+    - `[x]` Create `api/server.js` bridge
+    - `[x]` Update `vercel.json` with rewrites and functions config
+- `[x]` Final verification and instructions
