@@ -4,7 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "engines": {
-    "node": "20.x"
+    "node": "24.x"
   },
   "scripts": {
     "editor:sync-pages": "node scripts/sync-web-editor-pages.mjs",
@@ -68,7 +68,7 @@
     "@tanstack/react-router": "^1.170.4",
     "@tanstack/react-start": "^1.168.6",
     "@tanstack/router-plugin": "^1.168.6",
-    "better-sqlite3": "^11.8.1",
+    "better-sqlite3": "^13.0.1",
     "ckeditor5": "^48.2.0",
     "ckeditor5-premium-features": "^48.2.0",
     "class-variance-authority": "^0.7.1",
