@@ -1,0 +1,11 @@
+- `[ ]` Update `prisma/schema.prisma` with missing models
+- `[ ]` Update `src/lib/prisma.ts` to ensure robust env var handling
+- `[ ]` Migrate `src/lib/website-page-cms.server.ts` to Prisma
+- `[ ]` Migrate `src/lib/legal-cms.server.ts` to Prisma
+- `[ ]` Migrate `src/lib/user-db.server.ts` to Prisma
+- `[ ]` Migrate `src/lib/notification-db.server.ts` to Prisma
+- `[ ]` Migrate `src/lib/services-db.server.ts` to Prisma
+- `[ ]` Migrate other library files using `better-sqlite3`
+- `[ ]` Remove `better-sqlite3` from `package.json`
+- `[ ]` Run `npx prisma generate`
+- `[ ]` Run `npm run build` and verify startup
