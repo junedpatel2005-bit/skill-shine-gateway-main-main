@@ -178,7 +178,7 @@ function UserManagement() {
     `${data.viewer.firstName} ${data.viewer.lastName}`.trim() || data.viewer.email;
   const selectedUser = users.find((user) => user.id === selectedUserId) || null;
   const selectedUserDetail = selectedUserId
-    ? (data.userDetails[selectedUserId] as AdminManagedUserDetail | undefined)
+    ? data.userDetails?.[selectedUserId]
     : undefined;
 
   async function handleStatusChange(user: AdminUserRecord, isActive: boolean) {
@@ -522,6 +522,7 @@ function UserDetailDialog({
   } | null>(null);
 
   if (!user) return null;
+  const activeUser = user;
 
   const fullName = getFullName(user);
   const isProfessional = user.role === "PROFESSIONAL";
@@ -543,7 +544,7 @@ function UserDetailDialog({
     }
 
     try {
-      await onPasswordChange(user, newPassword);
+      await onPasswordChange(activeUser, newPassword);
       setNewPassword("");
       setConfirmPassword("");
       setPasswordMessage({

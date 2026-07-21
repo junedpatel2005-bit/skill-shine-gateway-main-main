@@ -61,6 +61,7 @@ export const Route = createFileRoute("/discover")({
     z
       .object({
         search: z.string().optional(),
+        category: z.string().optional(),
       })
       .parse(search),
   loader: () => getDiscoveryData(),

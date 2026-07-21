@@ -1,10 +1,9 @@
 import Database from "better-sqlite3";
 import path from "node:path";
-import { createAPIFileRoute } from "@tanstack/react-start/api";
 
 import { requireCurrentUserRole } from "@/lib/current-user.server";
 
-export const APIRoute = createAPIFileRoute("/api/admin/payments")({
+export const APIRoute = {
   GET: async () => {
     requireCurrentUserRole("ADMIN");
 
@@ -69,4 +68,4 @@ export const APIRoute = createAPIFileRoute("/api/admin/payments")({
       },
     );
   },
-});
+};

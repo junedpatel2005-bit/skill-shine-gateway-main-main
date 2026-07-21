@@ -712,7 +712,7 @@ describe("Admin Features", () => {
     const pro = createTestUser(db, { role: "PROFESSIONAL" }) as any;
     const rawRow = db.prepare('SELECT * FROM "User" WHERE id = ?').get(pro.id);
     console.log("Raw row:", rawRow);
-    console.log("Keys:", Object.keys(rawRow));
+    console.log("Keys:", Object.keys(rawRow as object));
     expect(pro.isVerified).toBe(0);
 
     db.prepare(`UPDATE "User" SET isVerified=?, updatedAt=? WHERE id=?`).run(1, now, pro.id);

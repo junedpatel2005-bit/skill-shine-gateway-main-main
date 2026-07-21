@@ -126,7 +126,8 @@ const updateHireRequestStatus = createServerFn({ method: "POST" })
       throw new Error("Only professionals can update hire requests.");
     }
 
-    return updateProfessionalHireContractStatus(viewer.id, data.contractId, data.status);
+    updateProfessionalHireContractStatus(viewer.id, data.contractId, data.status);
+    return { contractId: data.contractId, status: data.status };
   });
 
 const sendHireNegotiationOffer = createServerFn({ method: "POST" })
@@ -1745,7 +1746,6 @@ function StatBox({
   value,
   sub,
   tint,
-  to,
   delta,
   isActive = false,
   onClick,
@@ -1755,13 +1755,6 @@ function StatBox({
   value: string;
   sub: string;
   tint: string;
-  to?:
-    | "/earnings"
-    | "/professional-stats/projects"
-    | "/professional-stats/project-requests"
-    | "/professional-stats/hire-requests"
-    | "/professional-stats/completed"
-    | "/professional-stats/ratings";
   delta?: number;
   isActive?: boolean;
   onClick?: () => void;
@@ -1783,17 +1776,6 @@ function StatBox({
       <p className="text-xs text-muted-foreground">{sub}</p>
     </>
   );
-
-  if (to) {
-    return (
-      <Link
-        to={to}
-        className="block rounded-xl border border-border bg-card p-5 shadow-soft transition-colors hover:border-primary/50 hover:bg-primary/5"
-      >
-        {content}
-      </Link>
-    );
-  }
 
   if (onClick) {
     return (

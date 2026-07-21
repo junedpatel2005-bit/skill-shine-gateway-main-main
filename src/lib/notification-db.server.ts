@@ -403,7 +403,8 @@ export function getUserNotifications(userId: number, role: "CLIENT" | "PROFESSIO
   const states = getNotificationStates(db, userId);
 
   return notifications
-    .map((notification) => {
+    .filter((notification) => notification !== null)
+    .map((notification): UserNotification | null => {
       const state = states.get(notification.key);
 
       if (state?.clearedAt) {
@@ -604,7 +605,7 @@ function getManualNotifications(db: BetterSqlite3Database, userId: number) {
       `,
     )
     .all(userId)
-    .map((row) => {
+    .map((row): UserNotification | null => {
       const notification = row as ManualNotificationRow;
 
       return {
@@ -651,7 +652,7 @@ function getMessageNotifications(
       `,
     )
     .all(userId, userId)
-    .map((row) => {
+    .map((row): UserNotification | null => {
       const message = row as MessageNotificationRow;
       const senderName = formatName(
         message.senderFirstName,
@@ -705,7 +706,7 @@ function getProjectRequestNotifications(
       `,
     )
     .all(userId, userId)
-    .map((row) => {
+    .map((row): UserNotification | null => {
       const request = row as ProjectRequestNotificationRow;
       const projectTitle = request.projectTitle || "Project";
 
@@ -748,7 +749,7 @@ function getProjectRequestNotifications(
 
       return null;
     })
-    .filter((notification): notification is UserNotification => Boolean(notification));
+    .filter((notification): notification is UserNotification => notification !== null);
 }
 
 function getHireContractNotifications(
@@ -785,7 +786,7 @@ function getHireContractNotifications(
       `,
     )
     .all(String(userId), String(userId))
-    .map((row) => {
+    .map((row): UserNotification | null => {
       const contract = row as HireContractNotificationRow;
       const title = contract.title || "Direct hire request";
 
@@ -840,7 +841,7 @@ function getHireContractNotifications(
 
       return null;
     })
-    .filter((notification): notification is UserNotification => Boolean(notification));
+    .filter((notification): notification is UserNotification => notification !== null);
 }
 
 function getWorkUploadNotifications(
@@ -875,7 +876,7 @@ function getWorkUploadNotifications(
       `,
     )
     .all(userId, userId)
-    .map((row) => {
+    .map((row): UserNotification | null => {
       const upload = row as WorkUploadNotificationRow;
       const projectTitle = upload.projectTitle || "Project";
       const fileLabel = upload.fileName || upload.title || "work file";
@@ -912,7 +913,7 @@ function getWorkUploadNotifications(
 
       return null;
     })
-    .filter((notification): notification is UserNotification => Boolean(notification));
+    .filter((notification): notification is UserNotification => notification !== null);
 }
 
 function getRevisionNotifications(
@@ -948,7 +949,7 @@ function getRevisionNotifications(
       `,
     )
     .all(userId, userId)
-    .map((row) => {
+    .map((row): UserNotification | null => {
       const revision = row as RevisionNotificationRow;
       const projectTitle = revision.projectTitle || "Project";
 
@@ -984,7 +985,7 @@ function getRevisionNotifications(
 
       return null;
     })
-    .filter((notification): notification is UserNotification => Boolean(notification));
+    .filter((notification): notification is UserNotification => notification !== null);
 }
 
 function getMilestoneNotifications(
@@ -1021,7 +1022,7 @@ function getMilestoneNotifications(
       `,
     )
     .all(userId, userId)
-    .map((row) => {
+    .map((row): UserNotification | null => {
       const milestone = row as MilestoneNotificationRow;
       const projectTitle = milestone.projectTitle || "Project";
       const amountLabel = milestone.amount ? ` (${formatMoney(milestone.amount)})` : "";
@@ -1068,7 +1069,7 @@ function getMilestoneNotifications(
 
       return null;
     })
-    .filter((notification): notification is UserNotification => Boolean(notification));
+    .filter((notification): notification is UserNotification => notification !== null);
 }
 
 function getCompletionNotifications(
@@ -1104,7 +1105,7 @@ function getCompletionNotifications(
       `,
     )
     .all(userId, userId)
-    .map((row) => {
+    .map((row): UserNotification | null => {
       const completion = row as CompletionNotificationRow;
       const projectTitle = completion.projectTitle || "Project";
 
@@ -1156,7 +1157,7 @@ function getCompletionNotifications(
 
       return null;
     })
-    .filter((notification): notification is UserNotification => Boolean(notification));
+    .filter((notification): notification is UserNotification => notification !== null);
 }
 
 function getNotificationStates(db: BetterSqlite3Database, userId: number) {

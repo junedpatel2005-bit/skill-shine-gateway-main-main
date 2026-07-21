@@ -25,7 +25,10 @@ export default function StaticMap({
 
     L.marker([lat, lng]).addTo(mapRef.current);
 
-    return () => mapRef.current && mapRef.current.remove();
+    return () => {
+      mapRef.current?.remove();
+      mapRef.current = null;
+    };
   }, [lat, lng, zoom]);
 
   return <div ref={ref} className={className ?? "w-full h-48 rounded-md"} />;

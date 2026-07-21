@@ -98,6 +98,9 @@ export const Route = createFileRoute("/hire/$proId")({
 
 function HireProfessional() {
   const { viewer, profile: pro, projects } = useLoaderData({ from: "/hire/$proId" });
+  if (!viewer) {
+    throw new Error("Authenticated client data is unavailable.");
+  }
   const clientProjects = (projects ?? []) as ClientJobRecord[];
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
     clientProjects[0]?.id ?? null,

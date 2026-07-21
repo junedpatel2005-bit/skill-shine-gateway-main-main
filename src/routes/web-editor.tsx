@@ -157,7 +157,7 @@ function ClientOnlyEditor({
       editor={ClassicEditor}
       config={config}
       data={content}
-      onChange={(_, editor) => onChange(editor.getData())}
+      onChange={(_event: Event, editor: { getData(): string }) => onChange(editor.getData())}
     />
   );
 }

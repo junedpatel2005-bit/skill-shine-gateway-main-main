@@ -33,6 +33,7 @@ dist-ssr
 *.sw?
 
 /src/generated/prisma
+/src/generated/prisma-client
 /dev.db
 /dev.db-journal
 /prisma/app.db

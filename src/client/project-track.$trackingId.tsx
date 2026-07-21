@@ -381,6 +381,8 @@ function ProjectTrack() {
     );
   }
 
+  const activeTracking = tracking;
+
   const expectedWeeks = parseDurationWeeks(tracking.duration);
   const expectedDays = expectedWeeks ? expectedWeeks * 7 : null;
   const elapsedDays = getElapsedDays(tracking.acceptedAt, currentTime);
@@ -417,16 +419,16 @@ function ProjectTrack() {
     latestCompletionRequest?.status === "APPROVED"
       ? new Date(new Date(latestCompletionRequest.updatedAt).getTime() + 86400000).toISOString()
       : null;
-  const projectActivityRecipientId = isProfessional ? tracking.clientId : tracking.professionalId;
+  const projectActivityRecipientId = isProfessional ? activeTracking.clientId : activeTracking.professionalId;
 
   function emitProjectActivity(title: string, description?: string) {
     socketRef.current?.emit("project:activity", {
-      trackingId: tracking.id,
+      trackingId: activeTracking.id,
       actorId: viewer.id,
       recipientId: projectActivityRecipientId,
       title,
       description,
-      href: `/project-track/${tracking.id}`,
+      href: `/project-track/${activeTracking.id}`,
       createdAt: new Date().toISOString(),
     });
   }
@@ -541,7 +543,7 @@ function ProjectTrack() {
       toast.success("Work file deleted");
       emitProjectActivity(
         "Work file deleted",
-        `${displayName || "Professional"} deleted a work file from ${tracking.projectTitle}.`,
+        `${displayName || "Professional"} deleted a work file from ${activeTracking.projectTitle}.`,
       );
       await router.invalidate();
     } finally {
@@ -567,7 +569,7 @@ function ProjectTrack() {
     try {
       await requestProjectRevision({
         data: {
-          trackingId: tracking.id,
+          trackingId: activeTracking.id,
           note: revisionNote,
         },
       });
@@ -575,7 +577,7 @@ function ProjectTrack() {
       toast.success("Revision requested");
       emitProjectActivity(
         "Revision requested",
-        `${displayName || "Client"} requested changes for ${tracking.projectTitle}.`,
+        `${displayName || "Client"} requested changes for ${activeTracking.projectTitle}.`,
       );
       await router.invalidate();
     } catch (error) {
@@ -593,7 +595,7 @@ function ProjectTrack() {
       toast.success("Revision cleared");
       emitProjectActivity(
         "Revision cleared",
-        `${displayName || "Client"} cleared a revision request for ${tracking.projectTitle}.`,
+        `${displayName || "Client"} cleared a revision request for ${activeTracking.projectTitle}.`,
       );
       await router.invalidate();
     } finally {
@@ -673,12 +675,12 @@ function ProjectTrack() {
 
   async function handleMilestoneStatus(milestoneId: number, status: ProjectMilestoneStatus) {
     setUpdatingMilestoneId(milestoneId);
-    const paidMilestoneCountAfterChange = tracking.milestones.filter((milestone) =>
+    const paidMilestoneCountAfterChange = activeTracking.milestones.filter((milestone) =>
       milestone.id === milestoneId ? status === "PAID" : milestone.status === "PAID",
     ).length;
     const willCompleteProject =
       status === "PAID" &&
-      tracking.milestones.length >= REQUIRED_PROJECT_MILESTONES &&
+      activeTracking.milestones.length >= REQUIRED_PROJECT_MILESTONES &&
       paidMilestoneCountAfterChange >= REQUIRED_PROJECT_MILESTONES;
 
     try {
@@ -687,13 +689,13 @@ function ProjectTrack() {
         toast.success("Project completed");
         emitProjectActivity(
           "Project completed",
-          `${displayName || "Client"} completed all 5 milestones for ${tracking.projectTitle}.`,
+          `${displayName || "Client"} completed all 5 milestones for ${activeTracking.projectTitle}.`,
         );
       } else {
         toast.success(`Milestone ${formatMilestoneStatus(status).toLowerCase()}`);
         emitProjectActivity(
           `Milestone ${formatMilestoneStatus(status).toLowerCase()}`,
-          `${displayName || "Someone"} updated a milestone in ${tracking.projectTitle}.`,
+          `${displayName || "Someone"} updated a milestone in ${activeTracking.projectTitle}.`,
         );
       }
       await router.invalidate();
@@ -710,7 +712,7 @@ function ProjectTrack() {
       toast.success("Milestone deleted");
       emitProjectActivity(
         "Milestone deleted",
-        `${displayName || "Client"} deleted a milestone from ${tracking.projectTitle}.`,
+        `${displayName || "Client"} deleted a milestone from ${activeTracking.projectTitle}.`,
       );
       await router.invalidate();
       window.requestAnimationFrame(() =>
@@ -764,7 +766,7 @@ function ProjectTrack() {
       toast.success(status === "APPROVED" ? "Project completed" : "Revision requested");
       emitProjectActivity(
         status === "APPROVED" ? "Project completed" : "Final revision requested",
-        `${displayName || "Client"} ${status === "APPROVED" ? "approved" : "requested changes to"} final work for ${tracking.projectTitle}.`,
+        `${displayName || "Client"} ${status === "APPROVED" ? "approved" : "requested changes to"} final work for ${activeTracking.projectTitle}.`,
       );
       await router.invalidate();
     } finally {
@@ -1030,7 +1032,7 @@ function ProjectTrack() {
             <div className="mt-5 grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
               <InfoLine
                 icon={DollarSign}
-                text={`Posted budget ${formatBudget(tracking.projectBudgetMin, tracking.projectBudgetMax, tracking.projectTimingType)}`}
+                text={`Posted budget ${formatBudget(tracking.projectBudgetMin, tracking.projectBudgetMax, tracking.projectTimingType ?? "FIXED")}`}
               />
               <InfoLine
                 icon={CalendarDays}
@@ -1038,7 +1040,7 @@ function ProjectTrack() {
               />
               <InfoLine
                 icon={CalendarDays}
-                text={`End date ${formatScheduleDate(tracking.projectDeadline)}`}
+                text={`End date ${formatScheduleDate(tracking.projectDeadline ?? undefined)}`}
               />
               <InfoLine icon={Briefcase} text={formatEnum(tracking.projectWorkMode)} />
               <InfoLine icon={MapPin} text={tracking.projectLocationLabel || "No location label"} />

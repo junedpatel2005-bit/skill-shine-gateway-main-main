@@ -1,4 +1,3 @@
-import { createAPIFileRoute } from "@tanstack/react-start/api";
 
 import {
   clearGoogleStateCookie,
@@ -18,8 +17,8 @@ function redirectTo(path: string, cookie: string) {
   });
 }
 
-export const APIRoute = createAPIFileRoute("/api/auth/google/callback")({
-  GET: async ({ request }) => {
+export const APIRoute = {
+  GET: async ({ request }: { request: Request }) => {
     const url = new URL(request.url);
     const state = url.searchParams.get("state");
     const code = url.searchParams.get("code");
@@ -60,7 +59,7 @@ export const APIRoute = createAPIFileRoute("/api/auth/google/callback")({
         const isProfileComplete = !!(
           proProfile?.professionalCategory &&
           proProfile?.professionalCity &&
-          proProfile?.professionalSkillsJson &&
+          proProfile?.skills.length &&
           proProfile?.companyDescription &&
           proProfile?.address
         );
@@ -85,4 +84,4 @@ export const APIRoute = createAPIFileRoute("/api/auth/google/callback")({
       return redirectTo("/login?oauth=google_failed", clearGoogleStateCookie());
     }
   },
-});
+};

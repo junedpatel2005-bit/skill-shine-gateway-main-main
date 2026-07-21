@@ -3,6 +3,9 @@ import "./lib/error-capture";
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
 import { handleBackendApi } from "./backend/api.server";
+import { APIRoute as adminPaymentsApiRoute } from "./routes/api/admin/-payments";
+import { APIRoute as googleAuthApiRoute } from "./routes/api/auth/-google";
+import { APIRoute as googleCallbackApiRoute } from "./routes/api/auth/google/-callback";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -83,6 +86,18 @@ export default {
       const url = new URL(request.url);
       if (url.pathname === "/api/health") {
         return healthResponse();
+      }
+
+      if (url.pathname === "/api/auth/google") {
+        return googleAuthApiRoute.GET({ request });
+      }
+
+      if (url.pathname === "/api/auth/google/callback") {
+        return googleCallbackApiRoute.GET({ request });
+      }
+
+      if (url.pathname === "/api/admin/payments") {
+        return adminPaymentsApiRoute.GET();
       }
 
       const apiResponse = await handleBackendApi(request);

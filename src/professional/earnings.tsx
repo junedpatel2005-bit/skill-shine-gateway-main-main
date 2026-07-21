@@ -574,7 +574,7 @@ function Earnings() {
                     <td className="py-3 pr-4">
                       <span className={`inline-block rounded-full px-2 py-1 text-xs font-medium ${
                         transaction.status === "COMPLETED" ? "bg-green-100 text-green-700" :
-                        transaction.status === "PENDING" ? "bg-yellow-100 text-yellow-700" :
+                        transaction.status === "CANCELLED" ? "bg-red-100 text-red-700" :
                         "bg-slate-100 text-slate-700"
                       }`}>
                         {formatEnum(transaction.status)}

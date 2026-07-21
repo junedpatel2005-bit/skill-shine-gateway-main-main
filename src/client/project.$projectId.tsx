@@ -23,7 +23,7 @@ import { deleteProject } from "@/client/project.$projectId.server";
 import { formatApproximateLocation } from "@/lib/location-privacy";
 
 export function Project() {
-  const { viewer, job, tracking } = useLoaderData({ from: "/project/$projectId" }) as any;
+  const { viewer, job, tracking } = useLoaderData({ from: "/project/$projectId" });
   const { projectId } = useParams({ from: "/project/$projectId" });
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
@@ -32,6 +32,7 @@ export function Project() {
   if (!job) {
     return <div className="p-10 text-center">Project not found.</div>;
   }
+  const activeJob = job;
 
   const displayName = viewer ? `${viewer.firstName} ${viewer.lastName}`.trim() : undefined;
   const projectNumber = projectId.replace(/^p-/i, "").toUpperCase() || String(job.id);
@@ -52,7 +53,7 @@ export function Project() {
     setDeleteError(null);
 
     try {
-      await deleteProject({ data: { projectId: job.id } });
+      await deleteProject({ data: { projectId: activeJob.id } });
       await router.navigate({ to: "/projects" });
     } catch (error) {
       setDeleteError(error instanceof Error ? error.message : "Could not delete project.");
@@ -190,7 +191,7 @@ export function Project() {
                 </Button>
               ) : tracking ? (
                 <Button asChild>
-                  <Link to={`/project-track/${tracking.id}`}>
+                  <Link to="/project-track/$trackingId" params={{ trackingId: String(tracking.id) }}>
                     <Search className="h-4 w-4" />
                     Open tracking
                   </Link>
@@ -234,7 +235,7 @@ export function Project() {
                     </div>
                     <p className="mt-3 text-2xl font-semibold">
                       {
-                        tracking.milestones.filter((milestone) => milestone.status === "DONE")
+                        tracking.milestones.filter((milestone) => milestone.status === "PAID")
                           .length
                       }
                       /{tracking.milestones.length}
