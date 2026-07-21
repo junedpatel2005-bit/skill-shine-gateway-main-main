@@ -9,9 +9,6 @@ import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
 // @cloudflare/vite-plugin builds from this — wrangler.jsonc main alone is insufficient.
 export default defineConfig({
-  // The application uses better-sqlite3 and local secure file storage, both of
-  // which require a persistent Node runtime rather than a Cloudflare Worker.
-  cloudflare: false,
   tanstackStart: {
     server: { entry: "server" },
   },
