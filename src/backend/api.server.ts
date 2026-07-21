@@ -1,5 +1,5 @@
 ﻿import { createHash, createHmac, randomUUID, timingSafeEqual } from "node:crypto";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, writeFile, unlink } from "node:fs/promises";
 import path from "node:path";
 import { z } from "zod";
 import { issueAccessToken, opaqueToken, readAccessToken, tokenHash } from "./auth.server";
@@ -761,7 +761,7 @@ async function route(request: Request, url: URL): Promise<Response> {
           error: "No database tables found. Database may not be initialized.",
           totalTables: 0,
           totalRecords: 0
-        }, { status: 503 });
+        }, 503);
       }
 
       // Friendly mapping for table names
@@ -836,7 +836,7 @@ async function route(request: Request, url: URL): Promise<Response> {
         error: msg,
         totalTables: 0,
         totalRecords: 0
-      }, { status: 500 });
+      }, 500);
     }
   }
 
@@ -972,7 +972,7 @@ async function route(request: Request, url: URL): Promise<Response> {
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err);
       console.error("Reports/summary error:", msg);
-      return json({ role: "ADMIN", cards: [], charts: { monthlyUsers: [], jobsByStatus: [] }, scope: null, generatedAt: new Date().toISOString(), error: msg }, { status: 500 });
+      return json({ role: "ADMIN", cards: [], charts: { monthlyUsers: [], jobsByStatus: [] }, scope: null, generatedAt: new Date().toISOString(), error: msg }, 500);
     }
   }
 

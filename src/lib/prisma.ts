@@ -15,14 +15,14 @@ async function createPrismaClient() {
     // Turso / LibSQL adapter for cloud persistence (e.g. Vercel)
     try {
       const { createClient } = await import("@libsql/client");
-      const { PrismaLibSQL } = await import("@prisma/adapter-libsql");
+      const { PrismaLibSql } = await import("@prisma/adapter-libsql");
 
       const libsql = createClient({
         url: process.env.TURSO_DATABASE_URL,
         authToken: process.env.TURSO_AUTH_TOKEN,
       });
 
-      options.adapter = new PrismaLibSQL(libsql);
+      options.adapter = new PrismaLibSql(libsql);
     } catch (cause) {
       throw new Error(
         `Failed to load @prisma/adapter-libsql or @libsql/client. Cause: ${cause instanceof Error ? cause.message : String(cause)}`,
