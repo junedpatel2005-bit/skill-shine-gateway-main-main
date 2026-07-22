@@ -1,4 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import path from "node:path";
+import Database from "@/lib/supabase-compat";
+
+type BetterSqlite3Database = InstanceType<typeof Database>;
 
 export type ProfessionalVerificationInfo = {
   userId: number;
@@ -34,14 +38,14 @@ const globalForProVerificationDb = globalThis as typeof globalThis & {
   proVerificationDb?: BetterSqlite3Database;
 };
 
-function getDatabase() {
+function getDatabase(): BetterSqlite3Database {
   if (!globalForProVerificationDb.proVerificationDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForProVerificationDb.proVerificationDb = new (Database as any)(databasePath);
-    ensureVerificationTable(globalForProVerificationDb.proVerificationDb);
+    ensureVerificationTable(globalForProVerificationDb.proVerificationDb!);
   }
 
-  return globalForProVerificationDb.proVerificationDb;
+  return globalForProVerificationDb.proVerificationDb!;
 }
 
 function ensureVerificationTable(db: BetterSqlite3Database) {

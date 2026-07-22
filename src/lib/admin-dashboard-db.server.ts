@@ -261,13 +261,13 @@ const globalForAdminDashboardDb = globalThis as typeof globalThis & {
 
 const PLATFORM_COMMISSION_RATE = 0.1;
 
-function getDatabase() {
+function getDatabase(): BetterSqlite3Database {
   if (!globalForAdminDashboardDb.adminDashboardDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForAdminDashboardDb.adminDashboardDb = new Database();
+    globalForAdminDashboardDb.adminDashboardDb = new (Database as any)(databasePath);
   }
 
-  return globalForAdminDashboardDb.adminDashboardDb;
+  return globalForAdminDashboardDb.adminDashboardDb!;
 }
 
 export function getAdminDashboardSnapshot(): AdminDashboardSnapshot {

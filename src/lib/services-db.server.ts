@@ -1,4 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import path from "node:path";
+import Database from "@/lib/supabase-compat";
+
+type BetterSqlite3Database = InstanceType<typeof Database>;
 
 export type ServiceCategoryRecord = {
   id: number;
@@ -25,13 +29,13 @@ const globalForServicesDb = globalThis as typeof globalThis & {
   servicesDb?: BetterSqlite3Database;
 };
 
-function getDatabase() {
+function getDatabase(): BetterSqlite3Database {
   if (!globalForServicesDb.servicesDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForServicesDb.servicesDb = new (Database as any)(databasePath);
-    ensureServicesTables(globalForServicesDb.servicesDb);
+    ensureServicesTables(globalForServicesDb.servicesDb!);
   }
-  return globalForServicesDb.servicesDb;
+  return globalForServicesDb.servicesDb!;
 }
 
 function ensureServicesTables(db: BetterSqlite3Database) {

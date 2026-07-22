@@ -1,4 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import path from "node:path";
+import Database from "@/lib/supabase-compat";
+
+type BetterSqlite3Database = InstanceType<typeof Database>;
 
 export type NotificationType = "project" | "work" | "message" | "payment" | "review";
 
@@ -157,14 +161,14 @@ const globalForNotificationDb = globalThis as typeof globalThis & {
   notificationDb?: BetterSqlite3Database;
 };
 
-function getDatabase() {
+function getDatabase(): BetterSqlite3Database {
   if (!globalForNotificationDb.notificationDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForNotificationDb.notificationDb = new (Database as any)(databasePath);
   }
 
-  ensureNotificationTables(globalForNotificationDb.notificationDb);
-  return globalForNotificationDb.notificationDb;
+  ensureNotificationTables(globalForNotificationDb.notificationDb!);
+  return globalForNotificationDb.notificationDb!;
 }
 
 function ensureNotificationTables(db: BetterSqlite3Database) {

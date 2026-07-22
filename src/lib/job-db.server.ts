@@ -55,14 +55,14 @@ const globalForJobDb = globalThis as typeof globalThis & {
   jobDb?: BetterSqlite3Database;
 };
 
-function getDatabase() {
+function getDatabase(): BetterSqlite3Database {
   if (!globalForJobDb.jobDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForJobDb.jobDb = new (Database as any)(databasePath);
-    ensureClientJobTables(globalForJobDb.jobDb);
+    ensureClientJobTables(globalForJobDb.jobDb!);
   }
 
-  return globalForJobDb.jobDb;
+  return globalForJobDb.jobDb!;
 }
 
 function ensureClientJobTables(db: BetterSqlite3Database) {

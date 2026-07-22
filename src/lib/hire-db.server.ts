@@ -1,5 +1,9 @@
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
+import path from "node:path";
+import Database from "@/lib/supabase-compat";
+
+type BetterSqlite3Database = InstanceType<typeof Database>;
 
 export type HireAttachmentInput = {
   fileName: string;
@@ -93,14 +97,14 @@ const globalForHireDb = globalThis as typeof globalThis & {
   hireDb?: BetterSqlite3Database;
 };
 
-function getDatabase() {
+function getDatabase(): BetterSqlite3Database {
   if (!globalForHireDb.hireDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForHireDb.hireDb = new (Database as any)(databasePath);
+    ensureHireTables(globalForHireDb.hireDb!);
   }
 
-  ensureHireTables(globalForHireDb.hireDb);
-  return globalForHireDb.hireDb;
+  return globalForHireDb.hireDb!;
 }
 
 function ensureHireTables(db: BetterSqlite3Database) {

@@ -1,4 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import path from "node:path";
+import Database from "@/lib/supabase-compat";
+
+type BetterSqlite3Database = InstanceType<typeof Database>;
 
 export type UserRole = "ADMIN" | "CLIENT" | "PROFESSIONAL";
 
@@ -528,15 +532,15 @@ function ensureUserTableShape(db: BetterSqlite3Database) {
   `);
 }
 
-function getDatabase() {
+function getDatabase(): BetterSqlite3Database {
   if (!globalForUserDb.userDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForUserDb.userDb = new (Database as any)(databasePath);
-    ensureUserTableShape(globalForUserDb.userDb);
-    ensureClientProfileTables(globalForUserDb.userDb);
+    ensureUserTableShape(globalForUserDb.userDb!);
+    ensureClientProfileTables(globalForUserDb.userDb!);
   }
 
-  return globalForUserDb.userDb;
+  return globalForUserDb.userDb!;
 }
 
 function syncClientProfileTables(

@@ -1,4 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import path from "node:path";
+import Database from "@/lib/supabase-compat";
+
+type BetterSqlite3Database = InstanceType<typeof Database>;
 
 export type GlobalSearchResultItem = {
   id: string;
@@ -20,12 +24,12 @@ const globalForSearch = globalThis as typeof globalThis & {
   adminSearchDb?: BetterSqlite3Database;
 };
 
-function getDatabase() {
+function getDatabase(): BetterSqlite3Database {
   if (!globalForSearch.adminSearchDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForSearch.adminSearchDb = new (Database as any)(databasePath);
   }
-  return globalForSearch.adminSearchDb;
+  return globalForSearch.adminSearchDb!;
 }
 
 function tableExists(db: BetterSqlite3Database, tableName: string) {

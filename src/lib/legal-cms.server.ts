@@ -55,14 +55,14 @@ const globalForLegalCms = globalThis as typeof globalThis & {
   legalCmsDb?: InstanceType<typeof Database>;
 };
 
-function getDatabase() {
+function getDatabase(): InstanceType<typeof Database> {
   if (!globalForLegalCms.legalCmsDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForLegalCms.legalCmsDb = new (Database as any)(databasePath);
-    ensureLegalPagesTable(globalForLegalCms.legalCmsDb);
+    ensureLegalPagesTable(globalForLegalCms.legalCmsDb!);
   }
 
-  return globalForLegalCms.legalCmsDb;
+  return globalForLegalCms.legalCmsDb!;
 }
 
 function ensureLegalPagesTable(db: InstanceType<typeof Database>) {

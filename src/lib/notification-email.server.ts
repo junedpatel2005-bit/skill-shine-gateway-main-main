@@ -27,16 +27,16 @@ type EmailRecipient = {
 };
 
 const globalForNotificationEmail = globalThis as typeof globalThis & {
-  notificationEmailDb?: Database.Database;
+  notificationEmailDb?: InstanceType<typeof Database>;
 };
 
-function getDatabase() {
+function getDatabase(): InstanceType<typeof Database> {
   if (!globalForNotificationEmail.notificationEmailDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForNotificationEmail.notificationEmailDb = new (Database as any)(databasePath);
   }
 
-  return globalForNotificationEmail.notificationEmailDb;
+  return globalForNotificationEmail.notificationEmailDb!;
 }
 
 async function sendEmail(to: string, subject: string, text: string, html: string) {

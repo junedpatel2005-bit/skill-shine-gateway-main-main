@@ -383,14 +383,14 @@ const globalForProjectRequestDb = globalThis as typeof globalThis & {
   projectRequestDb?: BetterSqlite3Database;
 };
 
-function getDatabase() {
+function getDatabase(): BetterSqlite3Database {
   if (!globalForProjectRequestDb.projectRequestDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForProjectRequestDb.projectRequestDb = new (Database as any)(databasePath);
+    ensureProjectRequestTables(globalForProjectRequestDb.projectRequestDb!);
   }
 
-  ensureProjectRequestTables(globalForProjectRequestDb.projectRequestDb);
-  return globalForProjectRequestDb.projectRequestDb;
+  return globalForProjectRequestDb.projectRequestDb!;
 }
 
 function ensureProjectRequestTables(db: BetterSqlite3Database) {

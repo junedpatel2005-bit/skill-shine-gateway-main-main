@@ -1,22 +1,42 @@
+export interface Statement {
+  run(...args: any[]): any;
+  all(...args: any[]): any[];
+  get(...args: any[]): any;
+}
+
 export class Database {
-  public exec(_sql: string) {
+  constructor(..._args: any[]) {}
+
+  public exec(_sql: string): this {
     return this;
   }
 
-  public pragma(_sql: string) {
-    return this;
+  public pragma(_sql: string): any[] {
+    return [];
   }
 
-  public prepare(_sql: string) {
-    throw new Error(
-      "SQLite database is disabled. This code is still using SQLite. Migrate this query to Supabase."
-    );
+  public prepare(_sql: string): Statement {
+    return {
+      run: (..._args: any[]): any => {
+        throw new Error(
+          "SQLite database is disabled. This code is still using SQLite. Migrate this query to Supabase."
+        );
+      },
+      all: (..._args: any[]): any[] => {
+        throw new Error(
+          "SQLite database is disabled. This code is still using SQLite. Migrate this query to Supabase."
+        );
+      },
+      get: (..._args: any[]): any => {
+        throw new Error(
+          "SQLite database is disabled. This code is still using SQLite. Migrate this query to Supabase."
+        );
+      },
+    };
   }
 
-  public transaction<T>(_operation: () => T) {
-    throw new Error(
-      "SQLite transactions are disabled. Use Supabase operations instead."
-    );
+  public transaction<T extends (...args: any[]) => any>(operation: T): T {
+    return operation;
   }
 }
 

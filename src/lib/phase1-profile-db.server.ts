@@ -1,4 +1,8 @@
 import { prisma } from "@/lib/prisma";
+import path from "node:path";
+import Database from "@/lib/supabase-compat";
+
+type BetterSqlite3Database = InstanceType<typeof Database>;
 
 type Phase1ProfessionalProfileInput = {
   userId: number;
@@ -37,14 +41,14 @@ const globalForPhase1ProfileDb = globalThis as typeof globalThis & {
   phase1ProfileDb?: BetterSqlite3Database;
 };
 
-function getDatabase() {
+function getDatabase(): BetterSqlite3Database {
   if (!globalForPhase1ProfileDb.phase1ProfileDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForPhase1ProfileDb.phase1ProfileDb = new (Database as any)(databasePath);
-    ensurePhase1ProfileTables(globalForPhase1ProfileDb.phase1ProfileDb);
+    ensurePhase1ProfileTables(globalForPhase1ProfileDb.phase1ProfileDb!);
   }
 
-  return globalForPhase1ProfileDb.phase1ProfileDb;
+  return globalForPhase1ProfileDb.phase1ProfileDb!;
 }
 
 function ensurePhase1ProfileTables(db: BetterSqlite3Database) {
