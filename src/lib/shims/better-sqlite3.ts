@@ -13,6 +13,18 @@ class DatabaseShim {
     };
   }
 
+  exec(_sql: string) {
+    return this;
+  }
+
+  pragma(_sql: string) {
+    return [] as any[];
+  }
+
+  transaction<T extends Function>(operation: T): T {
+    return operation;
+  }
+
   close() {
     return undefined;
   }

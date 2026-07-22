@@ -1,46 +1,12 @@
-export interface Statement {
-  run(...args: any[]): any;
-  all(...args: any[]): any[];
-  get(...args: any[]): any;
-}
+import DatabaseShim from "./shims/better-sqlite3";
 
-export class Database {
-  constructor(..._args: any[]) {}
+export type Statement = {
+  run: (...args: any[]) => any;
+  all: (...args: any[]) => any[];
+  get: (...args: any[]) => any;
+};
 
-  public exec(_sql: string): this {
-    return this;
-  }
-
-  public pragma(_sql: string): any[] {
-    return [];
-  }
-
-  public prepare(_sql: string): Statement {
-    return {
-      run: (..._args: any[]): any => {
-        throw new Error(
-          "SQLite database is disabled. This code is still using SQLite. Migrate this query to Supabase."
-        );
-      },
-      all: (..._args: any[]): any[] => {
-        throw new Error(
-          "SQLite database is disabled. This code is still using SQLite. Migrate this query to Supabase."
-        );
-      },
-      get: (..._args: any[]): any => {
-        throw new Error(
-          "SQLite database is disabled. This code is still using SQLite. Migrate this query to Supabase."
-        );
-      },
-    };
-  }
-
-  public transaction<T extends Function>(operation: T): T {
-    return operation;
-  }
-
-  public close(): void {}
-}
+export class Database extends DatabaseShim {}
 
 export type BetterSqlite3Database = Database;
 export default Database;

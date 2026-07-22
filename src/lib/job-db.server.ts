@@ -1,6 +1,7 @@
 import path from "node:path";
 import Database from "@/lib/supabase-compat";
 import { io as clientIo } from "socket.io-client";
+import { prisma } from "@/lib/prisma";
 
 import type { ClientJobAttachmentInput, ClientJobInput } from "@/lib/validation/client-job";
 
@@ -314,178 +315,223 @@ export function createClientJob(userId: number, input: ClientJobInput) {
   return getClientJobById(userId, jobId);
 }
 
-export function getClientJobById(userId: number, jobId: number) {
-  const db = getDatabase();
-  const job = db
-    .prepare(
-      `
-        SELECT *
-        FROM "ClientJob"
-        WHERE id = ? AND userId = ?
-        LIMIT 1
-      `,
-    )
-    .get(jobId, userId) as Omit<ClientJobRecord, "attachments"> | undefined;
+export async function getClientJobById(userId: number, jobId: number) {
+  const job = await prisma.clientJob.findUnique({
+    where: { id: jobId },
+    include: {
+      attachments: { orderBy: { id: "asc" } },
+      user: { select: { firstName: true, lastName: true, companyName: true, avatarUrl: true } },
+    },
+  });
 
-  if (!job) {
-    return null;
-  }
+  if (!job || job.userId !== userId) return null;
 
-  const attachments = db
-    .prepare(
-      `
-        SELECT *
-        FROM "ClientJobAttachment"
-        WHERE jobId = ?
-        ORDER BY id ASC
-      `,
-    )
-    .all(job.id) as ClientJobAttachmentRecord[];
+  const attachments = job.attachments.map((a) => ({
+    id: a.id,
+    jobId: a.jobId,
+    fileName: a.fileName,
+    fileType: a.fileType,
+    fileSize: a.fileSize,
+    previewUrl: a.previewUrl,
+    createdAt: a.createdAt.toISOString(),
+  }));
 
-  return mapJob(job, attachments);
+  return {
+    id: job.id,
+    userId: job.userId,
+    category: job.category,
+    title: job.title,
+    description: job.description,
+    budgetMin: job.budgetMin,
+    budgetMax: job.budgetMax,
+    urgency: job.urgency,
+    timingType: job.jobDate ? "FIXED" : "FIXED",
+    hourlyRate: null,
+    jobDate: job.jobDate?.toISOString() ?? null,
+    deadline: job.deadline.toISOString(),
+    workMode: job.workMode as JobWorkMode,
+    locationLabel: job.locationLabel,
+    locationAddress: job.locationAddress,
+    locationLat: job.locationLat,
+    locationLng: job.locationLng,
+    status: job.status as JobStatus,
+    createdAt: job.createdAt.toISOString(),
+    updatedAt: job.updatedAt.toISOString(),
+    attachments,
+  } as ClientJobRecord;
 }
 
-export function getClientJobsByUserId(userId: number) {
-  const db = getDatabase();
-  const jobs = db
-    .prepare(
-      `
-        SELECT *
-        FROM "ClientJob"
-        WHERE userId = ?
-        ORDER BY datetime(createdAt) DESC, id DESC
-      `,
-    )
-    .all(userId) as Array<Omit<ClientJobRecord, "attachments">>;
-
-  if (!jobs.length) {
-    return [];
-  }
-
-  const attachmentRows = db
-    .prepare(
-      `
-        SELECT *
-        FROM "ClientJobAttachment"
-        WHERE jobId IN (${jobs.map(() => "?").join(",")})
-        ORDER BY id ASC
-      `,
-    )
-    .all(...jobs.map((job) => job.id)) as ClientJobAttachmentRecord[];
+export async function getClientJobsByUserId(userId: number) {
+  const jobs = await prisma.clientJob.findMany({
+    where: { userId },
+    include: { attachments: { orderBy: { id: "asc" } } },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+  });
 
   return jobs.map((job) =>
     mapJob(
-      job,
-      attachmentRows.filter((attachment) => attachment.jobId === job.id),
+      {
+        id: job.id,
+        userId: job.userId,
+        category: job.category,
+        title: job.title,
+        description: job.description,
+        budgetMin: job.budgetMin,
+        budgetMax: job.budgetMax,
+        urgency: job.urgency as JobUrgency,
+        timingType: job.jobDate ? "FIXED" : "FIXED",
+        hourlyRate: null,
+        jobDate: job.jobDate?.toISOString() ?? null,
+        deadline: job.deadline.toISOString(),
+        workMode: job.workMode as JobWorkMode,
+        locationLabel: job.locationLabel,
+        locationAddress: job.locationAddress,
+        locationLat: job.locationLat,
+        locationLng: job.locationLng,
+        status: job.status as JobStatus,
+        createdAt: job.createdAt.toISOString(),
+        updatedAt: job.updatedAt.toISOString(),
+      },
+      job.attachments.map((a) => ({
+        id: a.id,
+        jobId: a.jobId,
+        fileName: a.fileName,
+        fileType: a.fileType,
+        fileSize: a.fileSize,
+        previewUrl: a.previewUrl,
+        createdAt: a.createdAt.toISOString(),
+      })),
     ),
   );
 }
 
-export function getOpenClientJobs() {
-  const db = getDatabase();
-  const jobs = db
-    .prepare(
-      `
-        SELECT
-          ClientJob.*,
-          TRIM(User.firstName || ' ' || User.lastName) AS clientName,
-          User.companyName AS clientCompanyName,
-          User.avatarUrl AS clientAvatarUrl
-        FROM "ClientJob"
-        INNER JOIN "User" ON User.id = ClientJob.userId
-        WHERE ${availableJobPredicate()}
-        ORDER BY datetime(ClientJob.createdAt) DESC, ClientJob.id DESC
-      `,
-    )
-    .all() as Array<Omit<PublicClientJobRecord, "attachments">>;
+export async function getOpenClientJobs() {
+  const jobs = (await prisma.$queryRawUnsafe(
+    `
+      SELECT
+        cj.*,
+        TRIM(u."firstName" || ' ' || u."lastName") AS "clientName",
+        u."companyName" AS "clientCompanyName",
+        u."avatarUrl" AS "clientAvatarUrl"
+      FROM "ClientJob" cj
+      INNER JOIN "User" u ON u.id = cj."userId"
+      WHERE cj."status" = 'OPEN'
+      ORDER BY cj."createdAt" DESC, cj.id DESC
+    `,
+  )) as Array<any>;
 
-  if (!jobs.length) {
-    return [];
-  }
+  if (!jobs.length) return [];
 
-  const attachmentRows = db
-    .prepare(
-      `
-        SELECT *
-        FROM "ClientJobAttachment"
-        WHERE jobId IN (${jobs.map(() => "?").join(",")})
-        ORDER BY id ASC
-      `,
-    )
-    .all(...jobs.map((job) => job.id)) as ClientJobAttachmentRecord[];
+  const idsCsv = jobs.map((j) => Number(j.id)).join(",");
+  const attachmentRows = idsCsv
+    ? ((await prisma.$queryRawUnsafe(
+        `SELECT * FROM "ClientJobAttachment" WHERE "jobId" IN (${idsCsv}) ORDER BY id ASC`,
+      )) as Array<any>)
+    : [];
 
   return jobs.map((job) => ({
     ...mapJob(
-      job,
-      attachmentRows.filter((attachment) => attachment.jobId === job.id),
+      {
+        id: job.id,
+        userId: job.userId,
+        category: job.category,
+        title: job.title,
+        description: job.description,
+        budgetMin: job.budgetMin,
+        budgetMax: job.budgetMax,
+        urgency: job.urgency as JobUrgency,
+        timingType: job.jobDate ? "FIXED" : "FIXED",
+        hourlyRate: null,
+        jobDate: job.jobDate ? new Date(job.jobDate).toISOString() : null,
+        deadline: new Date(job.deadline).toISOString(),
+        workMode: job.workMode as JobWorkMode,
+        locationLabel: job.locationLabel,
+        locationAddress: job.locationAddress,
+        locationLat: job.locationLat,
+        locationLng: job.locationLng,
+        status: job.status as JobStatus,
+        createdAt: new Date(job.createdAt).toISOString(),
+        updatedAt: new Date(job.updatedAt).toISOString(),
+      },
+      (attachmentRows.filter((a) => a.jobId === job.id) as Array<any>).map((a) => ({
+        id: a.id,
+        jobId: a.jobId,
+        fileName: a.fileName,
+        fileType: a.fileType,
+        fileSize: a.fileSize,
+        previewUrl: a.previewUrl,
+        createdAt: new Date(a.createdAt).toISOString(),
+      })),
     ),
     clientName: job.clientName,
-    clientCompanyName: job.clientCompanyName,
-    clientAvatarUrl: job.clientAvatarUrl,
+    clientCompanyName: job.clientCompanyName ?? null,
+    clientAvatarUrl: job.clientAvatarUrl ?? null,
   }));
 }
 
-export function getOpenClientJobById(jobId: number) {
-  const db = getDatabase();
-  const job = db
-    .prepare(
-      `
-        SELECT
-          ClientJob.*,
-          TRIM(User.firstName || ' ' || User.lastName) AS clientName,
-          User.companyName AS clientCompanyName,
-          User.avatarUrl AS clientAvatarUrl
-        FROM "ClientJob"
-        INNER JOIN "User" ON User.id = ClientJob.userId
-        WHERE ClientJob.id = ? AND ${availableJobPredicate()}
-        LIMIT 1
-      `,
-    )
-    .get(jobId) as Omit<PublicClientJobRecord, "attachments"> | undefined;
+export async function getOpenClientJobById(jobId: number) {
+  const job = await prisma.clientJob.findUnique({
+    where: { id: jobId },
+    include: {
+      user: { select: { firstName: true, lastName: true, companyName: true, avatarUrl: true } },
+      attachments: { orderBy: { id: "asc" } },
+    },
+  });
 
-  if (!job) {
-    return null;
-  }
-
-  const attachments = db
-    .prepare(
-      `
-        SELECT *
-        FROM "ClientJobAttachment"
-        WHERE jobId = ?
-        ORDER BY id ASC
-      `,
-    )
-    .all(job.id) as ClientJobAttachmentRecord[];
+  if (!job || job.status !== "OPEN") return null;
 
   return {
-    ...mapJob(job, attachments),
-    clientName: job.clientName,
-    clientCompanyName: job.clientCompanyName,
-    clientAvatarUrl: job.clientAvatarUrl,
+    ...mapJob(
+      {
+        id: job.id,
+        userId: job.userId,
+        category: job.category,
+        title: job.title,
+        description: job.description,
+        budgetMin: job.budgetMin,
+        budgetMax: job.budgetMax,
+        urgency: job.urgency as JobUrgency,
+        timingType: job.jobDate ? "FIXED" : "FIXED",
+        hourlyRate: null,
+        jobDate: job.jobDate?.toISOString() ?? null,
+        deadline: job.deadline.toISOString(),
+        workMode: job.workMode as JobWorkMode,
+        locationLabel: job.locationLabel,
+        locationAddress: job.locationAddress,
+        locationLat: job.locationLat,
+        locationLng: job.locationLng,
+        status: job.status as JobStatus,
+        createdAt: job.createdAt.toISOString(),
+        updatedAt: job.updatedAt.toISOString(),
+      },
+      job.attachments.map((a) => ({
+        id: a.id,
+        jobId: a.jobId,
+        fileName: a.fileName,
+        fileType: a.fileType,
+        fileSize: a.fileSize,
+        previewUrl: a.previewUrl,
+        createdAt: a.createdAt.toISOString(),
+      })),
+    ),
+    clientName: `${job.user.firstName} ${job.user.lastName}`.trim(),
+    clientCompanyName: job.user.companyName ?? null,
+    clientAvatarUrl: job.user.avatarUrl ?? null,
   };
 }
 
-export function getFavoriteJobIds(userId: number) {
-  const db = getDatabase();
-  ensureFavoriteJobTable(db);
+export async function getFavoriteJobIds(userId: number) {
+  const rows = await prisma.favoriteJob.findMany({
+    where: { userId },
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    select: { jobId: true },
+  });
 
-  return (
-    db
-      .prepare(
-        `
-          SELECT jobId
-          FROM "FavoriteJob"
-          WHERE userId = ?
-          ORDER BY datetime(createdAt) DESC, id DESC
-        `,
-      )
-      .all(userId) as Array<{ jobId: number }>
-  ).map((row) => row.jobId);
+  return rows.map((r) => r.jobId);
 }
 
-export function getFavoriteJobsByUserId(userId: number) {
-  const favoriteIds = getFavoriteJobIds(userId);
+export async function getFavoriteJobsByUserId(userId: number) {
+  const favoriteIds = await getFavoriteJobIds(userId);
 
   if (!favoriteIds.length) {
     return [];
@@ -494,25 +540,15 @@ export function getFavoriteJobsByUserId(userId: number) {
   const favoriteIdSet = new Set(favoriteIds);
   const favoriteOrder = new Map(favoriteIds.map((jobId, index) => [jobId, index]));
 
-  return getOpenClientJobs()
+  const openJobs = await getOpenClientJobs();
+
+  return openJobs
     .filter((job) => favoriteIdSet.has(job.id))
     .sort((a, b) => (favoriteOrder.get(a.id) ?? 0) - (favoriteOrder.get(b.id) ?? 0));
 }
 
-export function isFavoriteJob(userId: number, jobId: number) {
-  const db = getDatabase();
-  ensureFavoriteJobTable(db);
-  const row = db
-    .prepare(
-      `
-        SELECT id
-        FROM "FavoriteJob"
-        WHERE userId = ? AND jobId = ?
-        LIMIT 1
-      `,
-    )
-    .get(userId, jobId) as { id: number } | undefined;
-
+export async function isFavoriteJob(userId: number, jobId: number) {
+  const row = await prisma.favoriteJob.findFirst({ where: { userId, jobId }, select: { id: true } });
   return Boolean(row);
 }
 
