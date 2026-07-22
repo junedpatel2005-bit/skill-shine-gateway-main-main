@@ -26,7 +26,7 @@ const globalForSearch = globalThis as typeof globalThis & {
 function getDatabase() {
   if (!globalForSearch.adminSearchDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForSearch.adminSearchDb = new Database(databasePath);
+    globalForSearch.adminSearchDb = new (Database as any)(databasePath);
   }
   return globalForSearch.adminSearchDb;
 }

@@ -3,7 +3,7 @@ import Database from "@/lib/supabase-compat";
 
 export function seedTestJobs(userId: number) {
   const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-  const db = new Database(databasePath);
+  const db = new (Database as any)(databasePath);
 
   const now = new Date().toISOString();
   const deadline = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString();

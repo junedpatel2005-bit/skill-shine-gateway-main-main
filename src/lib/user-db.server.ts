@@ -534,7 +534,7 @@ function ensureUserTableShape(db: BetterSqlite3Database) {
 function getDatabase() {
   if (!globalForUserDb.userDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForUserDb.userDb = new Database(databasePath);
+    globalForUserDb.userDb = new (Database as any)(databasePath);
     ensureUserTableShape(globalForUserDb.userDb);
     ensureClientProfileTables(globalForUserDb.userDb);
   }
@@ -959,7 +959,7 @@ export function findUserById(userId: number) {
             LIMIT 1
           `,
         )
-        .get(userId) as PublicUser | undefined,
+        .get(userId) as unknown as PublicUser | undefined,
   );
 }
 
@@ -1743,7 +1743,7 @@ export function createUserRecord(input: {
           LIMIT 1
         `,
       )
-      .get(result.lastInsertRowid) as PublicUser;
+      .get(result.lastInsertRowid) as unknown as PublicUser;
   });
 }
 
@@ -1791,7 +1791,7 @@ export function linkGoogleAccountToUser(input: {
           LIMIT 1
         `,
       )
-      .get(input.userId) as PublicUser;
+      .get(input.userId) as unknown as PublicUser;
   });
 }
 

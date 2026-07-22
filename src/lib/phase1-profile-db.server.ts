@@ -43,7 +43,7 @@ const globalForPhase1ProfileDb = globalThis as typeof globalThis & {
 function getDatabase() {
   if (!globalForPhase1ProfileDb.phase1ProfileDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForPhase1ProfileDb.phase1ProfileDb = new Database(databasePath);
+    globalForPhase1ProfileDb.phase1ProfileDb = new (Database as any)(databasePath);
     ensurePhase1ProfileTables(globalForPhase1ProfileDb.phase1ProfileDb);
   }
 

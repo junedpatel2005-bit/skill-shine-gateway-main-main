@@ -40,7 +40,7 @@ const globalForProVerificationDb = globalThis as typeof globalThis & {
 function getDatabase() {
   if (!globalForProVerificationDb.proVerificationDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForProVerificationDb.proVerificationDb = new Database(databasePath);
+    globalForProVerificationDb.proVerificationDb = new (Database as any)(databasePath);
     ensureVerificationTable(globalForProVerificationDb.proVerificationDb);
   }
 

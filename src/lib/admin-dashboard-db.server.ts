@@ -1,6 +1,9 @@
 import Database from "@/lib/supabase-compat";
 import path from "node:path";
 
+// Extract the type of the database instance created by your compatibility wrapper
+type BetterSqlite3Database = InstanceType<typeof Database> | any;
+
 export type AdminDashboardSnapshot = {
   generatedAt: string;
   stats: {
@@ -261,7 +264,7 @@ const PLATFORM_COMMISSION_RATE = 0.1;
 function getDatabase() {
   if (!globalForAdminDashboardDb.adminDashboardDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForAdminDashboardDb.adminDashboardDb = new Database(databasePath);
+    globalForAdminDashboardDb.adminDashboardDb = new Database();
   }
 
   return globalForAdminDashboardDb.adminDashboardDb;

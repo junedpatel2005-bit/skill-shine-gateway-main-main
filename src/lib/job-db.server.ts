@@ -58,7 +58,7 @@ const globalForJobDb = globalThis as typeof globalThis & {
 function getDatabase() {
   if (!globalForJobDb.jobDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForJobDb.jobDb = new Database(databasePath);
+    globalForJobDb.jobDb = new (Database as any)(databasePath);
     ensureClientJobTables(globalForJobDb.jobDb);
   }
 

@@ -31,7 +31,7 @@ const globalForServicesDb = globalThis as typeof globalThis & {
 function getDatabase() {
   if (!globalForServicesDb.servicesDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForServicesDb.servicesDb = new Database(databasePath);
+    globalForServicesDb.servicesDb = new (Database as any)(databasePath);
     ensureServicesTables(globalForServicesDb.servicesDb);
   }
   return globalForServicesDb.servicesDb;

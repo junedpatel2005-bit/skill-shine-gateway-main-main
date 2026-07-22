@@ -1,8 +1,10 @@
-import xss from "xss";
+import * as xssModule from "xss";
 
-const XssFilter = xss.FilterXSS ?? xss;
+// Support both ES Module and CommonJS resolution
+const xss = (xssModule as any).default ?? xssModule;
+const FilterXSS = xss.FilterXSS ?? xss;
 
-function escapeAttributeValue(value: string) {
+function escapeAttributeValue(value: string): string {
   if (typeof xss.escapeAttrValue === "function") {
     return xss.escapeAttrValue(value);
   }
@@ -14,7 +16,7 @@ function escapeAttributeValue(value: string) {
     .replace(/>/g, "&gt;");
 }
 
-const sanitizer = new XssFilter({
+const sanitizer = new FilterXSS({
   whiteList: {
     a: ["href", "title", "target", "rel", "class", "id"],
     b: ["class", "id"],
@@ -59,19 +61,19 @@ const sanitizer = new XssFilter({
   },
   stripIgnoreTag: true,
   stripIgnoreTagBody: ["script", "style"],
-  safeAttrValue(name, value) {
+  safeAttrValue(tag: string, name: string, value: string) {
     if ((name === "href" || name === "src") && /^\s*(javascript|vbscript|data):/i.test(value)) {
       return "";
     }
     return value;
   },
-  onIgnoreTagAttr(tag, name, value) {
+  onIgnoreTagAttr(tag: string, name: string, value: string) {
     if (name === "class" || name === "id") {
       return `${name}="${escapeAttributeValue(value)}"`;
     }
   },
 });
 
-export function sanitizeHtml(value: string) {
+export function sanitizeHtml(value: string): string {
   return sanitizer.process(value);
 }

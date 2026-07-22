@@ -35,7 +35,7 @@ const globalForWebsiteCms = globalThis as typeof globalThis & {
 function getDatabase() {
   if (!globalForWebsiteCms.websiteCmsDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForWebsiteCms.websiteCmsDb = new Database(databasePath);
+    globalForWebsiteCms.websiteCmsDb = new (Database as any)(databasePath);
     ensureTable(globalForWebsiteCms.websiteCmsDb);
   }
   return globalForWebsiteCms.websiteCmsDb;

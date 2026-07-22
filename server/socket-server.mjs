@@ -6,7 +6,7 @@ import { Server } from "socket.io";
 const port = Number(process.env.SOCKET_PORT || 4001);
 const clientOrigin = process.env.SOCKET_CLIENT_ORIGIN || "*";
 const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-const db = new Database(databasePath);
+const db = new (Database as any)(databasePath);
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS "SocketConversation" (

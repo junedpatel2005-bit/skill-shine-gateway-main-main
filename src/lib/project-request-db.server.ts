@@ -386,7 +386,7 @@ const globalForProjectRequestDb = globalThis as typeof globalThis & {
 function getDatabase() {
   if (!globalForProjectRequestDb.projectRequestDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForProjectRequestDb.projectRequestDb = new Database(databasePath);
+    globalForProjectRequestDb.projectRequestDb = new (Database as any)(databasePath);
   }
 
   ensureProjectRequestTables(globalForProjectRequestDb.projectRequestDb);

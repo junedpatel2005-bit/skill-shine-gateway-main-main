@@ -99,7 +99,7 @@ const globalForHireDb = globalThis as typeof globalThis & {
 function getDatabase() {
   if (!globalForHireDb.hireDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForHireDb.hireDb = new Database(databasePath);
+    globalForHireDb.hireDb = new (Database as any)(databasePath);
   }
 
   ensureHireTables(globalForHireDb.hireDb);

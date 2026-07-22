@@ -33,7 +33,7 @@ const globalForNotificationEmail = globalThis as typeof globalThis & {
 function getDatabase() {
   if (!globalForNotificationEmail.notificationEmailDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
-    globalForNotificationEmail.notificationEmailDb = new Database(databasePath);
+    globalForNotificationEmail.notificationEmailDb = new (Database as any)(databasePath);
   }
 
   return globalForNotificationEmail.notificationEmailDb;
