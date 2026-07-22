@@ -20,7 +20,7 @@
   ],
   "functions": {
     "api/server.js": {
-      "runtime": "nodejs22.x",
+      "runtime": "nodejs18.x",
       "memory": 1024,
       "maxDuration": 10,
       "includeFiles": "dist/**"
