@@ -18,5 +18,18 @@ export default defineConfig({
     ssr: {
       external: ["better-sqlite3"],
     },
+    optimizeDeps: {
+      exclude: ["better-sqlite3"],
+    },
+    resolve: {
+      alias: {
+        "better-sqlite3": "./src/lib/shims/better-sqlite3.ts",
+      },
+    },
+    build: {
+      rollupOptions: {
+        external: ["better-sqlite3"],
+      },
+    },
   },
 });

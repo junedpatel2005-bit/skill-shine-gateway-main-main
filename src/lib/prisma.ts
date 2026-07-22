@@ -4,34 +4,23 @@ const globalForPrisma = globalThis as typeof globalThis & {
   prisma?: PrismaClient;
 };
 
+function getConfiguredDatabaseUrl() {
+  const candidates = [process.env.SUPABASE_POSTGRES_URL, process.env.POSTGRES_URL, process.env.DIRECT_URL, process.env.DATABASE_URL];
+  return candidates.find((candidate): candidate is string => Boolean(candidate && /^postgres(ql)?:\/\//i.test(candidate.trim())))?.trim();
+}
+
 async function createPrismaClient() {
   const options = {
     log: ["warn", "error"],
   } as NonNullable<ConstructorParameters<typeof PrismaClient>[0]>;
 
-  if (process.env.PRISMA_ACCELERATE_URL) {
-    options.accelerateUrl = process.env.PRISMA_ACCELERATE_URL;
-  } else {
-    // LibSQL works with both Turso in production and file: SQLite URLs locally.
-    // This keeps the driver consistent with the SQLite Prisma schema and avoids
-    // loading a native better-sqlite3 adapter in Vercel deployments.
-    const databaseUrl = process.env.TURSO_DATABASE_URL ?? process.env.DATABASE_URL;
-    if (!databaseUrl) {
-      throw new Error("DATABASE_URL or TURSO_DATABASE_URL is required for Prisma adapter initialization.");
-    }
+  const configuredDatabaseUrl = getConfiguredDatabaseUrl();
 
-    try {
-      const { PrismaLibSql } = await import("@prisma/adapter-libsql");
-      options.adapter = new PrismaLibSql({
-        url: databaseUrl,
-        authToken: process.env.TURSO_AUTH_TOKEN,
-      });
-    } catch (cause) {
-      throw new Error(
-        `Failed to load @prisma/adapter-libsql or @libsql/client. Cause: ${cause instanceof Error ? cause.message : String(cause)}`,
-      );
-    }
+  if (!configuredDatabaseUrl) {
+    throw new Error("Missing Prisma database URL. Set SUPABASE_POSTGRES_URL, POSTGRES_URL, or DIRECT_URL to your Supabase PostgreSQL connection string.");
   }
+
+  process.env.DATABASE_URL = configuredDatabaseUrl;
 
   return new PrismaClient(options);
 }

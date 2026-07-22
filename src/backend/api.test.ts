@@ -1,5 +1,5 @@
 ﻿import { describe, it, expect, beforeAll, afterAll, beforeEach } from "vitest";
-import Database from "better-sqlite3";
+import Database from "@/lib/supabase-compat";
 import { createHash, createHmac } from "node:crypto";
 import {
   getTestDb,

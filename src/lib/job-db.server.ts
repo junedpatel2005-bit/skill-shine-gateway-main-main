@@ -1,5 +1,5 @@
 import path from "node:path";
-import Database from "better-sqlite3";
+import Database from "@/lib/supabase-compat";
 import { io as clientIo } from "socket.io-client";
 
 import type { ClientJobAttachmentInput, ClientJobInput } from "@/lib/validation/client-job";

@@ -1,5 +1,5 @@
 import path from "node:path";
-import Database from "better-sqlite3";
+import Database from "@/lib/supabase-compat";
 
 type BetterSqlite3Database = InstanceType<typeof Database>;
 

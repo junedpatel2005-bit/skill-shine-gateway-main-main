@@ -1,10 +1,8 @@
 ﻿import path from "node:path";
-import Database from "better-sqlite3";
-import { JSDOM } from "jsdom";
-import DOMPurify from "dompurify";
+import Database from "@/lib/supabase-compat";
+import { sanitizeHtml } from "@/lib/html-sanitizer.server";
 
-const window = new JSDOM("").window;
-const purify = DOMPurify(window as any);
+const purify = sanitizeHtml;
 
 export type WebsitePageStatus = "DRAFT" | "PUBLISHED";
 export type WebsitePageRecord = {
@@ -93,7 +91,7 @@ export function saveWebsitePage(
     throw new Error("This page is not editable.");
   }
   const db = getDatabase();
-  const sanitizedContent = purify.sanitize(input.content);
+  const sanitizedContent = purify(input.content);
   db.prepare(
     `UPDATE "WebsitePage" SET content = ?, status = ?, updatedAt = ? WHERE pageKey = ?`,
   ).run(sanitizedContent, input.status, new Date().toISOString(), pageKey);

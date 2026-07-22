@@ -49,6 +49,7 @@ import { logoutAction as logout } from "@/lib/logout.server";
 import { getCurrentUser } from "@/lib/current-user.server";
 import { setFavoriteJob } from "@/lib/job-db.server";
 import { formatApproximateLocation } from "@/lib/location-privacy";
+import { supabase } from "@/lib/supabase";
 
 const indexRoute = getRouteApi("/");
 
@@ -107,6 +108,7 @@ export function Landing() {
   const [favoriteMessage, setFavoriteMessage] = useState<string | null>(null);
   const [professionalSearch, setProfessionalSearch] = useState("");
   const [professionalSearchFilter, setProfessionalSearchFilter] = useState("all");
+  const [supabaseTodos, setSupabaseTodos] = useState<Array<{ id: number; name: string }>>([]);
   const navigate = useNavigate();
   const savedJobFilterStorageKey = user?.id
     ? `servio:saved-home-job-filters:${user.id}`
@@ -116,6 +118,28 @@ export function Landing() {
     setSavedJobFilters(readSavedJobFilters(savedJobFilterStorageKey));
     setSelectedSavedJobFilterId("");
   }, [savedJobFilterStorageKey]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function getTodos() {
+      const { data, error } = await supabase.from("todos").select("id, name").limit(5);
+
+      if (!isMounted) {
+        return;
+      }
+
+      if (!error && data) {
+        setSupabaseTodos(data as Array<{ id: number; name: string }>);
+      }
+    }
+
+    void getTodos();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const filteredOpenJobs = openJobs.filter((job) => {
     const query = jobSearch.trim().toLowerCase();
@@ -372,6 +396,16 @@ export function Landing() {
             <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
               <div className="relative overflow-hidden rounded-[2rem] border border-primary/15 bg-gradient-to-br from-primary/10 via-background to-primary/5 p-8 shadow-sm">
                 <div className="relative z-10">
+                  <div className="mb-4 flex flex-wrap items-center gap-2">
+                    <span className="rounded-full border border-primary/20 bg-background/80 px-3 py-1 text-sm font-medium text-primary">
+                      Supabase connected
+                    </span>
+                    {supabaseTodos.length > 0 ? (
+                      <span className="text-sm text-muted-foreground">
+                        Showing {supabaseTodos.length} synced item{supabaseTodos.length === 1 ? "" : "s"}
+                      </span>
+                    ) : null}
+                  </div>
                   <h1 className="text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl">
                     {user ? (
                       <>

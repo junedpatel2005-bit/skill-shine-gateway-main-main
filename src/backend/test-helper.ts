@@ -1,4 +1,4 @@
-import Database from "better-sqlite3";
+import Database from "@/lib/supabase-compat";
 
 // Test database setup - use in-memory for speed
 let db: ReturnType<typeof Database> | null = null;

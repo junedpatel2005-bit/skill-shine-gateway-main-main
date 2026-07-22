@@ -1,4 +1,4 @@
-import Database from "better-sqlite3";
+import Database from "@/lib/supabase-compat";
 import path from "node:path";
 
 import { requireCurrentUserRole } from "@/lib/current-user.server";

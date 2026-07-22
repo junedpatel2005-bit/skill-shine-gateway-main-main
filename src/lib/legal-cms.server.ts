@@ -1,10 +1,8 @@
 ﻿import path from "node:path";
-import Database from "better-sqlite3";
-import { JSDOM } from "jsdom";
-import DOMPurify from "dompurify";
+import Database from "@/lib/supabase-compat";
+import { sanitizeHtml } from "@/lib/html-sanitizer.server";
 
-const window = new JSDOM("").window;
-const purify = DOMPurify(window as any);
+const purify = sanitizeHtml;
 
 export type LegalPageSlug = string;
 export type LegalPageStatus = "DRAFT" | "PUBLISHED";
@@ -128,7 +126,7 @@ export function getPublishedLegalPageBySlug(slug: LegalPageSlug): LegalPageRecor
 
 export function saveLegalPage(slug: LegalPageSlug, input: LegalPageInput): LegalPageRecord {
   const db = getDatabase();
-  const sanitizedContent = purify.sanitize(input.content);
+  const sanitizedContent = purify(input.content);
   const updatedAt = new Date().toISOString();
   const defaultTemplate = getDefaultLegalPageTemplate(slug);
   const fallbackTitle = defaultTemplate?.title || slug.replace(/[-_]+/g, " ").trim() || "New page";
