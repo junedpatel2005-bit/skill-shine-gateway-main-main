@@ -1,0 +1,4 @@
+- [ ] Update `package.json` Node.js version to 22.x
+- [ ] Create `vercel.json` for routing and build configuration
+- [ ] Verify `api/server.js` path consistency
+- [ ] Summary of changes in `walkthrough.artifact.md`
