@@ -84,6 +84,10 @@ export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     try {
       const url = new URL(request.url);
+      // Short-circuit favicon requests to avoid invoking SSR when missing.
+      if (url.pathname === "/favicon.ico") {
+        return new Response(null, { status: 204 });
+      }
       if (url.pathname === "/api/health") {
         return healthResponse();
       }
