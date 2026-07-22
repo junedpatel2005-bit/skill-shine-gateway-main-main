@@ -20,7 +20,7 @@
   ],
   "functions": {
     "api/server.js": {
-      "runtime": "nodejs24.x",
+      "runtime": "@vercel/node@2.0.0",
       "memory": 1024,
       "maxDuration": 10,
       "includeFiles": "dist/**"
