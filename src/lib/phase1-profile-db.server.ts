@@ -1,7 +1,4 @@
-import path from "node:path";
-import Database from "@/lib/supabase-compat";
-
-type BetterSqlite3Database = InstanceType<typeof Database>;
+import { prisma } from "@/lib/prisma";
 
 type Phase1ProfessionalProfileInput = {
   userId: number;
