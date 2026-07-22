@@ -8,15 +8,15 @@ export class Database {
   }
 
   public prepare(_sql: string) {
-    return {
-      all: () => [],
-      get: () => undefined,
-      run: () => ({ lastInsertRowid: 0, changes: 0 }),
-    };
+    throw new Error(
+      "SQLite database is disabled. This code is still using SQLite. Migrate this query to Supabase."
+    );
   }
 
-  public transaction<T>(operation: () => T) {
-    return () => operation();
+  public transaction<T>(_operation: () => T) {
+    throw new Error(
+      "SQLite transactions are disabled. Use Supabase operations instead."
+    );
   }
 }
 
