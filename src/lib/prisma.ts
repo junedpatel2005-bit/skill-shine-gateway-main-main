@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as typeof globalThis & {
-  prisma?: PrismaClient;
+  prisma?: PrismaClient | unknown;
 };
 
 function getConfiguredDatabaseUrl() {
@@ -27,7 +27,6 @@ async function createPrismaClient() {
   // adapter package isn't installed.
   let adapter: unknown;
   try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const mod = await import("@prisma/adapter-pg");
     const PrismaPg = (mod && (mod.PrismaPg ?? mod.default)) as any;
     adapter = new PrismaPg({ connectionString: configuredDatabaseUrl });
@@ -42,8 +41,34 @@ async function createPrismaClient() {
   return new PrismaClient(options as any);
 }
 
-export const prisma = globalForPrisma.prisma ?? (await createPrismaClient());
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+function makeUnavailableProxy(message: string) {
+  const handler: ProxyHandler<any> = {
+    get() {
+      return new Proxy(() => {
+        throw new Error(message);
+      }, handler);
+    },
+    apply() {
+      throw new Error(message);
+    },
+  };
+  return new Proxy({}, handler) as any;
 }
+
+let prismaInstance: PrismaClient | any = null;
+try {
+  prismaInstance = globalForPrisma.prisma ?? (await createPrismaClient());
+  if (process.env.NODE_ENV !== "production") {
+    globalForPrisma.prisma = prismaInstance;
+  }
+} catch (err) {
+  // Don't throw during module import — log and export a proxy that fails on use.
+  // This prevents serverless function cold starts from crashing the whole function
+  // when environment or adapter isn't available.
+  // The real error will still appear in the server logs for diagnosis.
+  // eslint-disable-next-line no-console
+  console.error("Prisma client initialization failed:", err);
+  prismaInstance = makeUnavailableProxy("Prisma client is not available in this environment. Check logs for details.");
+}
+
+export const prisma = prismaInstance;
