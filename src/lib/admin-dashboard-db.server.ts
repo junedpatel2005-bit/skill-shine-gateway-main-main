@@ -2,7 +2,7 @@ import Database from "@/lib/supabase-compat";
 import path from "node:path";
 
 // Extract the type of the database instance created by your compatibility wrapper
-type BetterSqlite3Database = InstanceType<typeof Database> | any;
+type BetterSqlite3Database = Database | any;
 
 export type AdminDashboardSnapshot = {
   generatedAt: string;

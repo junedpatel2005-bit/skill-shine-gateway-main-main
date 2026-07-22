@@ -27,10 +27,10 @@ type EmailRecipient = {
 };
 
 const globalForNotificationEmail = globalThis as typeof globalThis & {
-  notificationEmailDb?: InstanceType<typeof Database>;
+  notificationEmailDb?: Database;
 };
 
-function getDatabase(): InstanceType<typeof Database> {
+function getDatabase(): Database {
   if (!globalForNotificationEmail.notificationEmailDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForNotificationEmail.notificationEmailDb = new (Database as any)(databasePath);

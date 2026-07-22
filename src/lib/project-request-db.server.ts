@@ -3,7 +3,7 @@ import Database from "@/lib/supabase-compat";
 
 import { getOpenClientJobById } from "@/lib/job-db.server";
 
-type BetterSqlite3Database = InstanceType<typeof Database>;
+type BetterSqlite3Database = Database;
 const REQUIRED_PROJECT_MILESTONES = 5;
 
 export type ProjectRequestStatus = "PENDING" | "ACCEPTED" | "DECLINED";

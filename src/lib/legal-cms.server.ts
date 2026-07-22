@@ -52,10 +52,10 @@ function getDefaultLegalPageTemplate(slug: string): Omit<LegalPageRecord, "updat
 }
 
 const globalForLegalCms = globalThis as typeof globalThis & {
-  legalCmsDb?: InstanceType<typeof Database>;
+  legalCmsDb?: Database;
 };
 
-function getDatabase(): InstanceType<typeof Database> {
+function getDatabase(): Database {
   if (!globalForLegalCms.legalCmsDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForLegalCms.legalCmsDb = new (Database as any)(databasePath);
@@ -65,7 +65,7 @@ function getDatabase(): InstanceType<typeof Database> {
   return globalForLegalCms.legalCmsDb!;
 }
 
-function ensureLegalPagesTable(db: InstanceType<typeof Database>) {
+function ensureLegalPagesTable(db: Database) {
   db.exec(`
     CREATE TABLE IF NOT EXISTS "LegalPage" (
       "slug" TEXT NOT NULL PRIMARY KEY,

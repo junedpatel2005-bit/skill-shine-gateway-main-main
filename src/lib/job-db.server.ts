@@ -4,7 +4,7 @@ import { io as clientIo } from "socket.io-client";
 
 import type { ClientJobAttachmentInput, ClientJobInput } from "@/lib/validation/client-job";
 
-type BetterSqlite3Database = InstanceType<typeof Database>;
+type BetterSqlite3Database = Database;
 
 export type JobUrgency = "LOW" | "MEDIUM" | "HIGH";
 export type JobWorkMode = "ON_SITE" | "REMOTE" | "BOTH";

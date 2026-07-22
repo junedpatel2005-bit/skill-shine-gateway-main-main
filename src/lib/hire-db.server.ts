@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import path from "node:path";
 import Database from "@/lib/supabase-compat";
 
-type BetterSqlite3Database = InstanceType<typeof Database>;
+type BetterSqlite3Database = Database;
 
 export type HireAttachmentInput = {
   fileName: string;

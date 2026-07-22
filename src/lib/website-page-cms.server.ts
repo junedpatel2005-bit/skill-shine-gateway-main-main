@@ -29,10 +29,10 @@ export const editableWebsitePages = [
 ] as const;
 
 const globalForWebsiteCms = globalThis as typeof globalThis & {
-  websiteCmsDb?: InstanceType<typeof Database>;
+  websiteCmsDb?: Database;
 };
 
-function getDatabase(): InstanceType<typeof Database> {
+function getDatabase(): Database {
   if (!globalForWebsiteCms.websiteCmsDb) {
     const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
     globalForWebsiteCms.websiteCmsDb = new (Database as any)(databasePath);
@@ -41,7 +41,7 @@ function getDatabase(): InstanceType<typeof Database> {
   return globalForWebsiteCms.websiteCmsDb!;
 }
 
-function ensureTable(db: InstanceType<typeof Database>) {
+function ensureTable(db: Database) {
   db.exec(`CREATE TABLE IF NOT EXISTS "WebsitePage" (
     "pageKey" TEXT NOT NULL PRIMARY KEY,
     "path" TEXT NOT NULL UNIQUE,

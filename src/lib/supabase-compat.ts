@@ -40,4 +40,5 @@ export class Database {
   }
 }
 
+export type BetterSqlite3Database = Database;
 export default Database;
