@@ -35,9 +35,11 @@ export class Database {
     };
   }
 
-  public transaction<T extends (...args: any[]) => any>(operation: T): T {
+  public transaction<T extends Function>(operation: T): T {
     return operation;
   }
+
+  public close(): void {}
 }
 
 export type BetterSqlite3Database = Database;
