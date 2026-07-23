@@ -4,7 +4,7 @@ import path from "node:path";
 const distServerDir = path.resolve(process.cwd(), "dist", "server");
 const src = path.resolve(distServerDir, "server.js");
 const destDir = path.resolve(process.cwd(), "api");
-const dest = path.resolve(destDir, "server-bundle.js");
+const dest = path.resolve(destDir, "server.js");
 
 await mkdir(destDir, { recursive: true });
 await copyFile(src, dest);

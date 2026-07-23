@@ -1,5 +1,5 @@
 import { Readable } from "node:stream";
-import app from "./server-bundle.js";
+import app from "./server.js";
 
 export default async function handler(incoming, outgoing) {
   try {
