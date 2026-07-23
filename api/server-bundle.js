@@ -1,6 +1,7 @@
 import { createHmac, randomBytes, createHash, timingSafeEqual, scryptSync, randomUUID } from "node:crypto";
 import { unlink, mkdir, writeFile, readFile } from "node:fs/promises";
-import path from "node:path";
+import * as path from "node:path";
+import path__default from "node:path";
 import { z } from "zod";
 import nodemailer from "nodemailer";
 import { AsyncLocalStorage } from "node:async_hooks";
@@ -102,9 +103,9 @@ class DatabaseShim {
   _filePath;
   prepare(_query) {
     return {
-      all: () => [],
-      get: () => null,
-      run: () => ({ changes: 0, lastInsertRowid: 0 })
+      all: (..._args) => [],
+      get: (..._args) => null,
+      run: (..._args) => ({ changes: 0, lastInsertRowid: 0 })
     };
   }
   exec(_sql) {
@@ -730,7 +731,7 @@ function ensureUserTableShape(db) {
 }
 function getDatabase$5() {
   if (!globalForUserDb.userDb) {
-    const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
+    const databasePath = path__default.resolve(process.cwd(), "prisma", "app.db");
     globalForUserDb.userDb = new Database(databasePath);
     ensureUserTableShape(globalForUserDb.userDb);
     ensureClientProfileTables(globalForUserDb.userDb);
@@ -1701,12 +1702,13 @@ async function createPrismaClient() {
   process.env.DATABASE_URL = configuredDatabaseUrl;
   let adapter;
   try {
-    const mod = await import("@prisma/adapter-pg");
-    const PrismaPg = mod && (mod.PrismaPg ?? mod.default);
-    adapter = new PrismaPg({ connectionString: configuredDatabaseUrl });
+    const { PrismaPg } = await import("@prisma/adapter-pg");
+    adapter = new PrismaPg({
+      connectionString: configuredDatabaseUrl
+    });
   } catch (err) {
     throw new Error(
-      "Missing package '@prisma/adapter-pg'. Run `npm install @prisma/adapter-pg` and restart your dev server."
+      `Failed to load @prisma/adapter-pg: ${err instanceof Error ? err.message : String(err)}`
     );
   }
   options.adapter = adapter;
@@ -2404,9 +2406,15 @@ async function getFavoriteJobsByUserId(userId) {
     return [];
   }
   const favoriteIdSet = new Set(favoriteIds);
-  const favoriteOrder = new Map(favoriteIds.map((jobId, index) => [jobId, index]));
+  const favoriteOrder = new Map(
+    favoriteIds.map((jobId, index) => [jobId, index])
+  );
   const openJobs = await getOpenClientJobs();
-  return openJobs.filter((job) => favoriteIdSet.has(job.id)).sort((a, b) => (favoriteOrder.get(a.id) ?? 0) - (favoriteOrder.get(b.id) ?? 0));
+  return openJobs.filter((job) => favoriteIdSet.has(job.id)).sort((a, b) => {
+    const aRank = favoriteOrder.get(a.id) ?? 0;
+    const bRank = favoriteOrder.get(b.id) ?? 0;
+    return aRank - bRank;
+  });
 }
 async function isFavoriteJob(userId, jobId) {
   const row = await prisma.favoriteJob.findFirst({ where: { userId, jobId }, select: { id: true } });
@@ -2443,10 +2451,10 @@ function setFavoriteJob(userId, jobId, favorite) {
   ).run(userId, jobId);
   return false;
 }
-function updateClientJobStatus(userId, jobId, status) {
+async function updateClientJobStatus(userId, jobId, status) {
   const db = getDatabase$4();
   const timestamp = (/* @__PURE__ */ new Date()).toISOString();
-  const existing = getClientJobById(userId, jobId);
+  const existing = await getClientJobById(userId, jobId);
   if (!existing) {
     return void 0;
   }
@@ -2644,7 +2652,7 @@ const REQUIRED_PROJECT_MILESTONES = 5;
 const globalForProjectRequestDb = globalThis;
 function getDatabase$3() {
   if (!globalForProjectRequestDb.projectRequestDb) {
-    const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
+    const databasePath = path__default.resolve(process.cwd(), "prisma", "app.db");
     globalForProjectRequestDb.projectRequestDb = new Database(databasePath);
     ensureProjectRequestTables(globalForProjectRequestDb.projectRequestDb);
   }
@@ -4536,7 +4544,7 @@ function getProjectTrackingDetailsByJob(userId, jobId) {
 const globalForHireDb = globalThis;
 function getDatabase$2() {
   if (!globalForHireDb.hireDb) {
-    const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
+    const databasePath = path__default.resolve(process.cwd(), "prisma", "app.db");
     globalForHireDb.hireDb = new Database(databasePath);
     ensureHireTables(globalForHireDb.hireDb);
   }
@@ -5407,7 +5415,7 @@ function deleteRejectedHireRequest(userId, contractId) {
 const globalForNotificationDb = globalThis;
 function getDatabase$1() {
   if (!globalForNotificationDb.notificationDb) {
-    const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
+    const databasePath = path__default.resolve(process.cwd(), "prisma", "app.db");
     globalForNotificationDb.notificationDb = new Database(databasePath);
   }
   ensureNotificationTables(globalForNotificationDb.notificationDb);
@@ -6245,7 +6253,7 @@ const globalForAdminDashboardDb = globalThis;
 const PLATFORM_COMMISSION_RATE = 0.1;
 function getDatabase() {
   if (!globalForAdminDashboardDb.adminDashboardDb) {
-    const databasePath = path.resolve(process.cwd(), "prisma", "app.db");
+    const databasePath = path__default.resolve(process.cwd(), "prisma", "app.db");
     globalForAdminDashboardDb.adminDashboardDb = new Database(databasePath);
   }
   return globalForAdminDashboardDb.adminDashboardDb;
@@ -7613,8 +7621,8 @@ async function route(request, url) {
     const row = db.prepare(`SELECT * FROM "StoredFile" WHERE id=?`).get(id);
     if (!row) throw new ApiError(404, "File not found.");
     if (row.ownerId !== user.id && user.role !== "ADMIN") throw new ApiError(403, "Not allowed.");
-    const root = path.resolve(process.cwd(), process.env.FILE_STORAGE_PATH || "storage");
-    const target = path.resolve(root, row.storageKey);
+    const root = path__default.resolve(process.cwd(), process.env.FILE_STORAGE_PATH || "storage");
+    const target = path__default.resolve(root, row.storageKey);
     if (!target.startsWith(root)) throw new ApiError(400, "Invalid storage path.");
     try {
       await unlink(target).catch(() => {
@@ -8386,8 +8394,8 @@ async function route(request, url) {
     const row = db.prepare(`SELECT * FROM "StoredFile" WHERE id=? AND purpose='report'`).get(id);
     if (!row) throw new ApiError(404, "Report not found");
     if (row.ownerId !== user.id && user.role !== "ADMIN") throw new ApiError(403, "Not allowed");
-    const root = path.resolve(process.cwd(), process.env.FILE_STORAGE_PATH || "storage");
-    const target = path.resolve(root, row.storageKey);
+    const root = path__default.resolve(process.cwd(), process.env.FILE_STORAGE_PATH || "storage");
+    const target = path__default.resolve(root, row.storageKey);
     try {
       await import("node:fs").then((m) => m.unlinkSync(target));
     } catch {
@@ -8438,11 +8446,11 @@ async function uploadFile(request) {
   if (file.size > max) throw new ApiError(413, "File is too large.");
   const allowed = (process.env.ALLOWED_UPLOAD_TYPES || "image/jpeg,image/png,image/webp,application/pdf").split(",");
   if (!allowed.includes(file.type)) throw new ApiError(415, "File type is not allowed.");
-  const key = `${user.id}/${randomUUID()}${path.extname(file.name).toLowerCase()}`;
-  const root = path.resolve(process.cwd(), process.env.FILE_STORAGE_PATH || "storage");
-  const target = path.resolve(root, key);
+  const key = `${user.id}/${randomUUID()}${path__default.extname(file.name).toLowerCase()}`;
+  const root = path__default.resolve(process.cwd(), process.env.FILE_STORAGE_PATH || "storage");
+  const target = path__default.resolve(root, key);
   if (!target.startsWith(root)) throw new ApiError(400, "Invalid storage path.");
-  await mkdir(path.dirname(target), { recursive: true });
+  await mkdir(path__default.dirname(target), { recursive: true });
   await writeFile(target, Buffer.from(await file.arrayBuffer()));
   const db = getApiDatabase(), stamp = now();
   const result = db.prepare(
@@ -8482,8 +8490,8 @@ async function downloadFile(id, url) {
     if (expires < Date.now() || provided.length !== expected.length || !timingSafeEqual(provided, expected))
       throw new ApiError(403, "File access link is invalid or expired.");
   }
-  const root = path.resolve(process.cwd(), process.env.FILE_STORAGE_PATH || "storage");
-  return new Response(await readFile(path.resolve(root, file.storageKey)), {
+  const root = path__default.resolve(process.cwd(), process.env.FILE_STORAGE_PATH || "storage");
+  return new Response(await readFile(path__default.resolve(root, file.storageKey)), {
     headers: {
       "content-type": file.mimeType,
       // Force download so browsers don't try to render HTML inline
@@ -8580,7 +8588,7 @@ function requireCurrentUserRole(role) {
 const APIRoute$2 = {
   GET: async () => {
     requireCurrentUserRole("ADMIN");
-    const db = new Database(path.resolve(process.cwd(), "prisma", "app.db"));
+    const db = new Database(path__default.resolve(process.cwd(), "prisma", "app.db"));
     const payments = db.prepare(
       `
           SELECT
@@ -8793,7 +8801,7 @@ const APIRoute = {
 let serverEntryPromise;
 async function getServerEntry() {
   if (!serverEntryPromise) {
-    serverEntryPromise = import("./assets/server-DlLZ3YER.js").then((n) => n.s).then(
+    serverEntryPromise = import("./assets/server-BvuapYYX.js").then((n) => n.s).then(
       (m) => m.default ?? m
     );
   }
