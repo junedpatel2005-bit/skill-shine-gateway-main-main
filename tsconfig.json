@@ -46,11 +46,6 @@
 
     "ignoreDeprecations": "5.0",
 
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    },
-    "baseUrl": "."
+    
   }
 }

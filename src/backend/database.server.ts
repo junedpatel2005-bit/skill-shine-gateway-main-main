@@ -1,4 +1,4 @@
-import Database from "@/lib/supabase-compat";
+import Database from "../lib/supabase-compat";
 
 export type AppDatabase = {
   prepare(query: string): {

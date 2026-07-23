@@ -19,9 +19,9 @@ import {
 import { io } from "socket.io-client";
 import { toast } from "sonner";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -29,12 +29,12 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { getFavoriteJobsByUserId } from "@/lib/job-db.server";
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import { getCurrentUser } from "../lib/current-user.server";
+import { getFavoriteJobsByUserId } from "../lib/job-db.server";
 import {
   cancelHireProject,
   createProfessionalHireNegotiation,
@@ -45,7 +45,7 @@ import {
   type DirectHireNegotiationRecord,
   type HireContractStatus,
   type ProfessionalHireRequestRecord,
-} from "@/lib/hire-db.server";
+} from "../lib/hire-db.server";
 import {
   cancelProjectTracking,
   createProfessionalNegotiation,
@@ -56,9 +56,9 @@ import {
   respondToProjectReview,
   type ProjectNegotiationRecord,
   type ProfessionalTrackedProjectRecord,
-} from "@/lib/project-request-db.server";
-import { formatApproximateLocation } from "@/lib/location-privacy";
-import { getProfessionalProfileByUserId } from "@/lib/user-db.server";
+} from "../lib/project-request-db.server";
+import { formatApproximateLocation } from "../lib/location-privacy";
+import { getProfessionalProfileByUserId } from "../lib/user-db.server";
 
 type ProfessionalStatsFilter =
   | "running"

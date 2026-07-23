@@ -6,8 +6,10 @@ const port = Number(process.env.PORT || 3000);
 
 const server = http.createServer(async (incoming, outgoing) => {
   const start = Date.now();
+
   try {
-    const origin = \`http://\${incoming.headers.host || \`localhost:\${port}\`}\`;
+    const origin = `http://${incoming.headers.host || `localhost:${port}`}`;
+
     const init = {
       method: incoming.method,
       headers: new Headers(
@@ -16,31 +18,59 @@ const server = http.createServer(async (incoming, outgoing) => {
             ? value.map((item) => [key, item])
             : value == null
               ? []
-              : [[key, value]],
-        ),
+              : [[key, value]]
+        )
       ),
     };
+
     if (incoming.method !== "GET" && incoming.method !== "HEAD") {
       init.body = Readable.toWeb(incoming);
       init.duplex = "half";
     }
+
     const response = await app.fetch(
       new Request(new URL(incoming.url || "/", origin), init),
       {},
-      {},
+      {}
     );
+
     outgoing.statusCode = response.status;
-    response.headers.forEach((value, key) => outgoing.setHeader(key, value));
-    if (!response.body) return outgoing.end();
+
+    response.headers.forEach((value, key) => {
+      outgoing.setHeader(key, value);
+    });
+
+    if (!response.body) {
+      outgoing.end();
+      return;
+    }
+
     Readable.fromWeb(response.body).pipe(outgoing);
   } catch (error) {
-    console.error(error);
-    if (!outgoing.headersSent) outgoing.writeHead(500, { "content-type": "application/json" });
-    outgoing.end(JSON.stringify({ error: { message: "Internal server error." } }));
+    console.error("HTTP Server Error:", error);
+
+    if (!outgoing.headersSent) {
+      outgoing.writeHead(500, {
+        "content-type": "application/json",
+      });
+    }
+
+    outgoing.end(
+      JSON.stringify({
+        error: {
+          message: "Internal server error.",
+        },
+      })
+    );
   } finally {
     const end = Date.now();
-    console.log(\`\${incoming.method} \${incoming.url} \${outgoing.statusCode} -\${end - start}ms\`);
+
+    console.log(
+      `${incoming.method} ${incoming.url} ${outgoing.statusCode} - ${end - start}ms`
+    );
   }
 });
 
-server.listen(port, () => console.log(\`Servio listening on http://localhost:\${port}\`));
+server.listen(port, () => {
+  console.log(`Server listening on http://localhost:${port}`);
+});

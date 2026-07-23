@@ -1,17 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createFileRoute, Link, useLoaderData, useRouter } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { AppShell } from "@/components/AppShell";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { getCurrentUser } from "@/lib/current-user.server";
+import { AppShell } from "../components/AppShell";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Textarea } from "../components/ui/textarea";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   listLegalPages,
   type LegalPageRecord,
   type LegalPageSlug,
   type LegalPageStatus,
-} from "@/lib/legal-cms.server";
+} from "../lib/legal-cms.server";
 
 const loadWebsiteCmsData = createServerFn({ method: "GET" }).handler(async () => {
   const viewer = getCurrentUser();
@@ -19,7 +19,7 @@ const loadWebsiteCmsData = createServerFn({ method: "GET" }).handler(async () =>
     return { viewer: null, pages: [] as LegalPageRecord[] };
   }
 
-  const { listLegalPages } = await import("@/lib/legal-cms.server");
+  const { listLegalPages } = await import('../lib/legal-cms.server');
   return { viewer, pages: await listLegalPages() };
 });
 
@@ -34,7 +34,7 @@ const saveWebsiteCmsPage = createServerFn({ method: "POST" })
       throw new Error("Only admins can update website CMS pages.");
     }
 
-    const { saveLegalPage } = await import("@/lib/legal-cms.server");
+    const { saveLegalPage } = await import('../lib/legal-cms.server');
     return await saveLegalPage(data.slug, {
       title: data.title,
       content: data.content,

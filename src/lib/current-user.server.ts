@@ -1,7 +1,7 @@
 import { getRequest } from "@tanstack/react-start/server";
 
-import { readSessionFromCookieHeader } from "@/lib/auth-session.server";
-import { findUserById, type PublicUser, type UserRole } from "@/lib/user-db.server";
+import { readSessionFromCookieHeader } from "./auth-session.server";
+import { findUserById, type PublicUser, type UserRole } from "./user-db.server";
 
 export function getCurrentUser() {
   const request = getRequest();

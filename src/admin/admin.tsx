@@ -25,31 +25,31 @@ import {
   MapPin,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
-import { verifyPassword } from "@/lib/password.server";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { GlobalSearchOverlay } from "@/components/GlobalSearch";
+import { AppShell } from "../components/AppShell";
+import { AdminEmptyState } from "../components/admin/AdminEmptyState";
+import { verifyPassword } from "../lib/password.server";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { GlobalSearchOverlay } from "../components/GlobalSearch";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Switch } from "@/components/ui/switch";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { AdminSummaryCard } from "@/components/admin/AdminSummaryCard";
-import { AdminSection } from "@/components/admin/AdminSection";
+} from "../components/ui/select";
+import { Switch } from "../components/ui/switch";
+import { AdminPageHeader } from "../components/admin/AdminPageHeader";
+import { AdminSummaryCard } from "../components/admin/AdminSummaryCard";
+import { AdminSection } from "../components/admin/AdminSection";
 import {
   formatBudget,
   formatDate,
   formatDateTime,
   formatEnum,
   formatMoney,
-} from "@/lib/admin-formatters";
+} from "../lib/admin-formatters";
 import {
   getAdminJobRecords,
   getAdminDisputeRecords,
@@ -60,9 +60,9 @@ import {
   type AdminJobRecord,
   type AdminDashboardSnapshot,
   type AdminPaymentTransaction,
-} from "@/lib/admin-dashboard-db.server";
-import { createSessionCookie } from "@/lib/auth-session.server";
-import { getCurrentUser } from "@/lib/current-user.server";
+} from "../lib/admin-dashboard-db.server";
+import { createSessionCookie } from "../lib/auth-session.server";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   findUserByEmail,
   getAdminUsers,
@@ -73,8 +73,8 @@ import {
   type AdminUserStats,
   type PublicUser,
   type UserRole,
-} from "@/lib/user-db.server";
-import { cn } from "@/lib/utils";
+} from "../lib/user-db.server";
+import { cn } from "../lib/utils";
 
 const ADMIN_USERNAME = "";
 

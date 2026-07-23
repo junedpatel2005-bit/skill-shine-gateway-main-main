@@ -18,13 +18,13 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { formatApproximateLocation } from "@/lib/location-privacy";
-import { getProfessionalUsers } from "@/lib/user-db.server";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { getCurrentUser } from "../lib/current-user.server";
+import { formatApproximateLocation } from "../lib/location-privacy";
+import { getProfessionalUsers } from "../lib/user-db.server";
 
 type ProfessionalDiscoveryUser = ReturnType<typeof getProfessionalUsers>[number];
 type ProfessionalWithDistance = ProfessionalDiscoveryUser & {

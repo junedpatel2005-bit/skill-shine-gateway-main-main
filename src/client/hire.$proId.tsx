@@ -15,16 +15,16 @@ import {
   Star,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { getCurrentUser, requireCurrentUserRole } from "@/lib/current-user.server";
-import { createHireContract, type HireContractInput } from "@/lib/hire-db.server";
-import { getClientJobsByUserId, type ClientJobRecord } from "@/lib/job-db.server";
-import { formatApproximateLocation } from "@/lib/location-privacy";
-import { getProfessionalProfileByUserId } from "@/lib/user-db.server";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import { getCurrentUser, requireCurrentUserRole } from "../lib/current-user.server";
+import { createHireContract, type HireContractInput } from "../lib/hire-db.server";
+import { getClientJobsByUserId, type ClientJobRecord } from "../lib/job-db.server";
+import { formatApproximateLocation } from "../lib/location-privacy";
+import { getProfessionalProfileByUserId } from "../lib/user-db.server";
 
 const getHireDetails = createServerFn({ method: "GET" })
   .inputValidator((id: string) => id)

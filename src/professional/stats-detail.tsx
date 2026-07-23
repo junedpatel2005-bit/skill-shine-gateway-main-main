@@ -14,9 +14,9 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -24,20 +24,20 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { getProfessionalStatsData } from "@/professional/stats";
-import type { ProfessionalHireRequestRecord } from "@/lib/hire-db.server";
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import { getCurrentUser } from "../lib/current-user.server";
+import { getProfessionalStatsData } from "./stats";
+import type { ProfessionalHireRequestRecord } from "../lib/hire-db.server";
 import {
   createProfessionalNegotiation,
   respondToProjectReview,
   type ProjectNegotiationRecord,
   type ProfessionalProjectRequestRecord,
   type ProfessionalTrackedProjectRecord,
-} from "@/lib/project-request-db.server";
+} from "../lib/project-request-db.server";
 
 export const Route = createFileRoute("/professional-stats/$section")({
   beforeLoad: async ({ location }) => {

@@ -14,14 +14,14 @@ import { Provider } from "react-redux";
 import { toast } from "sonner";
 
 import appCss from "../styles.css?url";
-import { store } from "@/store";
-import { Toaster } from "@/components/ui/sonner";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
-import type { WebsitePageRecord } from "@/lib/website-page-cms.server";
+import { store } from "../store";
+import { Toaster } from "../components/ui/sonner";
+import { SiteHeader } from "../components/SiteHeader";
+import { SiteFooter } from "../components/SiteFooter";
+import type { WebsitePageRecord } from "../lib/website-page-cms.server";
 
 const loadPublishedEditorPages = createServerFn({ method: "GET" }).handler(async () => {
-  const { listPublishedWebsitePages } = await import("@/lib/website-page-cms.server");
+  const { listPublishedWebsitePages } = await import('../lib/website-page-cms.server');
   return listPublishedWebsitePages();
 });
 

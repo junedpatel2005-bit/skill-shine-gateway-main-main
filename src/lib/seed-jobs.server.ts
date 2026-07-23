@@ -1,5 +1,5 @@
 import path from "node:path";
-import Database from "@/lib/supabase-compat";
+import Database from "./supabase-compat";
 
 export function seedTestJobs(userId: number) {
   const databasePath = path.resolve(process.cwd(), "prisma", "app.db");

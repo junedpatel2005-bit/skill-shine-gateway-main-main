@@ -18,24 +18,24 @@ import {
   FileText,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { getOpenClientJobById, isFavoriteJob, setFavoriteJob } from "@/lib/job-db.server";
-import { formatApproximateLocation } from "@/lib/location-privacy";
-import { queueAccountEmailNotification } from "@/lib/notification-email.server";
-import { createProjectRequest } from "@/lib/project-request-db.server";
+} from "../components/ui/dialog";
+import { getCurrentUser } from "../lib/current-user.server";
+import { getOpenClientJobById, isFavoriteJob, setFavoriteJob } from "../lib/job-db.server";
+import { formatApproximateLocation } from "../lib/location-privacy";
+import { queueAccountEmailNotification } from "../lib/notification-email.server";
+import { createProjectRequest } from "../lib/project-request-db.server";
 
 const getJobDetails = createServerFn({ method: "GET" })
   .inputValidator((jobId: string) => jobId)

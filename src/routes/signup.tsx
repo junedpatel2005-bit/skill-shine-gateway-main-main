@@ -6,8 +6,8 @@ import { CheckCircle2, Chrome, LoaderCircle, MailCheck, TriangleAlert } from "lu
 import { Eye, EyeOff } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { AuthLayout } from "@/components/AuthLayout";
-import { Button } from "@/components/ui/button";
+import { AuthLayout } from "../components/AuthLayout";
+import { Button } from "../components/ui/button";
 import {
   Form,
   FormControl,
@@ -16,18 +16,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "../components/ui/form";
+import { Input } from "../components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { createSessionCookie } from "@/lib/auth-session.server";
-import { hashPassword } from "@/lib/password.server";
-import { normalizePhone, signupSchema, type SignupInput } from "@/lib/validation/signup";
+} from "../components/ui/select";
+import { createSessionCookie } from "../lib/auth-session.server";
+import { hashPassword } from "../lib/password.server";
+import { normalizePhone, signupSchema, type SignupInput } from "../lib/validation/signup";
 import {
   clearSignupFeedback,
   setSignupOtpStatus,
@@ -36,8 +36,8 @@ import {
   setSignupSubmitError,
   setSignupSubmitting,
   setSignupSuccessMessage,
-} from "@/store/authSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+} from "../store/authSlice";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 export const Route = createFileRoute("/signup")({
   head: () => ({
@@ -55,7 +55,7 @@ const sendSignupOtp = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     try {
-      const { sendSignupOtpEmail } = await import("@/lib/otp.server");
+      const { sendSignupOtpEmail } = await import('../lib/otp.server');
       const email = data.email.trim().toLowerCase();
       await sendSignupOtpEmail(email);
 
@@ -75,8 +75,8 @@ const submitSignup = createServerFn({ method: "POST" })
   .inputValidator((data: SignupInput) => signupSchema.parse(data))
   .handler(async ({ data }) => {
     try {
-      const { createUserRecord, findUserByEmailOrPhone } = await import("@/lib/user-db.server");
-      const { verifySignupOtp } = await import("@/lib/otp.server");
+      const { createUserRecord, findUserByEmailOrPhone } = await import('../lib/user-db.server');
+      const { verifySignupOtp } = await import('../lib/otp.server');
 
       const email = data.email.trim().toLowerCase();
       const phone = normalizePhone(data.countryCode, data.phone);

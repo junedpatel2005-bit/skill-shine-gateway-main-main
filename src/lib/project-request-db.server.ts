@@ -1,7 +1,7 @@
 import path from "node:path";
-import Database from "@/lib/supabase-compat";
+import Database from "./supabase-compat";
 
-import { getOpenClientJobById } from "@/lib/job-db.server";
+import { getOpenClientJobById } from "./job-db.server";
 
 type BetterSqlite3Database = Database;
 const REQUIRED_PROJECT_MILESTONES = 5;

@@ -1,11 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { Landing } from "@/client/index";
-import { logoutAction } from "@/lib/logout.server";
-import { getFavoriteJobIds, getOpenClientJobs } from "@/lib/job-db.server";
-import { getProfessionalUsers } from "@/lib/user-db.server";
-import { getProfessionalVerificationByUserId } from "@/lib/pro-verification-db.server";
+import { getCurrentUser } from "../lib/current-user.server";
+import { Landing } from "../client/index";
+import { logoutAction } from "../lib/logout.server";
+import { getFavoriteJobIds, getOpenClientJobs } from "../lib/job-db.server";
+import { getProfessionalUsers } from "../lib/user-db.server";
+import { getProfessionalVerificationByUserId } from "../lib/pro-verification-db.server";
 
 const getCurrentUserFn = createServerFn({ method: "GET" }).handler(async () => {
   const user = getCurrentUser();
@@ -14,7 +14,7 @@ const getCurrentUserFn = createServerFn({ method: "GET" }).handler(async () => {
 
 const getHomeData = createServerFn({ method: "GET" }).handler(async () => {
   const user = getCurrentUser();
-  const { getPublishedWebsitePage } = await import("@/lib/website-page-cms.server");
+  const { getPublishedWebsitePage } = await import('../lib/website-page-cms.server');
   const editorPage = await getPublishedWebsitePage("home");
 
   return {

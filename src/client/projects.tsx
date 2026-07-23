@@ -19,17 +19,17 @@ import {
   XCircle,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { getCurrentUser } from "@/lib/current-user.server";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   cancelHireProject,
   deleteRejectedHireRequest,
   getClientHireRequests,
   startClientHireProject,
   type ClientHireRequestRecord,
-} from "@/lib/hire-db.server";
+} from "../lib/hire-db.server";
 import {
   deleteClientJob,
   getClientJobsByUserId,
@@ -37,9 +37,9 @@ import {
   updateClientJobStatus,
   type ClientJobRecord,
   type JobStatus,
-} from "@/lib/job-db.server";
-import { formatApproximateLocation } from "@/lib/location-privacy";
-import { queueAccountEmailNotification } from "@/lib/notification-email.server";
+} from "../lib/job-db.server";
+import { formatApproximateLocation } from "../lib/location-privacy";
+import { queueAccountEmailNotification } from "../lib/notification-email.server";
 import {
   getClientTrackedProjects,
   getClientProjectRequests,
@@ -51,8 +51,8 @@ import {
   type ClientProjectRequestRecord,
   type ProjectNegotiationRecord,
   type ProjectRequestStatus,
-} from "@/lib/project-request-db.server";
-import { getClientProfileByUserId } from "@/lib/user-db.server";
+} from "../lib/project-request-db.server";
+import { getClientProfileByUserId } from "../lib/user-db.server";
 
 type ProjectBucketFilter = "running" | "completed" | "requests" | "direct-hires";
 

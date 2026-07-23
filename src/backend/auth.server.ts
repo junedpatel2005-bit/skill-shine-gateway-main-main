@@ -1,5 +1,5 @@
 import { createHash, createHmac, randomBytes, timingSafeEqual } from "node:crypto";
-import type { PublicUser, UserRole } from "@/lib/user-db.server";
+import type { PublicUser, UserRole } from "../lib/user-db.server";
 
 type JwtPayload = { sub: number; role: UserRole; email: string; iat: number; exp: number };
 

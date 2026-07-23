@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
+import { prisma } from "./prisma";
 import path from "node:path";
-import Database from "@/lib/supabase-compat";
+import Database from "./supabase-compat";
 
 type BetterSqlite3Database = Database;
 

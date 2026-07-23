@@ -3,9 +3,9 @@ import {
   clearGoogleStateCookie,
   createSessionCookie,
   readGoogleStateFromCookieHeader,
-} from "@/lib/auth-session.server";
-import { deriveNamesFromGoogleProfile, exchangeCodeForGoogleUser } from "@/lib/google-oauth.server";
-import { findUserByEmail, recordUserLogin, upsertGoogleUser } from "@/lib/user-db.server";
+} from "../../../../lib/auth-session.server";
+import { deriveNamesFromGoogleProfile, exchangeCodeForGoogleUser } from "../../../../lib/google-oauth.server";
+import { findUserByEmail, recordUserLogin, upsertGoogleUser } from "../../../../lib/user-db.server";
 
 function redirectTo(path: string, cookie: string) {
   return new Response(null, {
@@ -54,7 +54,7 @@ export const APIRoute = {
 
       let finalDestination = savedState.returnTo || "/";
       if (user.role === "PROFESSIONAL" && finalDestination === "/") {
-        const { getProfessionalProfileByUserId } = await import("@/lib/user-db.server");
+        const { getProfessionalProfileByUserId } = await import('../../../../lib/user-db.server');
         const proProfile = getProfessionalProfileByUserId(user.id);
         const isProfileComplete = !!(
           proProfile?.professionalCategory &&

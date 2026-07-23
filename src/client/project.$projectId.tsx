@@ -1,6 +1,6 @@
 import { Link, useLoaderData, useParams, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
-import { AppShell } from "@/components/AppShell";
+import { AppShell } from "../components/AppShell";
 import {
   BriefcaseBusiness,
   CalendarDays,
@@ -17,10 +17,10 @@ import {
   Upload,
   Users,
 } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { deleteProject } from "@/client/project.$projectId.server";
-import { formatApproximateLocation } from "@/lib/location-privacy";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { deleteProject } from "./project.$projectId.server";
+import { formatApproximateLocation } from "../lib/location-privacy";
 
 export function Project() {
   const { viewer, job, tracking } = useLoaderData({ from: "/project/$projectId" });

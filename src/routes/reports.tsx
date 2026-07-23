@@ -16,10 +16,10 @@ import {
   X,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { getCurrentUser } from "@/lib/current-user.server";
+import { AppShell } from "../components/AppShell";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { getCurrentUser } from "../lib/current-user.server";
 
 type TableInfo = {
   name: string;

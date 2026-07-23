@@ -4,8 +4,8 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { CheckCircle2, LoaderCircle, MailCheck, ShieldCheck, TriangleAlert } from "lucide-react";
-import { AuthLayout } from "@/components/AuthLayout";
-import { Button } from "@/components/ui/button";
+import { AuthLayout } from "../components/AuthLayout";
+import { Button } from "../components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,15 +13,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { hashPassword, verifyPassword } from "@/lib/password.server";
+} from "../components/ui/form";
+import { Input } from "../components/ui/input";
+import { hashPassword, verifyPassword } from "../lib/password.server";
 import {
   forgotPasswordRequestSchema,
   resetPasswordSchema,
   type ForgotPasswordRequestInput,
   type ResetPasswordInput,
-} from "@/lib/validation/forgot-password";
+} from "../lib/validation/forgot-password";
 
 export const Route = createFileRoute("/forgot-password")({
   head: () => ({ meta: [{ title: "Reset password — Servio" }] }),
@@ -33,11 +33,11 @@ const sendPasswordResetOtp = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     try {
       const email = data.email.trim().toLowerCase();
-      const { findUserByEmail } = await import("@/lib/user-db.server");
+      const { findUserByEmail } = await import('../lib/user-db.server');
       const user = findUserByEmail(email);
 
       if (user) {
-        const { sendPasswordResetOtpEmail } = await import("@/lib/otp.server");
+        const { sendPasswordResetOtpEmail } = await import('../lib/otp.server');
         await sendPasswordResetOtpEmail(email);
       }
 
@@ -58,8 +58,8 @@ const resetPassword = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     try {
       const email = data.email.trim().toLowerCase();
-      const { findUserByEmail, updateUserPasswordByEmail } = await import("@/lib/user-db.server");
-      const { verifyPasswordResetOtp } = await import("@/lib/otp.server");
+      const { findUserByEmail, updateUserPasswordByEmail } = await import('../lib/user-db.server');
+      const { verifyPasswordResetOtp } = await import('../lib/otp.server');
 
       const fieldErrors: Partial<Record<keyof ResetPasswordInput, string>> = {};
       const user = findUserByEmail(email);

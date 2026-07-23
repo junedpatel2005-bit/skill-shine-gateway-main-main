@@ -1,7 +1,7 @@
 import { createHmac, timingSafeEqual } from "node:crypto";
 import { getRequest } from "@tanstack/react-start/server";
 
-import type { PublicUser, UserRole } from "@/lib/user-db.server";
+import type { PublicUser, UserRole } from "./user-db.server";
 
 const SESSION_COOKIE_NAME = "servio_session";
 const GOOGLE_STATE_COOKIE_NAME = "servio_google_state";

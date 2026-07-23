@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { deleteClientJob, getClientJobById } from "@/lib/job-db.server";
-import { getProjectTrackingDetailsByJob } from "@/lib/project-request-db.server";
-import { seedTestJobs } from "@/lib/seed-jobs.server";
+import { getCurrentUser } from "../lib/current-user.server";
+import { deleteClientJob, getClientJobById } from "../lib/job-db.server";
+import { getProjectTrackingDetailsByJob } from "../lib/project-request-db.server";
+import { seedTestJobs } from "../lib/seed-jobs.server";
 
 export const checkProjectAuth = createServerFn({ method: "GET" }).handler(async () => {
   const viewer = getCurrentUser();

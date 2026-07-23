@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "../components/SiteFooter";
+import { SiteHeader } from "../components/SiteHeader";
 
 const loadPrivacyPage = createServerFn({ method: "GET" }).handler(async () => {
-  const { getPublishedLegalPageBySlug } = await import("@/lib/legal-cms.server");
+  const { getPublishedLegalPageBySlug } = await import('../lib/legal-cms.server');
   return { cmsPage: (await getPublishedLegalPageBySlug("privacy-policy")) || null };
 });
 

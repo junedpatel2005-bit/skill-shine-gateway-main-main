@@ -1,4 +1,4 @@
-import type { BenefitsSectionConfig } from "@/types/page-builder";
+import type { BenefitsSectionConfig } from "../../types/page-builder";
 
 interface BenefitsSectionProps {
   config: BenefitsSectionConfig;

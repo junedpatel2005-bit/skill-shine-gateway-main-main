@@ -11,13 +11,13 @@ import {
   createSessionCookie,
   readGoogleStateFromCookieHeader,
   readSessionFromCookieHeader,
-} from "@/lib/auth-session.server";
+} from "../lib/auth-session.server";
 import {
   buildGoogleAuthorizationUrl,
   deriveNamesFromGoogleProfile,
   exchangeCodeForGoogleUser,
-} from "@/lib/google-oauth.server";
-import { hashPassword, verifyPassword } from "@/lib/password.server";
+} from "../lib/google-oauth.server";
+import { hashPassword, verifyPassword } from "../lib/password.server";
 import {
   createUserRecord,
   findUserByEmail,
@@ -27,9 +27,9 @@ import {
   upsertGoogleUser,
   type PublicUser,
   type UserRole,
-} from "@/lib/user-db.server";
-import { listWebsitePages, saveWebsitePage } from "@/lib/website-page-cms.server";
-import { clientJobSchema, type ClientJobInput } from "@/lib/validation/client-job";
+} from "../lib/user-db.server";
+import { listWebsitePages, saveWebsitePage } from "../lib/website-page-cms.server";
+import { clientJobSchema, type ClientJobInput } from "../lib/validation/client-job";
 import {
   createClientJob,
   deleteClientJob,
@@ -37,7 +37,7 @@ import {
   getClientJobsByUserId,
   getOpenClientJobs,
   updateClientJob,
-} from "@/lib/job-db.server";
+} from "../lib/job-db.server";
 import {
   createProjectRequest,
   getClientProjectRequests,
@@ -46,19 +46,19 @@ import {
   getProfessionalWithdrawals,
   createProfessionalWithdrawalRequest,
   rateCompletedProject,
-} from "@/lib/project-request-db.server";
-import { createHireContract } from "@/lib/hire-db.server";
-import { getUserNotifications, markUserNotificationsRead } from "@/lib/notification-db.server";
+} from "../lib/project-request-db.server";
+import { createHireContract } from "../lib/hire-db.server";
+import { getUserNotifications, markUserNotificationsRead } from "../lib/notification-db.server";
 import {
   getAdminDashboardSnapshot,
   getAdminJobRecords,
   getAdminPaymentTransactions,
-} from "@/lib/admin-dashboard-db.server";
+} from "../lib/admin-dashboard-db.server";
 import {
   getAdminUsers,
   updateProfessionalVerifiedStatusByAdmin,
   updateUserActiveStatusByAdmin,
-} from "@/lib/user-db.server";
+} from "../lib/user-db.server";
 
 const API_PREFIX = "/api/v1";
 const email = z

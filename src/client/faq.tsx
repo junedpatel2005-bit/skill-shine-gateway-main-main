@@ -1,14 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
+import { SiteHeader } from "../components/SiteHeader";
+import { SiteFooter } from "../components/SiteFooter";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Button } from "@/components/ui/button";
+} from "../components/ui/accordion";
+import { Button } from "../components/ui/button";
 
 const faqItems = [
   {
@@ -36,7 +36,7 @@ const faqItems = [
 ];
 
 const loadFaqPage = createServerFn({ method: "GET" }).handler(async () => {
-  const { getPublishedLegalPageBySlug } = await import("@/lib/legal-cms.server");
+  const { getPublishedLegalPageBySlug } = await import('../lib/legal-cms.server');
   return { cmsPage: (await getPublishedLegalPageBySlug("faq")) || null };
 });
 

@@ -2,16 +2,16 @@ import { createServerFn } from "@tanstack/react-start";
 import { createFileRoute, Link, useLoaderData, useRouter } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { BriefcaseBusiness, FolderKanban, Plus, Search, ShieldCheck, Trash2 } from "lucide-react";
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ReportExportActions } from "@/components/ReportExportActions";
-import { Textarea } from "@/components/ui/textarea";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { AdminSection } from "@/components/admin/AdminSection";
-import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
-import { getCurrentUser } from "@/lib/current-user.server";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { ReportExportActions } from "../components/ReportExportActions";
+import { Textarea } from "../components/ui/textarea";
+import { AdminPageHeader } from "../components/admin/AdminPageHeader";
+import { AdminSection } from "../components/admin/AdminSection";
+import { AdminEmptyState } from "../components/admin/AdminEmptyState";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   createServiceCategory,
   deleteServiceCategory,
@@ -19,7 +19,7 @@ import {
   type ServiceCategoryInput,
   type ServiceCategoryRecord,
   updateServiceCategory,
-} from "@/lib/services-db.server";
+} from "../lib/services-db.server";
 
 const loadAdminCategoriesData = createServerFn({ method: "GET" }).handler(async () => {
   const viewer = getCurrentUser();

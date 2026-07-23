@@ -22,28 +22,28 @@ import {
   Wallet,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { AdminSummaryCard } from "@/components/admin/AdminSummaryCard";
-import { AdminSection } from "@/components/admin/AdminSection";
-import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
+} from "../components/ui/select";
+import { AdminPageHeader } from "../components/admin/AdminPageHeader";
+import { AdminSummaryCard } from "../components/admin/AdminSummaryCard";
+import { AdminSection } from "../components/admin/AdminSection";
+import { AdminEmptyState } from "../components/admin/AdminEmptyState";
 import {
   formatDate,
   formatDateTime,
   formatEnum,
   formatMoney,
-} from "@/lib/admin-formatters";
-import { getCurrentUser } from "@/lib/current-user.server";
+} from "../lib/admin-formatters";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   getAdminEarningsReport,
   updateAdminPayoutStatus,
@@ -51,8 +51,8 @@ import {
   type AdminEarningsTransactionRecord,
   type AdminPayoutRecord,
   type AdminProfessionalEarningsSummary,
-} from "@/lib/admin-dashboard-db.server";
-import { cn } from "@/lib/utils";
+} from "../lib/admin-dashboard-db.server";
+import { cn } from "../lib/utils";
 
 type PayoutStatus = "PENDING" | "PROCESSING" | "COMPLETED" | "REJECTED";
 type ReportPeriod = "ALL" | "30_DAYS" | "90_DAYS" | "THIS_YEAR";

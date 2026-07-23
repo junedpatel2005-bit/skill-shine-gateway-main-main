@@ -1,5 +1,5 @@
 ﻿import { describe, it, expect, beforeAll, afterAll, beforeEach } from "vitest";
-import DatabaseShim from "@/lib/supabase-compat";
+import DatabaseShim from "../lib/supabase-compat";
 import { createHash, createHmac } from "node:crypto";
 import {
   getTestDb,
@@ -8,7 +8,7 @@ import {
   createTestJob,
   createTestWallet,
 } from "./test-helper";
-import { hashPassword, verifyPassword } from "@/lib/password.server";
+import { hashPassword, verifyPassword } from "../lib/password.server";
 import { issueAccessToken, readAccessToken, tokenHash, opaqueToken } from "./auth.server";
 import { ApiError, json, errorResponse, body } from "./http.server";
 

@@ -23,23 +23,23 @@ import {
   X,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ReportExportActions } from "@/components/ReportExportActions";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { ReportExportActions } from "../components/ReportExportActions";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { AdminSummaryCard } from "@/components/admin/AdminSummaryCard";
-import { AdminSection } from "@/components/admin/AdminSection";
-import { AdminTable, AdminTableCell, AdminTableRow } from "@/components/admin/AdminTable";
-import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
+} from "../components/ui/select";
+import { AdminPageHeader } from "../components/admin/AdminPageHeader";
+import { AdminSummaryCard } from "../components/admin/AdminSummaryCard";
+import { AdminSection } from "../components/admin/AdminSection";
+import { AdminTable, AdminTableCell, AdminTableRow } from "../components/admin/AdminTable";
+import { AdminEmptyState } from "../components/admin/AdminEmptyState";
 import {
   formatBudget,
   formatDate,
@@ -47,8 +47,8 @@ import {
   formatEnum,
   formatFileSize,
   formatMoney,
-} from "@/lib/admin-formatters";
-import { getCurrentUser } from "@/lib/current-user.server";
+} from "../lib/admin-formatters";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   getAdminDashboardSnapshot,
   getAdminDisputeRecords,
@@ -56,8 +56,8 @@ import {
   updateAdminDisputeStatus,
   type AdminDisputeRecord,
   type AdminJobRecord,
-} from "@/lib/admin-dashboard-db.server";
-import { cn } from "@/lib/utils";
+} from "../lib/admin-dashboard-db.server";
+import { cn } from "../lib/utils";
 
 type DisputeStatus = "OPEN" | "UNDER_REVIEW" | "RESOLVED";
 type JobQuickFilter =

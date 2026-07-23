@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AuthLayout } from "@/components/AuthLayout";
-import { Button } from "@/components/ui/button";
+import { AuthLayout } from "../components/AuthLayout";
+import { Button } from "../components/ui/button";
 import { useRef, useState } from "react";
 
 export const Route = createFileRoute("/verify")({

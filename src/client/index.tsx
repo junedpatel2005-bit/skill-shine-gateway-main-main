@@ -29,9 +29,9 @@ import {
 import React, { useEffect, useState } from "react";
 import { createServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
-import { Sheet, SheetContent, SheetTitle, SheetDescription } from "@/components/ui/sheet";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { cn } from "../lib/utils";
+import { Sheet, SheetContent, SheetTitle, SheetDescription } from "../components/ui/sheet";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "../components/ui/collapsible";
 import {
   Dialog,
   DialogContent,
@@ -39,17 +39,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "../components/ui/dialog";
 
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { logoutAction as logout } from "@/lib/logout.server";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { setFavoriteJob } from "@/lib/job-db.server";
-import { formatApproximateLocation } from "@/lib/location-privacy";
-import { supabase } from "@/lib/supabase";
+import { SiteHeader } from "../components/SiteHeader";
+import { SiteFooter } from "../components/SiteFooter";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { logoutAction as logout } from "../lib/logout.server";
+import { getCurrentUser } from "../lib/current-user.server";
+import { setFavoriteJob } from "../lib/job-db.server";
+import { formatApproximateLocation } from "../lib/location-privacy";
+import { supabase } from "../lib/supabase";
 
 const indexRoute = getRouteApi("/");
 

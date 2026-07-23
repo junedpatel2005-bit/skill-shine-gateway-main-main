@@ -4,8 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Chrome } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { AuthLayout } from "@/components/AuthLayout";
-import { Button } from "@/components/ui/button";
+import { AuthLayout } from "../components/AuthLayout";
+import { Button } from "../components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,18 +13,18 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { createSessionCookie } from "@/lib/auth-session.server";
-import { hashPassword, verifyPassword } from "@/lib/password.server";
-import { loginSchema, type LoginInput } from "@/lib/validation/login";
+} from "../components/ui/form";
+import { Input } from "../components/ui/input";
+import { createSessionCookie } from "../lib/auth-session.server";
+import { hashPassword, verifyPassword } from "../lib/password.server";
+import { loginSchema, type LoginInput } from "../lib/validation/login";
 import {
   clearLoginFeedback,
   setLoginSubmitError,
   setLoginSubmitting,
   setLoginSuccessMessage,
-} from "@/store/authSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+} from "../store/authSlice";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 export const Route = createFileRoute("/login")({
   head: () => ({
@@ -41,7 +41,7 @@ const submitLogin = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     try {
       const { findUserByEmail, recordUserLogin, getProfessionalProfileByUserId } =
-        await import("@/lib/user-db.server");
+        await import('../lib/user-db.server');
 
       const email = data.email.trim().toLowerCase();
       const user = findUserByEmail(email);
@@ -90,7 +90,7 @@ const submitLogin = createServerFn({ method: "POST" })
       }
 
       if (passwordCheck.needsUpgrade) {
-        const { updateUserPasswordByEmail } = await import("@/lib/user-db.server");
+        const { updateUserPasswordByEmail } = await import('../lib/user-db.server');
         updateUserPasswordByEmail(email, hashPassword(data.password));
       }
 

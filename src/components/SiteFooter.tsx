@@ -2,10 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Facebook, Instagram, Linkedin, Twitter } from "lucide-react";
-import type { LegalPageRecord } from "@/lib/legal-cms.server";
+import type { LegalPageRecord } from "../lib/legal-cms.server";
 
 const loadFooterPages = createServerFn({ method: "GET" }).handler(async () => {
-  const { listLegalPages } = await import("@/lib/legal-cms.server");
+  const { listLegalPages } = await import('../lib/legal-cms.server');
   const pages = await listLegalPages();
   return pages.filter((page) => page.status === "PUBLISHED");
 });

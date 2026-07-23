@@ -10,12 +10,12 @@ import {
   AlertTriangle,
   ReceiptText,
 } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Input } from "./ui/input";
 import {
   adminGlobalSearch,
   type GlobalSearchResultItem,
   type GlobalSearchResult,
-} from "@/lib/admin-global-search.server";
+} from "../lib/admin-global-search.server";
 
 const performSearch = createServerFn({ method: "GET" })
   .inputValidator((input: { query: string }) => input)

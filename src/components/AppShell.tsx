@@ -25,10 +25,10 @@ import {
 import { useCallback, useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { getUserNotifications, type UserNotification } from "@/lib/notification-db.server";
-import { getUserNotificationPreferences, type PublicUser } from "@/lib/user-db.server";
+import { Button } from "./ui/button";
+import { getCurrentUser } from "../lib/current-user.server";
+import { getUserNotifications, type UserNotification } from "../lib/notification-db.server";
+import { getUserNotificationPreferences, type PublicUser } from "../lib/user-db.server";
 
 const NOTIFICATION_POPUP_MS = 3000;
 

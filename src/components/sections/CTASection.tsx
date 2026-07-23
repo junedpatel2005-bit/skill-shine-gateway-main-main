@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
-import type { CTASectionConfig } from "@/types/page-builder";
+import { Button } from "../ui/button";
+import type { CTASectionConfig } from "../../types/page-builder";
 
 interface CTASectionProps {
   config: CTASectionConfig;

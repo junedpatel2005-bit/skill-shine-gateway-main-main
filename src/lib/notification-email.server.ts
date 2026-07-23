@@ -1,5 +1,5 @@
 import path from "node:path";
-import Database from "@/lib/supabase-compat";
+import Database from "./supabase-compat";
 
 const SMTP_HOST = process.env.SMTP_HOST || "smtp.gmail.com";
 const SMTP_PORT = Number(process.env.SMTP_PORT || 465);

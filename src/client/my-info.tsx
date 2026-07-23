@@ -17,9 +17,9 @@ import {
   X,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { AppShell } from "../components/AppShell";
+import { Button } from "../components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import {
   Form,
   FormControl,
@@ -27,25 +27,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+} from "../components/ui/form";
+import { Input } from "../components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { getFavoriteJobsByUserId } from "@/lib/job-db.server";
-import { formatApproximateLocation } from "@/lib/location-privacy";
-import { clientProfileSchema, type ClientProfileInput } from "@/lib/validation/client-profile";
+} from "../components/ui/select";
+import { Textarea } from "../components/ui/textarea";
+import { getCurrentUser } from "../lib/current-user.server";
+import { getFavoriteJobsByUserId } from "../lib/job-db.server";
+import { formatApproximateLocation } from "../lib/location-privacy";
+import { clientProfileSchema, type ClientProfileInput } from "../lib/validation/client-profile";
 import {
   findUserByEmailOrPhone,
   getClientProfileByUserId,
   updateClientProfileByUserId,
-} from "@/lib/user-db.server";
+} from "../lib/user-db.server";
 
 const teamSizeOptions = [
   "Just me",

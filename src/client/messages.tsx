@@ -13,11 +13,11 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
 
-import { AppShell } from "@/components/AppShell";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { getCurrentUser } from "@/lib/current-user.server";
-import type { PublicUser } from "@/lib/user-db.server";
+import { AppShell } from "../components/AppShell";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { getCurrentUser } from "../lib/current-user.server";
+import type { PublicUser } from "../lib/user-db.server";
 
 export const Route = createFileRoute("/messages")({
   loader: () => getClientMessagesPage(),

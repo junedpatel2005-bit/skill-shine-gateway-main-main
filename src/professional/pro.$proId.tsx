@@ -6,11 +6,11 @@ import {
   useLoaderData,
   useNavigate,
 } from "@tanstack/react-router";
-import { AppShell } from "@/components/AppShell";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { getProfessionalVerificationByUserId } from "@/lib/pro-verification-db.server";
-import { getProfessionalProfileByUserId } from "@/lib/user-db.server";
-import { formatApproximateLocation } from "@/lib/location-privacy";
+import { AppShell } from "../components/AppShell";
+import { getCurrentUser } from "../lib/current-user.server";
+import { getProfessionalVerificationByUserId } from "../lib/pro-verification-db.server";
+import { getProfessionalProfileByUserId } from "../lib/user-db.server";
+import { formatApproximateLocation } from "../lib/location-privacy";
 import {
   Star,
   MapPin,
@@ -26,7 +26,7 @@ import {
   ShieldCheck,
   Camera,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "../components/ui/button";
 
 export const Route = createFileRoute("/pro/$proId")({
   head: () => ({ meta: [{ title: "Professional profile — Servio" }] }),

@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { createServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
-import { Logo } from "@/components/Logo";
-import { Button } from "@/components/ui/button";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { logoutAction } from "@/lib/logout.server";
-import type { PublicUser } from "@/lib/user-db.server";
+import { Logo } from "./Logo";
+import { Button } from "./ui/button";
+import { getCurrentUser } from "../lib/current-user.server";
+import { logoutAction } from "../lib/logout.server";
+import type { PublicUser } from "../lib/user-db.server";
 import { LogOut, Star, User } from "lucide-react";
 
 const getAuthLayoutUser = createServerFn({ method: "GET" }).handler(async () => getCurrentUser());

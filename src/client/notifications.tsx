@@ -12,22 +12,22 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { getCurrentUser } from "@/lib/current-user.server";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   clearUserNotifications,
   getUserNotifications,
   markUserNotificationsRead,
   type NotificationType,
   type UserNotification,
-} from "@/lib/notification-db.server";
-import type { PublicUser } from "@/lib/user-db.server";
+} from "../lib/notification-db.server";
+import type { PublicUser } from "../lib/user-db.server";
 import {
   getUserNotificationPreferences,
   updateUserNotificationPreferencesByUserId,
-} from "@/lib/user-db.server";
+} from "../lib/user-db.server";
 
 const tabs = ["All", "Projects", "Work", "Messages", "Payments", "Reviews"] as const;
 

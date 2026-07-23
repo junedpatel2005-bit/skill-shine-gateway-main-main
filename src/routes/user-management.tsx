@@ -21,44 +21,44 @@ import {
   Wallet,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { hashPassword } from "@/lib/password.server";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
-import { ReportExportActions } from "@/components/ReportExportActions";
+import { AppShell } from "../components/AppShell";
+import { hashPassword } from "../lib/password.server";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Switch } from "../components/ui/switch";
+import { ReportExportActions } from "../components/ReportExportActions";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { AdminSummaryCard } from "@/components/admin/AdminSummaryCard";
-import { AdminSection } from "@/components/admin/AdminSection";
-import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
+} from "../components/ui/dialog";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { AdminPageHeader } from "../components/admin/AdminPageHeader";
+import { AdminSummaryCard } from "../components/admin/AdminSummaryCard";
+import { AdminSection } from "../components/admin/AdminSection";
+import { AdminEmptyState } from "../components/admin/AdminEmptyState";
 import {
   formatDate,
   formatDateTime,
   formatEnum,
   formatMoney,
-} from "@/lib/admin-formatters";
+} from "../lib/admin-formatters";
 import {
   getAdminManagedUserDetails,
   type AdminManagedUserDetail,
-} from "@/lib/admin-dashboard-db.server";
-import { getCurrentUser } from "@/lib/current-user.server";
+} from "../lib/admin-dashboard-db.server";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   getAdminUsers,
   updateProfessionalVerifiedStatusByAdmin,
   updateUserActiveStatusByAdmin,
   updateUserPasswordByAdmin,
   type AdminUserRecord,
-} from "@/lib/user-db.server";
-import { cn } from "@/lib/utils";
+} from "../lib/user-db.server";
+import { cn } from "../lib/utils";
 
 const getUserManagementData = createServerFn({ method: "GET" }).handler(async () => {
   const viewer = getCurrentUser();

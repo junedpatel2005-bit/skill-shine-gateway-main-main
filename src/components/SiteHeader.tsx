@@ -1,12 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 import { Logo } from "./Logo";
 import { Menu, X, LogOut, User } from "lucide-react";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { logoutAction } from "@/lib/logout.server";
-import type { PublicUser } from "@/lib/user-db.server";
+import { getCurrentUser } from "../lib/current-user.server";
+import { logoutAction } from "../lib/logout.server";
+import type { PublicUser } from "../lib/user-db.server";
 
 const links = [
   { to: "/", label: "Home" },

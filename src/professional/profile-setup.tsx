@@ -21,41 +21,41 @@ import {
 } from "lucide-react";
 import { z } from "zod";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { Textarea } from "@/components/ui/textarea";
-import { getCurrentUser } from "@/lib/current-user.server";
+} from "../components/ui/select";
+import { Slider } from "../components/ui/slider";
+import { Textarea } from "../components/ui/textarea";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   upsertPhase1ProfessionalProfile,
   upsertPhase1ProfessionalVerifications,
-} from "@/lib/phase1-profile-db.server";
+} from "../lib/phase1-profile-db.server";
 import {
   getProfessionalVerificationByUserId,
   upsertProfessionalVerification,
-} from "@/lib/pro-verification-db.server";
+} from "../lib/pro-verification-db.server";
 import {
   getProfessionalProfileByUserId,
   updateProfessionalAvatarByUserId,
   updateProfessionalProfileByUserId,
   updateProfessionalWorkPhotosByUserId,
-} from "@/lib/user-db.server";
+} from "../lib/user-db.server";
 
 const professionalProfileSchema = z.object({
   fullName: z.string().trim().min(2, "Full name is required."),

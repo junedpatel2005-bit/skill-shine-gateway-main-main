@@ -15,13 +15,13 @@ import {
   Upload,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { getCurrentUser } from "@/lib/current-user.server";
+import { AppShell } from "../components/AppShell";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   getProfessionalVerificationByUserId,
   upsertProfessionalVerification,
   type ProfessionalVerificationInfo,
-} from "@/lib/pro-verification-db.server";
+} from "../lib/pro-verification-db.server";
 
 export const Route = createFileRoute("/verification")({
   head: () => ({

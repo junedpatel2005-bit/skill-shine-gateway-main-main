@@ -1,10 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createFileRoute, Link, useLoaderData } from "@tanstack/react-router";
 
-import { AppShell } from "@/components/AppShell";
-import { Button } from "@/components/ui/button";
-import { UserPersonalReports } from "@/components/UserPersonalReports";
-import { getCurrentUser } from "@/lib/current-user.server";
+import { AppShell } from "../components/AppShell";
+import { Button } from "../components/ui/button";
+import { UserPersonalReports } from "../components/UserPersonalReports";
+import { getCurrentUser } from "../lib/current-user.server";
 import { ArrowLeft } from "lucide-react";
 
 type ClientReportsData = {

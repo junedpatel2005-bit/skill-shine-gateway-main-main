@@ -1,4 +1,4 @@
-import DatabaseShim from "@/lib/supabase-compat";
+import DatabaseShim from "../lib/supabase-compat";
 
 // Test database setup - use in-memory for speed
 let db: DatabaseShim | null = null;

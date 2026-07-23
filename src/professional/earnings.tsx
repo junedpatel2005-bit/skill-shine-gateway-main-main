@@ -13,8 +13,8 @@ import {
   Wallet,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { Button } from "@/components/ui/button";
+import { AppShell } from "../components/AppShell";
+import { Button } from "../components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -22,17 +22,17 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+} from "../components/ui/dialog";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { getCurrentUser } from "@/lib/current-user.server";
+} from "../components/ui/select";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   createProfessionalWithdrawalRequest,
   getProfessionalWithdrawals,
@@ -40,7 +40,7 @@ import {
   type ProjectTransactionRecord,
   type ProjectWithdrawalDestinationType,
   type ProjectWithdrawalRecord,
-} from "@/lib/project-request-db.server";
+} from "../lib/project-request-db.server";
 
 const getEarningsData = createServerFn({ method: "GET" }).handler(async () => {
   const viewer = getCurrentUser();

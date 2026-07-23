@@ -24,10 +24,10 @@ import {
   UserRound,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { getCurrentUser } from "@/lib/current-user.server";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   createProjectRevisionRequest,
   createProjectMilestone,
@@ -50,7 +50,7 @@ import {
   type ProjectMilestoneStatus,
   type ProjectRevisionRequestRecord,
   type ProjectWorkUploadRecord,
-} from "@/lib/project-request-db.server";
+} from "../lib/project-request-db.server";
 
 const REQUIRED_PROJECT_MILESTONES = 5;
 

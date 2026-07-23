@@ -1,12 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createFileRoute } from "@tanstack/react-router";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
+import { SiteFooter } from "../components/SiteFooter";
+import { SiteHeader } from "../components/SiteHeader";
 
 const loadLegalPage = createServerFn({ method: "GET" })
   .inputValidator((input: { slug: string }) => input)
   .handler(async ({ data }) => {
-    const { getPublishedLegalPageBySlug } = await import("@/lib/legal-cms.server");
+    const { getPublishedLegalPageBySlug } = await import('../lib/legal-cms.server');
     return (await getPublishedLegalPageBySlug(data.slug)) || null;
   });
 

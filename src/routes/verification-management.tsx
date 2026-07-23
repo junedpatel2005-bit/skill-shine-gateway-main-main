@@ -19,27 +19,27 @@ import {
   XCircle,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ReportExportActions } from "@/components/ReportExportActions";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { AdminSummaryCard } from "@/components/admin/AdminSummaryCard";
-import { AdminSection } from "@/components/admin/AdminSection";
-import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { ReportExportActions } from "../components/ReportExportActions";
+import { AdminPageHeader } from "../components/admin/AdminPageHeader";
+import { AdminSummaryCard } from "../components/admin/AdminSummaryCard";
+import { AdminSection } from "../components/admin/AdminSection";
+import { AdminEmptyState } from "../components/admin/AdminEmptyState";
 import {
   formatDateTime,
   formatEnum,
-} from "@/lib/admin-formatters";
-import { getCurrentUser } from "@/lib/current-user.server";
+} from "../lib/admin-formatters";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   getAdminVerificationRecords,
   updateProfessionalVerificationStatusByAdmin,
   type AdminVerificationRecord,
   type ProfessionalVerificationInfo,
-} from "@/lib/pro-verification-db.server";
-import { cn } from "@/lib/utils";
+} from "../lib/pro-verification-db.server";
+import { cn } from "../lib/utils";
 
 type VerificationStatus = ProfessionalVerificationInfo["status"];
 type StatusFilter = "all" | VerificationStatus;

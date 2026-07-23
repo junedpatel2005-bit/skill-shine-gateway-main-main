@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Download, FileSpreadsheet, FileText, Loader2, Printer } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "./ui/button";
 
 interface ReportExportActionsProps {
   table: string;

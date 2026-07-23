@@ -3,15 +3,15 @@ import { createServerFn } from "@tanstack/react-start";
 import { ArrowLeft, ExternalLink, FileText, Pencil, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { AppShell } from "@/components/AppShell";
-import { Button } from "@/components/ui/button";
-import { getCurrentUser } from "@/lib/current-user.server";
-import type { WebsitePageRecord, WebsitePageStatus } from "@/lib/website-page-cms.server";
+import { AppShell } from "../components/AppShell";
+import { Button } from "../components/ui/button";
+import { getCurrentUser } from "../lib/current-user.server";
+import type { WebsitePageRecord, WebsitePageStatus } from "../lib/website-page-cms.server";
 
 const getWebEditorData = createServerFn({ method: "GET" }).handler(async () => {
   const viewer = getCurrentUser();
   if (!viewer || viewer.role !== "ADMIN") return { viewer: null, pages: [] as WebsitePageRecord[] };
-  const { listWebsitePages } = await import("@/lib/website-page-cms.server");
+  const { listWebsitePages } = await import('../lib/website-page-cms.server');
   return { viewer, pages: await listWebsitePages() };
 });
 
@@ -20,7 +20,7 @@ const saveWebEditorPage = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const viewer = getCurrentUser();
     if (!viewer || viewer.role !== "ADMIN") throw new Error("Admin access required.");
-    const { saveWebsitePage } = await import("@/lib/website-page-cms.server");
+    const { saveWebsitePage } = await import('../lib/website-page-cms.server');
     return await saveWebsitePage(data.pageKey, data);
   });
 

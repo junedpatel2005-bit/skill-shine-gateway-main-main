@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createFileRoute, useLoaderData } from "@tanstack/react-router";
-import { ServicesPageContent } from "@/client/services";
-import { getServiceCategories, getTotalProfessionalsCount } from "@/lib/services-db.server";
+import { ServicesPageContent } from "../client/services";
+import { getServiceCategories, getTotalProfessionalsCount } from "../lib/services-db.server";
 
 const loadServicesData = createServerFn({ method: "GET" }).handler(async () => {
   return {

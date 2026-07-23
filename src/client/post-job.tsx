@@ -30,19 +30,19 @@ import {
   X,
 } from "lucide-react";
 
-import { AppShell } from "@/components/AppShell";
-import LocationPicker from "@/components/maps/LocationPicker";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Badge } from "@/components/ui/badge";
-import { createClientJob, getClientJobById, updateClientJob } from "@/lib/job-db.server";
-import { getServiceCategories } from "@/lib/services-db.server";
-import { formatApproximateCoordinates, formatApproximateLocation } from "@/lib/location-privacy";
-import { requireCurrentUserRole } from "@/lib/current-user.server";
-import { getClientProfileByUserId } from "@/lib/user-db.server";
-import { saveClientJobSchema, type ClientJobInput } from "@/lib/validation/client-job";
+import { AppShell } from "../components/AppShell";
+import LocationPicker from "../components/maps/LocationPicker";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import { Badge } from "../components/ui/badge";
+import { createClientJob, getClientJobById, updateClientJob } from "../lib/job-db.server";
+import { getServiceCategories } from "../lib/services-db.server";
+import { formatApproximateCoordinates, formatApproximateLocation } from "../lib/location-privacy";
+import { requireCurrentUserRole } from "../lib/current-user.server";
+import { getClientProfileByUserId } from "../lib/user-db.server";
+import { saveClientJobSchema, type ClientJobInput } from "../lib/validation/client-job";
 
 type AttachmentDraft = {
   fileName: string;

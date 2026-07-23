@@ -27,14 +27,14 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { ReportExportActions } from "@/components/ReportExportActions";
+} from "./ui/popover";
+import { ReportExportActions } from "./ReportExportActions";
 
 type ReportPreviewRow = Record<string, unknown>;
 

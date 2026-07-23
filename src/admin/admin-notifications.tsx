@@ -3,16 +3,16 @@ import { createServerFn } from "@tanstack/react-start";
 import { BellRing, Briefcase, CheckCheck, Trash2, UserPlus, Wallet } from "lucide-react";
 import { useEffect, useState } from "react";
 
-import { AppShell } from "@/components/AppShell";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { getCurrentUser } from "@/lib/current-user.server";
+import { AppShell } from "../components/AppShell";
+import { Badge } from "../components/ui/badge";
+import { Button } from "../components/ui/button";
+import { getCurrentUser } from "../lib/current-user.server";
 import {
   clearUserNotifications,
   getUserNotifications,
   markUserNotificationsRead,
   type UserNotification,
-} from "@/lib/notification-db.server";
+} from "../lib/notification-db.server";
 
 const getAdminNotifications = createServerFn({ method: "GET" }).handler(async () => {
   const viewer = getCurrentUser();

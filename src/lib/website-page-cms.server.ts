@@ -1,5 +1,5 @@
-﻿import { prisma } from "@/lib/prisma";
-import { sanitizeHtml } from "@/lib/html-sanitizer.server";
+﻿import { prisma } from "./prisma";
+import { sanitizeHtml } from "./html-sanitizer.server";
 
 const purify = sanitizeHtml;
 

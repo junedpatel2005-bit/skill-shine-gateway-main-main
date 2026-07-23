@@ -1,17 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createFileRoute, Link, redirect, useLoaderData, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
-import { AppShell } from "@/components/AppShell";
+import { AppShell } from "../components/AppShell";
 import {
   getClientJobsByUserId,
   getOpenClientJobs,
   updateClientJobStatus,
   type ClientJobRecord,
   type JobStatus,
-} from "@/lib/job-db.server";
-import { formatApproximateLocation } from "@/lib/location-privacy";
-import { getClientProfileByUserId } from "@/lib/user-db.server";
-import { getCurrentUser } from "@/lib/current-user.server";
+} from "../lib/job-db.server";
+import { formatApproximateLocation } from "../lib/location-privacy";
+import { getClientProfileByUserId } from "../lib/user-db.server";
+import { getCurrentUser } from "../lib/current-user.server";
 
 type DashboardLoaderData =
   | {
@@ -38,8 +38,8 @@ import {
   Paperclip,
   Search,
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "../components/ui/button";
+import { Badge } from "../components/ui/badge";
 import {
   Table,
   TableBody,
@@ -47,7 +47,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "../components/ui/table";
 
 const getDashboardAccess = createServerFn({ method: "GET" }).handler(async () => {
   const viewer = getCurrentUser();

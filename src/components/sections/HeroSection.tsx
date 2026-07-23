@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Button } from "@/components/ui/button";
-import type { HeroSectionConfig } from "@/types/page-builder";
+import { Button } from "../ui/button";
+import type { HeroSectionConfig } from "../../types/page-builder";
 
 interface HeroSectionProps {
   config: HeroSectionConfig;

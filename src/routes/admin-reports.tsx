@@ -14,21 +14,21 @@ import {
   Users,
   Wallet,
 } from "lucide-react";
-import { AppShell } from "@/components/AppShell";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { AppShell } from "../components/AppShell";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { ReportExportActions } from "@/components/ReportExportActions";
-import { AdminPageHeader } from "@/components/admin/AdminPageHeader";
-import { AdminSummaryCard } from "@/components/admin/AdminSummaryCard";
-import { AdminSection } from "@/components/admin/AdminSection";
-import { AdminEmptyState } from "@/components/admin/AdminEmptyState";
-import { getCurrentUser } from "@/lib/current-user.server";
-import { cn } from "@/lib/utils";
+} from "../components/ui/popover";
+import { ReportExportActions } from "../components/ReportExportActions";
+import { AdminPageHeader } from "../components/admin/AdminPageHeader";
+import { AdminSummaryCard } from "../components/admin/AdminSummaryCard";
+import { AdminSection } from "../components/admin/AdminSection";
+import { AdminEmptyState } from "../components/admin/AdminEmptyState";
+import { getCurrentUser } from "../lib/current-user.server";
+import { cn } from "../lib/utils";
 
 type AdminReportsData = {
   viewer: { id: number; firstName: string; lastName: string; email: string } | null;

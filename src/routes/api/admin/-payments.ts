@@ -1,7 +1,7 @@
-import Database from "@/lib/supabase-compat";
+import Database from "../../../lib/supabase-compat";
 import path from "node:path";
 
-import { requireCurrentUserRole } from "@/lib/current-user.server";
+import { requireCurrentUserRole } from "../../../lib/current-user.server";
 
 export const APIRoute = {
   GET: async () => {

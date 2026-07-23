@@ -1,3 +1,3 @@
-import { Route as ForProfessionalsRoute } from "@/professional/for-professionals";
+import { Route as ForProfessionalsRoute } from "../professional/for-professionals";
 
 export const Route = ForProfessionalsRoute;

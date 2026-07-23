@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Clock, ShieldCheck, Star, Users, Wallet } from "lucide-react";
-import { SiteFooter } from "@/components/SiteFooter";
-import { SiteHeader } from "@/components/SiteHeader";
-import { Button } from "@/components/ui/button";
+import { SiteFooter } from "../components/SiteFooter";
+import { SiteHeader } from "../components/SiteHeader";
+import { Button } from "../components/ui/button";
 
 export const Route = createFileRoute("/for-clients")({
   head: () => ({

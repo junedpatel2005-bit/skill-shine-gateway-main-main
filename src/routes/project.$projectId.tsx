@@ -1,6 +1,6 @@
 import { createFileRoute, notFound, redirect } from "@tanstack/react-router";
-import { getProjectData, checkProjectAuth } from "@/client/project.$projectId.server";
-import { Project } from "@/client/project.$projectId";
+import { getProjectData, checkProjectAuth } from "../client/project.$projectId.server";
+import { Project } from "../client/project.$projectId";
 
 export const Route = createFileRoute("/project/$projectId")({
   head: () => ({ meta: [{ title: "Project tracking — Servio" }] }),

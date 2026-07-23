@@ -1,10 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
 import { createFileRoute, Link, useLoaderData } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SiteFooter } from "@/components/SiteFooter";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { SiteHeader } from "../components/SiteHeader";
+import { SiteFooter } from "../components/SiteFooter";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -12,7 +12,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "../components/ui/dialog";
 import {
   TrendingUp,
   ShieldCheck,
@@ -26,8 +26,8 @@ import {
   Search,
   SlidersHorizontal,
 } from "lucide-react";
-import { getOpenClientJobs } from "@/lib/job-db.server";
-import { formatApproximateCoordinates, formatApproximateLocation } from "@/lib/location-privacy";
+import { getOpenClientJobs } from "../lib/job-db.server";
+import { formatApproximateCoordinates, formatApproximateLocation } from "../lib/location-privacy";
 
 const getHomeData = createServerFn({ method: "GET" }).handler(async () => {
   return {

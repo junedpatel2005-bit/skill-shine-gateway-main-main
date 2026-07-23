@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 
-import { createGoogleStateCookie } from "@/lib/auth-session.server";
-import { buildGoogleAuthorizationUrl } from "@/lib/google-oauth.server";
+import { createGoogleStateCookie } from "../../../lib/auth-session.server";
+import { buildGoogleAuthorizationUrl } from "../../../lib/google-oauth.server";
 
 function sanitizeReturnTo(value: string | null) {
   if (!value || !value.startsWith("/") || value.startsWith("//")) {
