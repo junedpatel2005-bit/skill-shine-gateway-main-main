@@ -29,11 +29,16 @@ function brandedErrorResponse(): Response {
   });
 }
 
+import { isPrismaConfigured, getPrismaInitError } from "./lib/prisma";
+
 function healthResponse(): Response {
+  const prismaError = getPrismaInitError();
   return Response.json({
     ok: true,
     service: "skill-shine-gateway",
-    database: process.env.DATABASE_URL ? "configured" : "missing",
+    database: isPrismaConfigured() ? "configured" : "missing",
+    prismaStatus: isPrismaConfigured() ? (prismaError ? "error" : "ok") : "unconfigured",
+    prismaError: prismaError instanceof Error ? prismaError.message : prismaError ? String(prismaError) : undefined,
     realtime: process.env.VITE_SOCKET_URL || process.env.SOCKET_PORT ? "configured" : "optional",
     timestamp: new Date().toISOString(),
   });

@@ -28,61 +28,80 @@ export const editableWebsitePages = [
 ] as const;
 
 async function ensureWebsitePages() {
-  const count = await prisma.websitePage.count();
-  if (count === 0) {
-    for (const page of editableWebsitePages) {
-      await prisma.websitePage.upsert({
-        where: { pageKey: page.pageKey },
-        update: {},
-        create: {
-          pageKey: page.pageKey,
-          path: page.path,
-          title: page.title,
-          content: createDefaultContent(page.title),
-          status: "DRAFT",
-        },
-      });
+  try {
+    const count = await prisma.websitePage.count();
+    if (count === 0) {
+      for (const page of editableWebsitePages) {
+        await prisma.websitePage.upsert({
+          where: { pageKey: page.pageKey },
+          update: {},
+          create: {
+            pageKey: page.pageKey,
+            path: page.path,
+            title: page.title,
+            content: createDefaultContent(page.title),
+            status: "DRAFT",
+          },
+        });
+      }
     }
+  } catch (error) {
+    console.warn("WebsitePage count/upsert failed (database unconfigured or unreachable):", error instanceof Error ? error.message : error);
   }
 }
 
 export async function listWebsitePages(): Promise<WebsitePageRecord[]> {
-  await ensureWebsitePages();
-  const pages = (await prisma.websitePage.findMany({
-    orderBy: { pageKey: "asc" },
-  })) as Array<Omit<WebsitePageRecord, "updatedAt"> & { updatedAt: Date }>;
+  try {
+    await ensureWebsitePages();
+    const pages = (await prisma.websitePage.findMany({
+      orderBy: { pageKey: "asc" },
+    })) as Array<Omit<WebsitePageRecord, "updatedAt"> & { updatedAt: Date }>;
 
-  return pages.map((p) => ({
-    ...p,
-    status: p.status as WebsitePageStatus,
-    updatedAt: p.updatedAt.toISOString(),
-  }));
+    return pages.map((p) => ({
+      ...p,
+      status: p.status as WebsitePageStatus,
+      updatedAt: p.updatedAt.toISOString(),
+    }));
+  } catch (error) {
+    console.warn("listWebsitePages failed, returning empty list:", error instanceof Error ? error.message : error);
+    return [];
+  }
 }
 
 export async function listPublishedWebsitePages(): Promise<WebsitePageRecord[]> {
-  await ensureWebsitePages();
-  const pages = (await prisma.websitePage.findMany({
-    where: { status: "PUBLISHED" },
-    orderBy: { pageKey: "asc" },
-  })) as Array<Omit<WebsitePageRecord, "updatedAt"> & { updatedAt: Date }>;
+  try {
+    await ensureWebsitePages();
+    const pages = (await prisma.websitePage.findMany({
+      where: { status: "PUBLISHED" },
+      orderBy: { pageKey: "asc" },
+    })) as Array<Omit<WebsitePageRecord, "updatedAt"> & { updatedAt: Date }>;
 
-  return pages.map((p) => ({
-    ...p,
-    status: p.status as WebsitePageStatus,
-    updatedAt: p.updatedAt.toISOString(),
-  }));
+    return pages.map((p) => ({
+      ...p,
+      status: p.status as WebsitePageStatus,
+      updatedAt: p.updatedAt.toISOString(),
+    }));
+  } catch (error) {
+    console.warn("listPublishedWebsitePages failed, returning empty list:", error instanceof Error ? error.message : error);
+    return [];
+  }
 }
 
 export async function getPublishedWebsitePage(pageKey: string): Promise<WebsitePageRecord | undefined> {
-  const page = await prisma.websitePage.findFirst({
-    where: { pageKey, status: "PUBLISHED" },
-  });
-  if (!page) return undefined;
-  return {
-    ...page,
-    status: page.status as WebsitePageStatus,
-    updatedAt: page.updatedAt.toISOString(),
-  };
+  try {
+    const page = await prisma.websitePage.findFirst({
+      where: { pageKey, status: "PUBLISHED" },
+    });
+    if (!page) return undefined;
+    return {
+      ...page,
+      status: page.status as WebsitePageStatus,
+      updatedAt: page.updatedAt.toISOString(),
+    };
+  } catch (error) {
+    console.warn(`getPublishedWebsitePage(${pageKey}) failed:`, error instanceof Error ? error.message : error);
+    return undefined;
+  }
 }
 
 export async function saveWebsitePage(

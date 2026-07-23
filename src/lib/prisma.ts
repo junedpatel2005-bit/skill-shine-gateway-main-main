@@ -60,6 +60,8 @@ function makeUnavailableProxy(message: string) {
 }
 
 let prismaInstance: PrismaClient | any = null;
+let prismaInitError: unknown = null;
+
 try {
   prismaInstance = globalForPrisma.prisma ?? (await createPrismaClient());
   if (process.env.NODE_ENV !== "production") {
@@ -72,7 +74,12 @@ try {
   // The real error will still appear in the server logs for diagnosis.
   // eslint-disable-next-line no-console
   console.error("Prisma client initialization failed:", err);
-  prismaInstance = makeUnavailableProxy("Prisma client is not available in this environment. Check logs for details.");
+  prismaInitError = err;
+  prismaInstance = makeUnavailableProxy(
+    `Prisma client is not available in this environment: ${err instanceof Error ? err.message : String(err)}`
+  );
 }
 
 export const prisma = prismaInstance;
+export const isPrismaConfigured = () => Boolean(getConfiguredDatabaseUrl());
+export const getPrismaInitError = () => prismaInitError;

@@ -406,128 +406,143 @@ export async function getClientJobsByUserId(userId: number) {
 }
 
 export async function getOpenClientJobs() {
-  const jobs = (await prisma.$queryRawUnsafe(
-    `
-      SELECT
-        cj.*,
-        TRIM(u."firstName" || ' ' || u."lastName") AS "clientName",
-        u."companyName" AS "clientCompanyName",
-        u."avatarUrl" AS "clientAvatarUrl"
-      FROM "ClientJob" cj
-      INNER JOIN "User" u ON u.id = cj."userId"
-      WHERE cj."status" = 'OPEN'
-      ORDER BY cj."createdAt" DESC, cj.id DESC
-    `,
-  )) as Array<any>;
+  try {
+    const jobs = (await prisma.$queryRawUnsafe(
+      `
+        SELECT
+          cj.*,
+          TRIM(u."firstName" || ' ' || u."lastName") AS "clientName",
+          u."companyName" AS "clientCompanyName",
+          u."avatarUrl" AS "clientAvatarUrl"
+        FROM "ClientJob" cj
+        INNER JOIN "User" u ON u.id = cj."userId"
+        WHERE cj."status" = 'OPEN'
+        ORDER BY cj."createdAt" DESC, cj.id DESC
+      `,
+    )) as Array<any>;
 
-  if (!jobs.length) return [];
+    if (!jobs || !jobs.length) return [];
 
-  const idsCsv = jobs.map((j: any) => Number(j.id)).join(",");
-  const attachmentRows = idsCsv
-    ? ((await prisma.$queryRawUnsafe(
-        `SELECT * FROM "ClientJobAttachment" WHERE "jobId" IN (${idsCsv}) ORDER BY id ASC`,
-      )) as Array<any>)
-    : [];
+    const idsCsv = jobs.map((j: any) => Number(j.id)).join(",");
+    const attachmentRows = idsCsv
+      ? ((await prisma.$queryRawUnsafe(
+          `SELECT * FROM "ClientJobAttachment" WHERE "jobId" IN (${idsCsv}) ORDER BY id ASC`,
+        )) as Array<any>)
+      : [];
 
-  return jobs.map((job) => ({
-    ...mapJob(
-      {
-        id: job.id,
-        userId: job.userId,
-        category: job.category,
-        title: job.title,
-        description: job.description,
-        budgetMin: job.budgetMin,
-        budgetMax: job.budgetMax,
-        urgency: job.urgency as JobUrgency,
-        timingType: job.jobDate ? "FIXED" : "FIXED",
-        hourlyRate: null,
-        jobDate: job.jobDate ? new Date(job.jobDate).toISOString() : null,
-        deadline: new Date(job.deadline).toISOString(),
-        workMode: job.workMode as JobWorkMode,
-        locationLabel: job.locationLabel,
-        locationAddress: job.locationAddress,
-        locationLat: job.locationLat,
-        locationLng: job.locationLng,
-        status: job.status as JobStatus,
-        createdAt: new Date(job.createdAt).toISOString(),
-        updatedAt: new Date(job.updatedAt).toISOString(),
-      },
-      (attachmentRows.filter((a: any) => a.jobId === job.id) as Array<any>).map((a: any) => ({
-        id: a.id,
-        jobId: a.jobId,
-        fileName: a.fileName,
-        fileType: a.fileType,
-        fileSize: a.fileSize,
-        previewUrl: a.previewUrl,
-        createdAt: new Date(a.createdAt).toISOString(),
-      })),
-    ),
-    clientName: job.clientName,
-    clientCompanyName: job.clientCompanyName ?? null,
-    clientAvatarUrl: job.clientAvatarUrl ?? null,
-  }));
+    return jobs.map((job) => ({
+      ...mapJob(
+        {
+          id: job.id,
+          userId: job.userId,
+          category: job.category,
+          title: job.title,
+          description: job.description,
+          budgetMin: job.budgetMin,
+          budgetMax: job.budgetMax,
+          urgency: job.urgency as JobUrgency,
+          timingType: job.jobDate ? "FIXED" : "FIXED",
+          hourlyRate: null,
+          jobDate: job.jobDate ? new Date(job.jobDate).toISOString() : null,
+          deadline: new Date(job.deadline).toISOString(),
+          workMode: job.workMode as JobWorkMode,
+          locationLabel: job.locationLabel,
+          locationAddress: job.locationAddress,
+          locationLat: job.locationLat,
+          locationLng: job.locationLng,
+          status: job.status as JobStatus,
+          createdAt: new Date(job.createdAt).toISOString(),
+          updatedAt: new Date(job.updatedAt).toISOString(),
+        },
+        (attachmentRows.filter((a: any) => a.jobId === job.id) as Array<any>).map((a: any) => ({
+          id: a.id,
+          jobId: a.jobId,
+          fileName: a.fileName,
+          fileType: a.fileType,
+          fileSize: a.fileSize,
+          previewUrl: a.previewUrl,
+          createdAt: new Date(a.createdAt).toISOString(),
+        })),
+      ),
+      clientName: job.clientName,
+      clientCompanyName: job.clientCompanyName ?? null,
+      clientAvatarUrl: job.clientAvatarUrl ?? null,
+    }));
+  } catch (error) {
+    console.warn("getOpenClientJobs failed (database unconfigured or unreachable):", error instanceof Error ? error.message : error);
+    return [];
+  }
 }
 
 export async function getOpenClientJobById(jobId: number) {
-  const job = await prisma.clientJob.findUnique({
-    where: { id: jobId },
-    include: {
-      user: { select: { firstName: true, lastName: true, companyName: true, avatarUrl: true } },
-      attachments: { orderBy: { id: "asc" } },
-    },
-  });
-
-  if (!job || job.status !== "OPEN") return null;
-
-  return {
-    ...mapJob(
-      {
-        id: job.id,
-        userId: job.userId,
-        category: job.category,
-        title: job.title,
-        description: job.description,
-        budgetMin: job.budgetMin,
-        budgetMax: job.budgetMax,
-        urgency: job.urgency as JobUrgency,
-        timingType: job.jobDate ? "FIXED" : "FIXED",
-        hourlyRate: null,
-        jobDate: job.jobDate?.toISOString() ?? null,
-        deadline: job.deadline.toISOString(),
-        workMode: job.workMode as JobWorkMode,
-        locationLabel: job.locationLabel,
-        locationAddress: job.locationAddress,
-        locationLat: job.locationLat,
-        locationLng: job.locationLng,
-        status: job.status as JobStatus,
-        createdAt: job.createdAt.toISOString(),
-        updatedAt: job.updatedAt.toISOString(),
+  try {
+    const job = await prisma.clientJob.findUnique({
+      where: { id: jobId },
+      include: {
+        user: { select: { firstName: true, lastName: true, companyName: true, avatarUrl: true } },
+        attachments: { orderBy: { id: "asc" } },
       },
-      job.attachments.map((a: any) => ({
-        id: a.id,
-        jobId: a.jobId,
-        fileName: a.fileName,
-        fileType: a.fileType,
-        fileSize: a.fileSize,
-        previewUrl: a.previewUrl,
-        createdAt: a.createdAt.toISOString(),
-      })),
-    ),
-    clientName: `${job.user.firstName} ${job.user.lastName}`.trim(),
-    clientCompanyName: job.user.companyName ?? null,
-    clientAvatarUrl: job.user.avatarUrl ?? null,
-  };
+    });
+
+    if (!job || job.status !== "OPEN") return null;
+
+    return {
+      ...mapJob(
+        {
+          id: job.id,
+          userId: job.userId,
+          category: job.category,
+          title: job.title,
+          description: job.description,
+          budgetMin: job.budgetMin,
+          budgetMax: job.budgetMax,
+          urgency: job.urgency as JobUrgency,
+          timingType: job.jobDate ? "FIXED" : "FIXED",
+          hourlyRate: null,
+          jobDate: job.jobDate?.toISOString() ?? null,
+          deadline: job.deadline.toISOString(),
+          workMode: job.workMode as JobWorkMode,
+          locationLabel: job.locationLabel,
+          locationAddress: job.locationAddress,
+          locationLat: job.locationLat,
+          locationLng: job.locationLng,
+          status: job.status as JobStatus,
+          createdAt: job.createdAt.toISOString(),
+          updatedAt: job.updatedAt.toISOString(),
+        },
+        job.attachments.map((a: any) => ({
+          id: a.id,
+          jobId: a.jobId,
+          fileName: a.fileName,
+          fileType: a.fileType,
+          fileSize: a.fileSize,
+          previewUrl: a.previewUrl,
+          createdAt: a.createdAt.toISOString(),
+        })),
+      ),
+      clientName: `${job.user.firstName} ${job.user.lastName}`.trim(),
+      clientCompanyName: job.user.companyName ?? null,
+      clientAvatarUrl: job.user.avatarUrl ?? null,
+    };
+  } catch (error) {
+    console.warn(`getOpenClientJobById(${jobId}) failed:`, error instanceof Error ? error.message : error);
+    return null;
+  }
 }
 
 export async function getFavoriteJobIds(userId: number) {
-  const rows = await prisma.favoriteJob.findMany({
-    where: { userId },
-    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
-    select: { jobId: true },
-  });
+  try {
+    const rows = await prisma.favoriteJob.findMany({
+      where: { userId },
+      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+      select: { jobId: true },
+    });
 
-  return rows.map((r: { jobId: number }) => r.jobId);
+    return rows.map((r: { jobId: number }) => r.jobId);
+  } catch (error) {
+    console.warn(`getFavoriteJobIds(${userId}) failed:`, error instanceof Error ? error.message : error);
+    return [];
+  }
 }
 
 export async function getFavoriteJobsByUserId(userId: number) {
@@ -554,8 +569,12 @@ export async function getFavoriteJobsByUserId(userId: number) {
 }
 
 export async function isFavoriteJob(userId: number, jobId: number) {
-  const row = await prisma.favoriteJob.findFirst({ where: { userId, jobId }, select: { id: true } });
-  return Boolean(row);
+  try {
+    const row = await prisma.favoriteJob.findFirst({ where: { userId, jobId }, select: { id: true } });
+    return Boolean(row);
+  } catch (error) {
+    return false;
+  }
 }
 
 export function setFavoriteJob(userId: number, jobId: number, favorite: boolean) {
