@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/client",
+
   "rewrites": [
     {
       "source": "/api/v1/health",
@@ -18,20 +21,23 @@
       "destination": "/api/server"
     }
   ],
+
   "functions": {
     "api/server.js": {
       "runtime": "@vercel/node@2.0.0",
       "memory": 1024,
       "maxDuration": 10,
-      "includeFiles": "dist/**"
+      "includeFiles": [
+        "api/server-bundle.js",
+        "dist/server/**/*",
+        "dist/client/**/*"
+      ]
     }
   },
-  "build": {
-    "env": {
-      "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true",
-      "PUPPETEER_SKIP_DOWNLOAD": "true",
-      "NODE_OPTIONS": "--max-old-space-size=4096"
-    }
-  },
-  "outputDirectory": "dist/client"
+
+  "env": {
+    "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true",
+    "PUPPETEER_SKIP_DOWNLOAD": "true",
+    "NODE_OPTIONS": "--max-old-space-size=4096"
+  }
 }

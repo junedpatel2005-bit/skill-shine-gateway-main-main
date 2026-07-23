@@ -1,20 +1,20 @@
-import Database from "@/lib/supabase-compat";
+import DatabaseShim from "@/lib/supabase-compat";
 
 // Test database setup - use in-memory for speed
-let db: ReturnType<typeof Database> | null = null;
+let db: DatabaseShim | null = null;
 let counter = 0;
 
-export function getTestDb() {
+export function getTestDb(): DatabaseShim {
   if (!db) {
-    db = new Database(":memory:");
-    db.pragma("journal_mode = WAL");
-    db.pragma("foreign_keys = ON");
-    seedTestSchema(db);
+    db = new DatabaseShim(":memory:");
+    db!.pragma("journal_mode = WAL");
+    db!.pragma("foreign_keys = ON");
+    seedTestSchema(db!);
   }
-  return db;
+  return db!;
 }
 
-function seedTestSchema(database: ReturnType<typeof Database>) {
+function seedTestSchema(database: DatabaseShim) {
   database.exec(`
     CREATE TABLE IF NOT EXISTS "User" (
       "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -273,13 +273,14 @@ function seedTestSchema(database: ReturnType<typeof Database>) {
 
 export function cleanTestDb() {
   if (db) {
-    db.close();
+    // Explicit cast to call close() to satisfy all TS environments
+    (db as any).close();
     db = null;
   }
 }
 
 export function createTestUser(
-  database: ReturnType<typeof Database>,
+  database: DatabaseShim,
   overrides: Record<string, unknown> = {},
 ) {
   counter++;
@@ -316,7 +317,7 @@ export function createTestUser(
 }
 
 export function createTestJob(
-  database: ReturnType<typeof Database>,
+  database: DatabaseShim,
   userId: number,
   overrides: Record<string, unknown> = {},
 ) {
@@ -346,7 +347,7 @@ export function createTestJob(
 }
 
 export function createTestWallet(
-  database: ReturnType<typeof Database>,
+  database: DatabaseShim,
   userId: number,
   balance = 1000,
 ) {

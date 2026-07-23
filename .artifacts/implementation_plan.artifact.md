@@ -1,34 +1,32 @@
-# Fix Vercel 404 Error for TanStack Start App
+# Fix Vercel 404 Routing for TanStack Start App
 
-The project is currently experiencing a 404 error when deployed to Vercel. This is because Vercel is not correctly routing requests to the Serverless Function that handles the SSR (Server-Side Rendering) for the TanStack Start application. Additionally, the Node.js version specified in `package.json` is newer than what Vercel currently supports.
+The application is still showing a 404 error on Vercel. This is because the previous `vercel.json` used legacy `builds` and `routes` which may conflict with modern Vercel project settings and routing behaviors. This plan updates the configuration to use modern `rewrites` and `functions` settings.
 
 ## User Review Required
 
 > [!IMPORTANT]
-> This plan involves adding a `vercel.json` configuration file and modifying `package.json`. These changes are necessary for Vercel to understand how to route traffic to your application.
+> I am moving from a legacy "Builds" configuration to a modern "Rewrites" configuration in `vercel.json`. This is the recommended way to handle custom server routing on Vercel.
 
 ## Proposed Changes
 
 ### Project Root
 
-#### [NEW] [vercel.json](file:///D:/skill-shine-gateway-main-main/vercel.json)
-Create a `vercel.json` file to configure Vercel's routing. This will:
-- Route static asset requests (`/assets/*`) to the built client files in `dist/client/assets/`.
-- Route all other requests to the serverless function located at `api/server.js`.
-- Ensure the project is treated as a Node.js application.
+#### [MODIFY] [vercel.json](file:///D:/skill-shine-gateway-main-main/vercel.json)
+Update `vercel.json` to:
+- Use modern `rewrites` instead of legacy `routes`.
+- Remove the `builds` block to allow Vercel's zero-config deployment to correctly identify the `api/` directory.
+- Map all non-asset requests specifically to the serverless function at `/api/server`.
+- Set the `outputDirectory` to `dist/client` to serve static assets directly.
+
+### Dependencies
 
 #### [MODIFY] [package.json](file:///D:/skill-shine-gateway-main-main/package.json)
-- Downgrade the required Node.js version from `24.x` to `22.x` to ensure compatibility with Vercel's current supported runtimes.
-- Verify that the build script is correctly producing the `dist` directory.
-
-### API Bridge
-
-#### [MODIFY] [api/server.js](file:///D:/skill-shine-gateway-main-main/api/server.js) (Optional Check)
-- Ensure the relative path to the built server entry (`../dist/server/server.js`) is correct and will be bundled by Vercel.
+- Add a `postbuild` script to ensure that the `dist` directory is correctly structured if needed, though the current Vite build seems correct. (Optional, will check first).
 
 ## Verification Plan
 
 ### Manual Verification
-1. After applying these changes, the user should push the changes to their Git repository linked to Vercel.
-2. Monitor the Vercel build logs to ensure the build completes and the function is deployed.
-3. Visit the Vercel deployment URL to confirm the 404 is resolved and the app loads correctly.
+1. Push the updated `vercel.json` to the repository.
+2. Monitor the Vercel deployment.
+3. Verify that hitting the root URL (`/`) now correctly loads the application via the `api/server.js` function.
+4. Verify that static assets (CSS/JS) are loading from the `/assets/` path.

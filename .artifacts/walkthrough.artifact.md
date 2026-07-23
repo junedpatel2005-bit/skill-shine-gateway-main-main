@@ -1,25 +1,27 @@
-# Vercel 404 Error Fix Summary
+# Vercel Pro-Max Build & Runtime Fix Summary
 
-I have implemented the necessary configuration changes to resolve the 404 error you were seeing on Vercel.
+I have implemented a dual-layer fix to resolve both the build hang and the `ERR_MODULE_NOT_FOUND` runtime crash.
 
 ## Changes Made
 
-### Configuration Updates
-
-#### [package.json](file:///D:/skill-shine-gateway-main-main/package.json)
-- Downgraded the Node.js engine requirement from `24.x` to `22.x`. Vercel currently supports Node.js 18, 20, and 22 as stable runtimes. Using an unsupported version can cause deployment failures or runtime errors.
+### 1. Runtime Fix (Solving the 500 Error)
 
 #### [vercel.json](file:///D:/skill-shine-gateway-main-main/vercel.json)
-- Created a new `vercel.json` file to explicitly configure routing and the build process.
-- **Routing:** All requests (except for static assets in `/assets/`) are now correctly routed to your SSR bridge at `api/server.js`.
-- **Static Assets:** Configured `/assets/*` to be served with long-term caching headers from the `dist/client` directory.
-- **Function Mapping:** Explicitly told Vercel to treat `api/server.js` as a Node.js Serverless Function.
+- **Lambda Bundling:** Added `"includeFiles": "dist/server/**"`. This ensures that when Vercel packages your `api/server.js` function, it physically includes the compiled SSR code from the `dist` directory. Without this, the function was trying to import a file that didn't exist in its isolated environment.
 
-## Next Steps
+### 2. Build Fix (Solving the Hang)
 
-1. **Push to Git:** Commit and push these changes (`package.json` and `vercel.json`) to your repository.
-2. **Redeploy:** Vercel should automatically start a new build. If not, trigger a manual redeployment.
-3. **Verify:** Check the new deployment URL. The app should now load correctly without the 404 error.
+#### [.npmrc](file:///D:/skill-shine-gateway-main-main/.npmrc)
+- **Forced Skip:** Added `PUPPETEER_SKIP_DOWNLOAD=true`. This tells the `npm install` process to skip the 150MB Chromium download entirely. This is the most effective way to prevent the "5-6 minute hang" you were experiencing.
+
+#### [vercel.json](file:///D:/skill-shine-gateway-main-main/vercel.json)
+- **Build Environment:** Re-added the Puppeteer skip flags and increased the Node.js memory limit (`4096MB`) for the build phase to ensure Vite has enough power to finish the job.
+
+## Verification & Next Steps
+
+1. **Commit & Push:** Push these changes now.
+2. **Build Monitoring:** You should see `npm install` finish in under a minute.
+3. **Runtime Test:** The 500 `FUNCTION_INVOCATION_FAILED` error should be gone, and your site should load normally.
 
 > [!TIP]
-> If you still encounter issues, check the **Functions** tab in your Vercel dashboard to ensure `api/server.js` is successfully deployed and look at the logs for any runtime errors.
+> If the build ever runs out of memory again, the `NODE_OPTIONS` I added will make it easier to troubleshoot or increase the limit further.

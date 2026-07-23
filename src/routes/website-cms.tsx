@@ -19,7 +19,8 @@ const loadWebsiteCmsData = createServerFn({ method: "GET" }).handler(async () =>
     return { viewer: null, pages: [] as LegalPageRecord[] };
   }
 
-  return { viewer, pages: listLegalPages() };
+  const { listLegalPages } = await import("@/lib/legal-cms.server");
+  return { viewer, pages: await listLegalPages() };
 });
 
 const saveWebsiteCmsPage = createServerFn({ method: "POST" })
@@ -34,7 +35,7 @@ const saveWebsiteCmsPage = createServerFn({ method: "POST" })
     }
 
     const { saveLegalPage } = await import("@/lib/legal-cms.server");
-    return saveLegalPage(data.slug, {
+    return await saveLegalPage(data.slug, {
       title: data.title,
       content: data.content,
       status: data.status,

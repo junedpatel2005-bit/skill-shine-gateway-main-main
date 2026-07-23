@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 
 const loadTermsPage = createServerFn({ method: "GET" }).handler(async () => {
   const { getPublishedLegalPageBySlug } = await import("@/lib/legal-cms.server");
-  return { cmsPage: getPublishedLegalPageBySlug("terms-and-conditions") || null };
+  return { cmsPage: (await getPublishedLegalPageBySlug("terms-and-conditions")) || null };
 });
 
 export const Route = createFileRoute("/terms-and-conditions")({

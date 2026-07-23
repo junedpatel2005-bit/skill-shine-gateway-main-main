@@ -41,8 +41,8 @@ const getDashboardAccess = createServerFn({ method: "GET" }).handler(async () =>
   }
 
   if (viewer.role === "CLIENT") {
-    const clientProfile = getClientProfileByUserId(viewer.id);
-    const clientJobs = getClientJobsByUserId(viewer.id);
+    const clientProfile = await getClientProfileByUserId(viewer.id);
+    const clientJobs = await getClientJobsByUserId(viewer.id);
 
     return {
       viewer,
@@ -56,7 +56,7 @@ const getDashboardAccess = createServerFn({ method: "GET" }).handler(async () =>
     viewer,
     clientProfile: null,
     clientJobs: [],
-    openJobs: getOpenClientJobs(),
+    openJobs: await getOpenClientJobs(),
   };
 });
 

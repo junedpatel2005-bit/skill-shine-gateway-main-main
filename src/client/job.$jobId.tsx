@@ -47,7 +47,7 @@ const getJobDetails = createServerFn({ method: "GET" })
       return null;
     }
 
-    const job = getOpenClientJobById(jobId);
+    const job = await getOpenClientJobById(jobId);
 
     if (!job) {
       return null;
@@ -56,7 +56,7 @@ const getJobDetails = createServerFn({ method: "GET" })
     return {
       viewer,
       job,
-      isFavorite: viewer ? isFavoriteJob(viewer.id, job.id) : false,
+      isFavorite: viewer ? await isFavoriteJob(viewer.id, job.id) : false,
     };
   });
 

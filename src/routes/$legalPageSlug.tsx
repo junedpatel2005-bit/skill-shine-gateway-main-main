@@ -7,7 +7,7 @@ const loadLegalPage = createServerFn({ method: "GET" })
   .inputValidator((input: { slug: string }) => input)
   .handler(async ({ data }) => {
     const { getPublishedLegalPageBySlug } = await import("@/lib/legal-cms.server");
-    return getPublishedLegalPageBySlug(data.slug) || null;
+    return (await getPublishedLegalPageBySlug(data.slug)) || null;
   });
 
 export const Route = createFileRoute("/$legalPageSlug")({

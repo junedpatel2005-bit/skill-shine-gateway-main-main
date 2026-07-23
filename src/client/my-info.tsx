@@ -72,13 +72,12 @@ const getMyInfoData = createServerFn({ method: "GET" }).handler(async () => {
   if (!viewer || viewer.role !== "CLIENT") {
     return null;
   }
-
-  const clientProfile = getClientProfileByUserId(viewer.id);
+  const clientProfile = await getClientProfileByUserId(viewer.id);
 
   return {
     viewer,
     clientProfile,
-    favoriteJobs: getFavoriteJobsByUserId(viewer.id),
+    favoriteJobs: await getFavoriteJobsByUserId(viewer.id),
   };
 });
 

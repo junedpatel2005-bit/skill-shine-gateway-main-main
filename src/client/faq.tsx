@@ -37,7 +37,7 @@ const faqItems = [
 
 const loadFaqPage = createServerFn({ method: "GET" }).handler(async () => {
   const { getPublishedLegalPageBySlug } = await import("@/lib/legal-cms.server");
-  return { cmsPage: getPublishedLegalPageBySlug("faq") || null };
+  return { cmsPage: (await getPublishedLegalPageBySlug("faq")) || null };
 });
 
 export const Route = createFileRoute("/faq")({

@@ -239,7 +239,7 @@ async function route(request: Request, url: URL): Promise<Response> {
 
   if (method === "GET" && pathname === `${API_PREFIX}/jobs`) {
     currentUser(request);
-    return json(getOpenClientJobs());
+    return json(await getOpenClientJobs());
   }
   if (method === "GET" && pathname === `${API_PREFIX}/categories`) {
     return json(db.prepare(`SELECT * FROM "ServiceCategory" ORDER BY sortOrder,id`).all());
@@ -249,7 +249,7 @@ async function route(request: Request, url: URL): Promise<Response> {
   }
   if (method === "GET" && pathname === `${API_PREFIX}/client/jobs`) {
     const user = currentUser(request, ["CLIENT"]);
-    return json(getClientJobsByUserId(user.id));
+    return json(await getClientJobsByUserId(user.id));
   }
   if (method === "POST" && pathname === `${API_PREFIX}/client/jobs`) {
     const user = currentUser(request, ["CLIENT"]);
@@ -261,7 +261,7 @@ async function route(request: Request, url: URL): Promise<Response> {
   let routeMatch = match(pathname, new RegExp(`^${API_PREFIX}/client/jobs/(\\d+)$`));
   if (routeMatch && method === "GET") {
     const user = currentUser(request, ["CLIENT"]);
-    const result = getClientJobById(user.id, Number(routeMatch[1]));
+    const result = await getClientJobById(user.id, Number(routeMatch[1]));
     if (!result) throw new ApiError(404, "Job not found.");
     return json(result);
   }
@@ -578,14 +578,14 @@ async function route(request: Request, url: URL): Promise<Response> {
       dashboard: getAdminDashboardSnapshot(),
       payments: getAdminPaymentTransactions(),
     });
-  if (method === "GET" && pathname === `${API_PREFIX}/admin/cms`) return json(listWebsitePages());
+  if (method === "GET" && pathname === `${API_PREFIX}/admin/cms`) return json(await listWebsitePages());
   routeMatch = match(pathname, new RegExp(`^${API_PREFIX}/admin/cms/([a-z0-9-]+)$`));
   if (routeMatch && method === "PATCH") {
     const input = parse(
       z.object({ content: z.string().max(500000), status: z.enum(["DRAFT", "PUBLISHED"]) }),
       await body(request),
     );
-    return json(saveWebsitePage(routeMatch[1], input));
+    return json(await saveWebsitePage(routeMatch[1], input));
   }
   if (method === "GET" && pathname === `${API_PREFIX}/admin/faq`)
     return json(db.prepare(`SELECT * FROM "Faq" ORDER BY sortOrder,id`).all());
@@ -1330,6 +1330,10 @@ async function route(request: Request, url: URL): Promise<Response> {
   </div>
 </body>
 </html>`;
+
+        if (process.env.VERCEL) {
+          throw new ApiError(500, 'PDF generation is currently disabled in the Vercel environment to prevent build hangs. Use a remote browser service for production PDF generation.');
+        }
 
         const puppeteer = await import('puppeteer');
         const browser = await puppeteer.launch({ args: ['--no-sandbox','--disable-setuid-sandbox'] });

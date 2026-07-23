@@ -1,5 +1,5 @@
 ﻿import { describe, it, expect, beforeAll, afterAll, beforeEach } from "vitest";
-import Database from "@/lib/supabase-compat";
+import DatabaseShim from "@/lib/supabase-compat";
 import { createHash, createHmac } from "node:crypto";
 import {
   getTestDb,
@@ -15,7 +15,7 @@ import { ApiError, json, errorResponse, body } from "./http.server";
 // ======== Backend Unit Tests ========
 
 describe("Auth Module", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
 
   beforeAll(() => {
     db = getTestDb();
@@ -195,7 +195,7 @@ describe("Auth Module", () => {
 });
 
 describe("Profile Management", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
   let userId: number;
 
   beforeAll(() => {
@@ -275,7 +275,7 @@ describe("Profile Management", () => {
 });
 
 describe("Service Categories", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
 
   beforeAll(() => {
     db = getTestDb();
@@ -301,7 +301,7 @@ describe("Service Categories", () => {
 });
 
 describe("Services", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
 
   beforeAll(() => {
     db = getTestDb();
@@ -334,7 +334,7 @@ describe("Services", () => {
 });
 
 describe("Jobs", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
   let clientUser: { id: number };
   let professionalUser: { id: number };
 
@@ -411,7 +411,7 @@ describe("Jobs", () => {
 });
 
 describe("Project Requests (Applications)", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
   let client: { id: number };
   let professional: { id: number };
   let job: any;
@@ -458,7 +458,7 @@ describe("Project Requests (Applications)", () => {
 });
 
 describe("Payments & Wallet", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
   let client: { id: number };
   let professional: { id: number };
 
@@ -537,7 +537,7 @@ describe("Payments & Wallet", () => {
 });
 
 describe("Notification System", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
   let user: { id: number };
 
   beforeAll(() => {
@@ -598,7 +598,7 @@ describe("Notification System", () => {
 });
 
 describe("CMS (FAQ & Contact)", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
 
   beforeAll(() => {
     db = getTestDb();
@@ -668,7 +668,7 @@ describe("CMS (FAQ & Contact)", () => {
 });
 
 describe("Admin Features", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
   let admin: { id: number };
   let regularUser: { id: number };
 
@@ -722,7 +722,7 @@ describe("Admin Features", () => {
 });
 
 describe("Hire Contracts", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
   let client: { id: number };
   let professional: { id: number };
 
@@ -751,7 +751,7 @@ describe("Hire Contracts", () => {
 });
 
 describe("Project Reviews", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
   let client: { id: number };
   let professional: { id: number };
 
@@ -852,7 +852,7 @@ describe("API Error Handling", () => {
 });
 
 describe("Database Operations", () => {
-  let db: ReturnType<typeof Database>;
+  let db: DatabaseShim;
 
   beforeAll(() => {
     db = getTestDb();

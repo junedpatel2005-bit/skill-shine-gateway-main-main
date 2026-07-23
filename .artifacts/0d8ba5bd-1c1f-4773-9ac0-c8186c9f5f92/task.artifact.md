@@ -1,5 +1,5 @@
-- [ ] Update `prisma/schema.prisma` with `WebsitePage` and `LegalPage` models
-- [ ] Run `npx prisma generate`
+- [x] Update `prisma/schema.prisma` with `WebsitePage` and `LegalPage` models
+- [/] Run `npx prisma generate`
 - [ ] Refactor `src/lib/website-page-cms.server.ts` to use Prisma
 - [ ] Refactor `src/lib/legal-cms.server.ts` to use Prisma
 - [ ] Verify changes (build/generate)

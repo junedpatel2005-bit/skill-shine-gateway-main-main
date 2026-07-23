@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/SiteHeader";
 
 const loadPrivacyPage = createServerFn({ method: "GET" }).handler(async () => {
   const { getPublishedLegalPageBySlug } = await import("@/lib/legal-cms.server");
-  return { cmsPage: getPublishedLegalPageBySlug("privacy-policy") || null };
+  return { cmsPage: (await getPublishedLegalPageBySlug("privacy-policy")) || null };
 });
 
 export const Route = createFileRoute("/privacy-policy")({

@@ -88,17 +88,16 @@ export const getProfessionalStatsData = createServerFn({ method: "GET" }).handle
       transactions: [],
     };
   }
-
   return {
     viewer,
-    profile: getProfessionalProfileByUserId(viewer.id),
-    projectRequests: getProfessionalProjectRequests(viewer.id),
-    favoriteJobs: getFavoriteJobsByUserId(viewer.id),
-    projectNegotiations: getProjectNegotiationsForProfessional(viewer.id),
-    hireNegotiations: getProfessionalHireNegotiations(viewer.id),
-    hireRequests: getProfessionalHireRequests(viewer.id),
-    trackedProjects: getProfessionalTrackedProjects(viewer.id),
-    transactions: getUserProjectTransactions(viewer.id),
+    profile: await getProfessionalProfileByUserId(viewer.id),
+    projectRequests: await getProfessionalProjectRequests(viewer.id),
+    favoriteJobs: await getFavoriteJobsByUserId(viewer.id),
+    projectNegotiations: await getProjectNegotiationsForProfessional(viewer.id),
+    hireNegotiations: await getProfessionalHireNegotiations(viewer.id),
+    hireRequests: await getProfessionalHireRequests(viewer.id),
+    trackedProjects: await getProfessionalTrackedProjects(viewer.id),
+    transactions: await getUserProjectTransactions(viewer.id),
   };
 });
 

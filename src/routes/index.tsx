@@ -15,13 +15,13 @@ const getCurrentUserFn = createServerFn({ method: "GET" }).handler(async () => {
 const getHomeData = createServerFn({ method: "GET" }).handler(async () => {
   const user = getCurrentUser();
   const { getPublishedWebsitePage } = await import("@/lib/website-page-cms.server");
-  const editorPage = getPublishedWebsitePage("home");
+  const editorPage = await getPublishedWebsitePage("home");
 
   return {
     homeIntroHtml: editorPage ? extractFirstSection(editorPage.content) : null,
-    openJobs: getOpenClientJobs(),
-    favoriteJobIds: user ? getFavoriteJobIds(user.id) : [],
-    professionals: getProfessionalUsers().map((professional) => ({
+    openJobs: await getOpenClientJobs(),
+    favoriteJobIds: user ? await getFavoriteJobIds(user.id) : [],
+    professionals: (await getProfessionalUsers()).map((professional) => ({
       ...professional,
       verification: getProfessionalVerificationByUserId(professional.id),
     })),

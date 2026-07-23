@@ -5,7 +5,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma-client"
 }
 
 datasource db {
@@ -40,6 +39,27 @@ enum CmsPageStatus {
   DRAFT
   PUBLISHED
   ARCHIVED
+}
+
+model WebsitePage {
+  pageKey   String   @id
+  path      String   @unique
+  title     String
+  content   String   @default("")
+  status    String   @default("DRAFT")
+  updatedAt DateTime @default(now())
+
+  @@map("WebsitePage")
+}
+
+model LegalPage {
+  slug      String   @id
+  title     String
+  content   String   @default("")
+  status    String   @default("PUBLISHED")
+  updatedAt DateTime @default(now())
+
+  @@map("LegalPage")
 }
 
 model CmsPage {
