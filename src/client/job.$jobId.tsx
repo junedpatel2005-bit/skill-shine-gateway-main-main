@@ -104,7 +104,7 @@ const submitProjectRequest = createServerFn({ method: "POST" })
     }
 
     try {
-      const request = createProjectRequest({
+      const request = await createProjectRequest({
         jobId: data.jobId,
         professionalId: viewer.id,
         bidAmount: data.bidAmount,
@@ -112,7 +112,7 @@ const submitProjectRequest = createServerFn({ method: "POST" })
         coverLetter: data.coverLetter,
         attachments: data.attachments ?? [],
       });
-      const job = getOpenClientJobById(data.jobId);
+      const job = await getOpenClientJobById(data.jobId);
       const professionalName = `${viewer.firstName} ${viewer.lastName}`.trim() || viewer.email;
       const projectTitle = job?.title || "your project";
 

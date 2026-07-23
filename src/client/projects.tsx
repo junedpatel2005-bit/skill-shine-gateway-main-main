@@ -56,6 +56,16 @@ import { getClientProfileByUserId } from "@/lib/user-db.server";
 
 type ProjectBucketFilter = "running" | "completed" | "requests" | "direct-hires";
 
+type ProjectsPageLoaderData = {
+  viewer: NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;
+  clientProfile: Awaited<ReturnType<typeof getClientProfileByUserId>>;
+  projects: ClientJobRecord[];
+  projectRequests: ClientProjectRequestRecord[];
+  projectNegotiations: ProjectNegotiationRecord[];
+  trackedProjects: ClientTrackedProjectRecord[];
+  hireRequests: ClientHireRequestRecord[];
+};
+
 const getProjectsPageData = createServerFn({ method: "GET" }).handler(async () => {
   const viewer = getCurrentUser();
 
@@ -77,12 +87,12 @@ const getProjectsPageData = createServerFn({ method: "GET" }).handler(async () =
 
   return {
     viewer,
-    clientProfile: getClientProfileByUserId(viewer.id),
-    projects: getClientJobsByUserId(viewer.id),
-    projectRequests: getClientProjectRequests(viewer.id),
-    projectNegotiations: getProjectNegotiationsForClient(viewer.id),
-    trackedProjects: getClientTrackedProjects(viewer.id),
-    hireRequests: getClientHireRequests(viewer.id),
+    clientProfile: await getClientProfileByUserId(viewer.id),
+    projects: await getClientJobsByUserId(viewer.id),
+    projectRequests: await getClientProjectRequests(viewer.id),
+    projectNegotiations: await getProjectNegotiationsForClient(viewer.id),
+    trackedProjects: await getClientTrackedProjects(viewer.id),
+    hireRequests: await getClientHireRequests(viewer.id),
   };
 });
 
@@ -101,9 +111,10 @@ const updateProjectRequest = createServerFn({ method: "POST" })
     const request = updateClientProjectRequestStatus(viewer.id, data.requestId, data.status);
 
     if (request) {
+      const openJob = await getOpenClientJobById(request.jobId);
       const projectTitle =
         existingRequest?.projectTitle ||
-        getOpenClientJobById(request.jobId)?.title ||
+        openJob?.title ||
         "your project";
       const clientName = `${viewer.firstName} ${viewer.lastName}`.trim() || viewer.email;
       const statusLabel = data.status === "ACCEPTED" ? "accepted" : "rejected";
@@ -133,7 +144,7 @@ const updateProjectStatus = createServerFn({ method: "POST" })
       throw new Error("Only clients can update projects.");
     }
 
-    return updateClientJobStatus(viewer.id, data.projectId, data.status);
+    return await updateClientJobStatus(viewer.id, data.projectId, data.status);
   });
 
 const removeProjectImmediately = createServerFn({ method: "POST" })
@@ -145,7 +156,7 @@ const removeProjectImmediately = createServerFn({ method: "POST" })
       throw new Error("Only clients can remove projects.");
     }
 
-    return deleteClientJob(viewer.id, data.projectId);
+    return await deleteClientJob(viewer.id, data.projectId);
   });
 
 const rateProjectProfessional = createServerFn({ method: "POST" })
@@ -253,7 +264,8 @@ function Projects() {
     return null;
   }
 
-  const { viewer, clientProfile, projects } = data;
+  const { viewer, clientProfile } = data;
+  const projects = data.projects as ClientJobRecord[];
   const projectRequests = (data.projectRequests ?? []) as ClientProjectRequestRecord[];
   const projectNegotiations = (data.projectNegotiations ?? []) as ProjectNegotiationRecord[];
   const trackedProjects = (data.trackedProjects ?? []) as ClientTrackedProjectRecord[];

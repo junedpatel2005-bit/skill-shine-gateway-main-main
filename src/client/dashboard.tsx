@@ -6,11 +6,27 @@ import {
   getClientJobsByUserId,
   getOpenClientJobs,
   updateClientJobStatus,
+  type ClientJobRecord,
   type JobStatus,
 } from "@/lib/job-db.server";
 import { formatApproximateLocation } from "@/lib/location-privacy";
 import { getClientProfileByUserId } from "@/lib/user-db.server";
 import { getCurrentUser } from "@/lib/current-user.server";
+
+type DashboardLoaderData =
+  | {
+      viewer: NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;
+      clientProfile: Awaited<ReturnType<typeof getClientProfileByUserId>>;
+      clientJobs: ClientJobRecord[];
+      openJobs: [];
+    }
+  | {
+      viewer: NonNullable<Awaited<ReturnType<typeof getCurrentUser>>>;
+      clientProfile: null;
+      clientJobs: [];
+      openJobs: Awaited<ReturnType<typeof getOpenClientJobs>>;
+    };
+
 import {
   Briefcase,
   CalendarClock,
@@ -72,7 +88,7 @@ const setClientJobStatus = createServerFn({ method: "POST" })
       };
     }
 
-    const job = updateClientJobStatus(viewer.id, data.jobId, data.status);
+    const job = await updateClientJobStatus(viewer.id, data.jobId, data.status);
 
     if (!job) {
       return {
@@ -128,7 +144,8 @@ function Dashboard() {
     return null;
   }
 
-  const { viewer, clientProfile, clientJobs } = access;
+  const { viewer, clientProfile } = access;
+  const clientJobs = access.clientJobs as ClientJobRecord[];
   const displayName = clientProfile?.fullName || `${viewer.firstName} ${viewer.lastName}`.trim();
 
   if (viewer.role === "ADMIN") {

@@ -36,17 +36,17 @@ export const getProjectData = createServerFn({ method: "GET" })
       return null;
     }
 
-    let job = getClientJobById(viewer.id, numericId);
+    let job = await getClientJobById(viewer.id, numericId);
 
     // For development/testing: create test job if it doesn't exist
     if (!job && numericId === 1) {
       const testJobId = seedTestJobs(viewer.id) as number;
       if (testJobId) {
-        job = getClientJobById(viewer.id, testJobId);
+        job = await getClientJobById(viewer.id, testJobId);
       }
     }
 
-    const tracking = job ? (getProjectTrackingDetailsByJob(viewer.id, job.id) ?? null) : null;
+    const tracking = job ? (await getProjectTrackingDetailsByJob(viewer.id, job.id) ?? null) : null;
 
     return { viewer, job, tracking };
   });

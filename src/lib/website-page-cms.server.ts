@@ -48,9 +48,10 @@ async function ensureWebsitePages() {
 
 export async function listWebsitePages(): Promise<WebsitePageRecord[]> {
   await ensureWebsitePages();
-  const pages = await prisma.websitePage.findMany({
+  const pages = (await prisma.websitePage.findMany({
     orderBy: { pageKey: "asc" },
-  });
+  })) as Array<Omit<WebsitePageRecord, "updatedAt"> & { updatedAt: Date }>;
+
   return pages.map((p) => ({
     ...p,
     status: p.status as WebsitePageStatus,
@@ -60,10 +61,11 @@ export async function listWebsitePages(): Promise<WebsitePageRecord[]> {
 
 export async function listPublishedWebsitePages(): Promise<WebsitePageRecord[]> {
   await ensureWebsitePages();
-  const pages = await prisma.websitePage.findMany({
+  const pages = (await prisma.websitePage.findMany({
     where: { status: "PUBLISHED" },
     orderBy: { pageKey: "asc" },
-  });
+  })) as Array<Omit<WebsitePageRecord, "updatedAt"> & { updatedAt: Date }>;
+
   return pages.map((p) => ({
     ...p,
     status: p.status as WebsitePageStatus,

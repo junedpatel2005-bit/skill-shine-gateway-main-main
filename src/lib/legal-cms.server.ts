@@ -70,21 +70,23 @@ async function ensureLegalPages() {
 
 export async function listLegalPages(): Promise<LegalPageRecord[]> {
   await ensureLegalPages();
-  const pages = await prisma.legalPage.findMany();
+  const pages = await prisma.legalPage.findMany() as Array<
+    Omit<LegalPageRecord, "updatedAt"> & { updatedAt: Date }
+  >;
 
   // Custom sort to match original behavior
   const slugOrder: Record<string, number> = {
-    'faq': 0,
-    'terms-and-conditions': 1,
-    'privacy-policy': 2
+    faq: 0,
+    "terms-and-conditions": 1,
+    "privacy-policy": 2,
   };
 
   return pages
     .sort((a, b) => (slugOrder[a.slug] ?? 3) - (slugOrder[b.slug] ?? 3))
-    .map(p => ({
+    .map((p) => ({
       ...p,
       status: p.status as LegalPageStatus,
-      updatedAt: p.updatedAt.toISOString()
+      updatedAt: p.updatedAt.toISOString(),
     }));
 }
 

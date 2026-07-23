@@ -215,7 +215,7 @@ function availableJobPredicate() {
   `;
 }
 
-export function createClientJob(userId: number, input: ClientJobInput) {
+export async function createClientJob(userId: number, input: ClientJobInput) {
   const db = getDatabase();
   const timestamp = new Date().toISOString();
 
@@ -271,18 +271,18 @@ export function createClientJob(userId: number, input: ClientJobInput) {
 
     const jobId = Number(result.lastInsertRowid);
     const insertAttachment = db.prepare(
-      `
-        INSERT INTO "ClientJobAttachment" (
-          jobId,
-          fileName,
-          fileType,
-          fileSize,
-          previewUrl,
-          createdAt
-        )
-        VALUES (?, ?, ?, ?, ?, ?)
-      `,
-    );
+        `
+          INSERT INTO "ClientJobAttachment" (
+            jobId,
+            fileName,
+            fileType,
+            fileSize,
+            previewUrl,
+            createdAt
+          )
+          VALUES (?, ?, ?, ?, ?, ?)
+        `,
+      );
 
     for (const attachment of attachments) {
       insertAttachment.run(
@@ -312,7 +312,7 @@ export function createClientJob(userId: number, input: ClientJobInput) {
     // ignore errors — admin refresh is best-effort
   }
 
-  return getClientJobById(userId, jobId);
+  return await getClientJobById(userId, jobId);
 }
 
 export async function getClientJobById(userId: number, jobId: number) {
@@ -623,7 +623,7 @@ export async function updateClientJobStatus(userId: number, jobId: number, statu
 
   updateJobStatus();
 
-  return getClientJobById(userId, jobId);
+  return await getClientJobById(userId, jobId);
 }
 
 function clearReopenedJobRequestDrafts(db: BetterSqlite3Database, jobId: number) {
@@ -652,10 +652,10 @@ function clearReopenedJobRequestDrafts(db: BetterSqlite3Database, jobId: number)
   ).run(jobId);
 }
 
-export function updateClientJob(userId: number, jobId: number, input: ClientJobInput) {
+export async function updateClientJob(userId: number, jobId: number, input: ClientJobInput) {
   const db = getDatabase();
   const timestamp = new Date().toISOString();
-  const existing = getClientJobById(userId, jobId);
+  const existing = await getClientJobById(userId, jobId);
 
   if (!existing) {
     return null;
@@ -749,12 +749,12 @@ export function updateClientJob(userId: number, jobId: number, input: ClientJobI
     // ignore errors
   }
 
-  return getClientJobById(userId, jobId);
+  return await getClientJobById(userId, jobId);
 }
 
-export function deleteClientJob(userId: number, jobId: number) {
+export async function deleteClientJob(userId: number, jobId: number) {
   const db = getDatabase();
-  const job = getClientJobById(userId, jobId);
+  const job = await getClientJobById(userId, jobId);
 
   if (!job) {
     return false;

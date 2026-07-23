@@ -1719,8 +1719,8 @@ export function deleteProjectWorkUpload(professionalId: number, uploadId: number
   return getProjectWorkUploads(upload.trackingId);
 }
 
-export function createProjectRequest(input: ProjectRequestInput) {
-  const job = getOpenClientJobById(input.jobId);
+export async function createProjectRequest(input: ProjectRequestInput) {
+  const job = await getOpenClientJobById(input.jobId);
 
   if (!job) {
     throw new Error("Project is not available for requests.");

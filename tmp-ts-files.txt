@@ -1,0 +1,8 @@
+src/client/project.$projectId.server.ts
+src/client/projects.tsx
+src/client/post-job.tsx
+src/client/job.$jobId.tsx
+src/client/hire.$proId.tsx
+src/backend/api.server.ts
+src/lib/project-request-db.server.ts
+src/lib/job-db.server.ts

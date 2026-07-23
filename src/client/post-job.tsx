@@ -82,8 +82,8 @@ const saveClientJob = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const viewer = requireCurrentUserRole("CLIENT");
     const job = data.draftId
-      ? updateClientJob(viewer.id, data.draftId, data.job)
-      : createClientJob(viewer.id, data.job);
+      ? await updateClientJob(viewer.id, data.draftId, data.job)
+      : await createClientJob(viewer.id, data.job);
 
     return {
       ok: true as const,
@@ -95,7 +95,7 @@ const getDraftJob = createServerFn({ method: "GET" })
   .inputValidator((data: { draftId: number }) => data)
   .handler(async ({ data }) => {
     const viewer = requireCurrentUserRole("CLIENT");
-    const job = getClientJobById(viewer.id, data.draftId);
+    const job = await getClientJobById(viewer.id, data.draftId);
 
     if (!job || job.status !== "DRAFT") {
       return null;

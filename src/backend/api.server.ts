@@ -254,7 +254,7 @@ async function route(request: Request, url: URL): Promise<Response> {
   if (method === "POST" && pathname === `${API_PREFIX}/client/jobs`) {
     const user = currentUser(request, ["CLIENT"]);
     return json(
-      createClientJob(user.id, parse(clientJobSchema, await body(request)) as ClientJobInput),
+      await createClientJob(user.id, parse(clientJobSchema, await body(request)) as ClientJobInput),
       201,
     );
   }
@@ -267,7 +267,7 @@ async function route(request: Request, url: URL): Promise<Response> {
   }
   if (routeMatch && method === "PATCH") {
     const user = currentUser(request, ["CLIENT"]);
-    const result = updateClientJob(
+    const result = await updateClientJob(
       user.id,
       Number(routeMatch[1]),
       parse(clientJobSchema, await body(request)) as ClientJobInput,
@@ -277,7 +277,7 @@ async function route(request: Request, url: URL): Promise<Response> {
   }
   if (routeMatch && method === "DELETE") {
     const user = currentUser(request, ["CLIENT"]);
-    if (!deleteClientJob(user.id, Number(routeMatch[1]))) throw new ApiError(404, "Job not found.");
+    if (!(await deleteClientJob(user.id, Number(routeMatch[1])))) throw new ApiError(404, "Job not found.");
     return json({ cancelled: true });
   }
   if (method === "GET" && pathname === `${API_PREFIX}/client/applications`) {
@@ -323,7 +323,7 @@ async function route(request: Request, url: URL): Promise<Response> {
       }),
       await body(request),
     );
-    return json(createProjectRequest({ ...input, professionalId: user.id }), 201);
+    return json(await createProjectRequest({ ...input, professionalId: user.id }), 201);
   }
   if (method === "POST" && pathname === `${API_PREFIX}/professional/services`) {
     const user = currentUser(request, ["PROFESSIONAL"]);
