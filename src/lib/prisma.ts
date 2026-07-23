@@ -26,16 +26,20 @@ async function createPrismaClient() {
   // Use a dynamic import so we can provide a clear error message if the
   // adapter package isn't installed.
   let adapter: unknown;
-  try {
-    const mod = await import("@prisma/adapter-pg");
-    const PrismaPg = (mod && (mod.PrismaPg ?? mod.default)) as any;
-    adapter = new PrismaPg({ connectionString: configuredDatabaseUrl });
-  } catch (err) {
-    throw new Error(
-      "Missing package '@prisma/adapter-pg'. Run `npm install @prisma/adapter-pg` and restart your dev server."
-    );
-  }
 
+try {
+  const { PrismaPg } = await import("@prisma/adapter-pg");
+
+  adapter = new PrismaPg({
+    connectionString: configuredDatabaseUrl,
+  });
+} catch (err) {
+  throw new Error(
+    `Failed to load @prisma/adapter-pg: ${
+      err instanceof Error ? err.message : String(err)
+    }`
+  );
+}
   (options as any).adapter = adapter;
 
   return new PrismaClient(options as any);
