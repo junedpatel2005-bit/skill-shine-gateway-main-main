@@ -13,13 +13,13 @@ export default defineConfig({
     server: { entry: "server" },
   },
   vite: {
-    // better-sqlite3 is a native Node module and must be loaded from node_modules
-    // at runtime instead of being folded into the SSR/worker JavaScript bundle.
+    // better-sqlite3 and puppeteer are treated as external native/dynamic modules
+    // to prevent Vite/Rollup from bundling them during the Vercel build.
     ssr: {
-      external: ["better-sqlite3"],
+      external: ["better-sqlite3", "puppeteer", "puppeteer-core"],
     },
     optimizeDeps: {
-      exclude: ["better-sqlite3"],
+      exclude: ["better-sqlite3", "puppeteer", "puppeteer-core"],
     },
     resolve: {
       alias: {
@@ -28,7 +28,7 @@ export default defineConfig({
     },
     build: {
       rollupOptions: {
-        external: ["better-sqlite3"],
+        external: ["better-sqlite3", "puppeteer", "puppeteer-core"],
       },
     },
   },
