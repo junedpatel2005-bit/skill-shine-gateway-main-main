@@ -1,9 +1,9 @@
-import path from "node:path";
-import Database from "@/lib/supabase-compat";
+import * as path from "node:path";
+import Database from "./supabase-compat";
 import { io as clientIo } from "socket.io-client";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "./prisma";
 
-import type { ClientJobAttachmentInput, ClientJobInput } from "@/lib/validation/client-job";
+import type { ClientJobAttachmentInput, ClientJobInput } from "./validation/client-job";
 
 type BetterSqlite3Database = Database;
 
@@ -326,7 +326,7 @@ export async function getClientJobById(userId: number, jobId: number) {
 
   if (!job || job.userId !== userId) return null;
 
-  const attachments = job.attachments.map((a) => ({
+  const attachments = job.attachments.map((a: any) => ({
     id: a.id,
     jobId: a.jobId,
     fileName: a.fileName,
@@ -368,7 +368,7 @@ export async function getClientJobsByUserId(userId: number) {
     orderBy: [{ createdAt: "desc" }, { id: "desc" }],
   });
 
-  return jobs.map((job) =>
+  return jobs.map((job: any) =>
     mapJob(
       {
         id: job.id,
@@ -422,7 +422,7 @@ export async function getOpenClientJobs() {
 
   if (!jobs.length) return [];
 
-  const idsCsv = jobs.map((j) => Number(j.id)).join(",");
+  const idsCsv = jobs.map((j: any) => Number(j.id)).join(",");
   const attachmentRows = idsCsv
     ? ((await prisma.$queryRawUnsafe(
         `SELECT * FROM "ClientJobAttachment" WHERE "jobId" IN (${idsCsv}) ORDER BY id ASC`,
@@ -453,7 +453,7 @@ export async function getOpenClientJobs() {
         createdAt: new Date(job.createdAt).toISOString(),
         updatedAt: new Date(job.updatedAt).toISOString(),
       },
-      (attachmentRows.filter((a) => a.jobId === job.id) as Array<any>).map((a) => ({
+      (attachmentRows.filter((a: any) => a.jobId === job.id) as Array<any>).map((a: any) => ({
         id: a.id,
         jobId: a.jobId,
         fileName: a.fileName,
@@ -527,7 +527,7 @@ export async function getFavoriteJobIds(userId: number) {
     select: { jobId: true },
   });
 
-  return rows.map((r) => r.jobId);
+  return rows.map((r: { jobId: number }) => r.jobId);
 }
 
 export async function getFavoriteJobsByUserId(userId: number) {
@@ -538,13 +538,19 @@ export async function getFavoriteJobsByUserId(userId: number) {
   }
 
   const favoriteIdSet = new Set(favoriteIds);
-  const favoriteOrder = new Map(favoriteIds.map((jobId, index) => [jobId, index]));
+  const favoriteOrder = new Map<number, number>(
+    favoriteIds.map((jobId: number, index: number) => [jobId, index] as [number, number]),
+  );
 
   const openJobs = await getOpenClientJobs();
 
   return openJobs
     .filter((job) => favoriteIdSet.has(job.id))
-    .sort((a, b) => (favoriteOrder.get(a.id) ?? 0) - (favoriteOrder.get(b.id) ?? 0));
+    .sort((a, b) => {
+      const aRank = favoriteOrder.get(a.id) ?? 0;
+      const bRank = favoriteOrder.get(b.id) ?? 0;
+      return aRank - bRank;
+    });
 }
 
 export async function isFavoriteJob(userId: number, jobId: number) {
@@ -592,10 +598,10 @@ export function setFavoriteJob(userId: number, jobId: number, favorite: boolean)
   return false;
 }
 
-export function updateClientJobStatus(userId: number, jobId: number, status: JobStatus) {
+export async function updateClientJobStatus(userId: number, jobId: number, status: JobStatus) {
   const db = getDatabase();
   const timestamp = new Date().toISOString();
-  const existing = getClientJobById(userId, jobId);
+  const existing = await getClientJobById(userId, jobId);
 
   if (!existing) {
     return undefined;
