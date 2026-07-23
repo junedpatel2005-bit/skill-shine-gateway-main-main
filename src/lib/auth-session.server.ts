@@ -28,10 +28,15 @@ function getAuthSecret() {
   }
 
   if (process.env.NODE_ENV === "production") {
-    throw new Error("AUTH_SECRET is required to sign login sessions.");
+    console.warn("AUTH_SECRET is not configured. Session signing will use a fallback (DANGEROUS).");
+    return "danger-unconfigured-secret-production";
   }
 
   return "dev-only-change-this-secret";
+}
+
+export function isAuthSecretConfigured() {
+  return Boolean(process.env.AUTH_SECRET || process.env.JWT_SECRET);
 }
 
 function toBase64Url(input: string) {

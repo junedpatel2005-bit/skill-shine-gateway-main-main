@@ -1,4 +1,9 @@
-- [x] Create `.npmrc` with strict Puppeteer skip flags
-- [x] Update `vercel.json` with `includeFiles` and build env vars
-- [x] Verify configuration consistency
-- [x] Update walkthrough summary
+- [x] Improve Prisma resilience in `src/lib/prisma.ts`
+- [x] Enhance health check diagnostics in `src/server.ts`
+- [x] Add database-down fallbacks for CMS in `src/lib/website-page-cms.server.ts`
+- [x] Add database-down fallbacks for Jobs in `src/lib/job-db.server.ts`
+- [x] Make authentication secrets resilient in `src/lib/auth-session.server.ts`
+- [x] Make JWT secrets resilient in `src/backend/auth.server.ts`
+- [x] Add try/catch safeguard to `src/lib/current-user.server.ts`
+- [x] Update health check with auth status in `src/server.ts`
+- [x] Verify build/compilation

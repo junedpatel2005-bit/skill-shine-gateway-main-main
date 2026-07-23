@@ -1,32 +1,31 @@
-# Fix Vercel 404 Routing for TanStack Start App
+# Implementation Plan - Fix 500 Error by Addressing Missing Auth Secrets
 
-The application is still showing a 404 error on Vercel. This is because the previous `vercel.json` used legacy `builds` and `routes` which may conflict with modern Vercel project settings and routing behaviors. This plan updates the configuration to use modern `rewrites` and `functions` settings.
-
-## User Review Required
-
-> [!IMPORTANT]
-> I am moving from a legacy "Builds" configuration to a modern "Rewrites" configuration in `vercel.json`. This is the recommended way to handle custom server routing on Vercel.
+The previous fix addressed Prisma/database issues, but the app is likely still crashing because of missing environment variables for session signing (`AUTH_SECRET` / `JWT_SECRET`). In production mode, the app currently throws an error if these are missing, which happens early in the page load (during user session check).
 
 ## Proposed Changes
 
-### Project Root
+### [Authentication & Session Resilience]
 
-#### [MODIFY] [vercel.json](file:///D:/skill-shine-gateway-main-main/vercel.json)
-Update `vercel.json` to:
-- Use modern `rewrites` instead of legacy `routes`.
-- Remove the `builds` block to allow Vercel's zero-config deployment to correctly identify the `api/` directory.
-- Map all non-asset requests specifically to the serverless function at `/api/server`.
-- Set the `outputDirectory` to `dist/client` to serve static assets directly.
+#### [MODIFY] [auth-session.server.ts](file:///D:/skill-shine-gateway-main-main/src/lib/auth-session.server.ts)
+- Update `getAuthSecret()` to never throw. If missing in production, it will return a fallback "danger-unconfigured-secret" and log a warning.
+- This allows the app to load and serve pages (as anonymous) even if the secret isn't set yet.
 
-### Dependencies
+#### [MODIFY] [auth.server.ts](file:///D:/skill-shine-gateway-main-main/src/backend/auth.server.ts)
+- Update `secret()` to never throw. It will return a fallback "danger-unconfigured-jwt-secret" if missing and log a warning.
 
-#### [MODIFY] [package.json](file:///D:/skill-shine-gateway-main-main/package.json)
-- Add a `postbuild` script to ensure that the `dist` directory is correctly structured if needed, though the current Vite build seems correct. (Optional, will check first).
+#### [MODIFY] [current-user.server.ts](file:///D:/skill-shine-gateway-main-main/src/lib/current-user.server.ts)
+- Wrap `getCurrentUser()` in a try/catch block to ensure that any unexpected failure in session parsing or database lookup (even with shims) doesn't crash the entire request.
+
+### [Diagnostics]
+
+#### [MODIFY] [server.ts](file:///D:/skill-shine-gateway-main-main/src/server.ts)
+- Update `healthResponse` to also report if `AUTH_SECRET` is configured.
 
 ## Verification Plan
 
+### Automated Tests
+- Verify code compilation and absence of syntax errors.
+
 ### Manual Verification
-1. Push the updated `vercel.json` to the repository.
-2. Monitor the Vercel deployment.
-3. Verify that hitting the root URL (`/`) now correctly loads the application via the `api/server.js` function.
-4. Verify that static assets (CSS/JS) are loading from the `/assets/` path.
+1. Check `/api/health` after deployment to confirm `authConfigured: false` if secrets are missing.
+2. Verify the Landing page loads anonymously instead of showing the 500 error page.

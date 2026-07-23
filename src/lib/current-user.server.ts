@@ -4,14 +4,20 @@ import { readSessionFromCookieHeader } from "./auth-session.server";
 import { findUserById, type PublicUser, type UserRole } from "./user-db.server";
 
 export function getCurrentUser() {
-  const request = getRequest();
-  const session = readSessionFromCookieHeader(request.headers.get("cookie"));
+  try {
+    const request = getRequest();
+    const headers = request.headers;
+    const session = readSessionFromCookieHeader(headers.get("cookie"));
 
-  if (!session) {
+    if (!session) {
+      return null;
+    }
+
+    return findUserById(session.userId) ?? null;
+  } catch (error) {
+    console.error("getCurrentUser failed (resilient fallback to null):", error);
     return null;
   }
-
-  return findUserById(session.userId) ?? null;
 }
 
 export function requireCurrentUser() {

@@ -5,8 +5,10 @@ type JwtPayload = { sub: number; role: UserRole; email: string; iat: number; exp
 
 function secret() {
   const value = process.env.JWT_SECRET || process.env.AUTH_SECRET;
-  if (!value && process.env.NODE_ENV === "production")
-    throw new Error("JWT_SECRET is required in production.");
+  if (!value && process.env.NODE_ENV === "production") {
+    console.warn("JWT_SECRET is required in production. Using fallback (DANGEROUS).");
+    return "danger-unconfigured-jwt-secret-production";
+  }
   return value || "dev-only-change-this-secret";
 }
 

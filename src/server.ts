@@ -30,6 +30,7 @@ function brandedErrorResponse(): Response {
 }
 
 import { isPrismaConfigured, getPrismaInitError } from "./lib/prisma";
+import { isAuthSecretConfigured } from "./lib/auth-session.server";
 
 function healthResponse(): Response {
   const prismaError = getPrismaInitError();
@@ -39,6 +40,7 @@ function healthResponse(): Response {
     database: isPrismaConfigured() ? "configured" : "missing",
     prismaStatus: isPrismaConfigured() ? (prismaError ? "error" : "ok") : "unconfigured",
     prismaError: prismaError instanceof Error ? prismaError.message : prismaError ? String(prismaError) : undefined,
+    authSecret: isAuthSecretConfigured() ? "configured" : "missing",
     realtime: process.env.VITE_SOCKET_URL || process.env.SOCKET_PORT ? "configured" : "optional",
     timestamp: new Date().toISOString(),
   });
