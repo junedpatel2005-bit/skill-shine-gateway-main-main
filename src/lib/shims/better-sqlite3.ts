@@ -29,7 +29,7 @@ class DatabaseShim {
     return [] as any[];
   }
 
-  transaction<T extends (...args: any[]) => unknown>(operation: T): T {
+  transaction<Args extends any[], R>(operation: (...args: Args) => R): (...args: Args) => R {
     return operation;
   }
 

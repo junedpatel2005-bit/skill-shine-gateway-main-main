@@ -392,7 +392,7 @@ export async function getClientJobsByUserId(userId: number) {
         createdAt: job.createdAt.toISOString(),
         updatedAt: job.updatedAt.toISOString(),
       },
-      job.attachments.map((a) => ({
+      job.attachments.map((a: any) => ({
         id: a.id,
         jobId: a.jobId,
         fileName: a.fileName,
@@ -504,7 +504,7 @@ export async function getOpenClientJobById(jobId: number) {
         createdAt: job.createdAt.toISOString(),
         updatedAt: job.updatedAt.toISOString(),
       },
-      job.attachments.map((a) => ({
+      job.attachments.map((a: any) => ({
         id: a.id,
         jobId: a.jobId,
         fileName: a.fileName,
