@@ -4,12 +4,19 @@
 import "dotenv/config";
 import { defineConfig, env } from "prisma/config";
 
+const databaseUrl = process.env.DIRECT_URL || process.env.DATABASE_URL || process.env.SUPABASE_POSTGRES_URL;
+if (!databaseUrl) {
+  throw new Error(
+    "Missing Prisma database URL. Set DIRECT_URL, DATABASE_URL, or SUPABASE_POSTGRES_URL in your environment.",
+  );
+}
+
 export default defineConfig({
   schema: "prisma/schema.prisma",
   migrations: {
     path: "prisma/migrations",
   },
   datasource: {
-    url: env("DIRECT_URL"),
+    url: databaseUrl,
   },
 });
