@@ -1335,9 +1335,9 @@ async function route(request: Request, url: URL): Promise<Response> {
           throw new ApiError(500, 'PDF generation is currently disabled in the Vercel environment to prevent build hangs. Use a remote browser service for production PDF generation.');
         }
 
-       const modName = 'puppeteer';
-const puppeteer = await import(/* @vite-ignore */ modName);
-        const browser = await puppeteer.launch({ args: ['--no-sandbox','--disable-setuid-sandbox'] });
+        const modName = 'puppeteer';
+        const puppeteer = await import(/* @vite-ignore */ modName);
+        const browser = await puppeteer.launch({ args: ['--no-sandbox', '--disable-setuid-sandbox'] });
         const pageP = await browser.newPage();
         await pageP.setContent(html, { waitUntil: 'networkidle0' });
         const pdfBuffer = await pageP.pdf({
