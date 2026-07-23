@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
+  "framework": "tanstack-start",
   "outputDirectory": "dist/client",
 
   "rewrites": [
@@ -11,14 +11,6 @@
     {
       "source": "/api/(.*)",
       "destination": "/api/server"
-    },
-    {
-      "source": "/assets/(.*)",
-      "destination": "/assets/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/api/server"
     }
   ],
 
@@ -26,13 +18,7 @@
     "api/server.js": {
       "memory": 1024,
       "maxDuration": 10,
-      "includeFiles": "dist/server/**"
+      "includeFiles": "node_modules/.prisma/client/**"
     }
-  },
-
-  "env": {
-    "PUPPETEER_SKIP_CHROMIUM_DOWNLOAD": "true",
-    "PUPPETEER_SKIP_DOWNLOAD": "true",
-    "NODE_OPTIONS": "--max-old-space-size=4096"
   }
 }
