@@ -2115,7 +2115,7 @@ function availableJobPredicate() {
     )
   `;
 }
-function createClientJob(userId, input) {
+async function createClientJob(userId, input) {
   const db = getDatabase$4();
   const timestamp = (/* @__PURE__ */ new Date()).toISOString();
   const createJob = db.transaction((attachments) => {
@@ -2168,16 +2168,16 @@ function createClientJob(userId, input) {
     const jobId2 = Number(result.lastInsertRowid);
     const insertAttachment = db.prepare(
       `
-        INSERT INTO "ClientJobAttachment" (
-          jobId,
-          fileName,
-          fileType,
-          fileSize,
-          previewUrl,
-          createdAt
-        )
-        VALUES (?, ?, ?, ?, ?, ?)
-      `
+          INSERT INTO "ClientJobAttachment" (
+            jobId,
+            fileName,
+            fileType,
+            fileSize,
+            previewUrl,
+            createdAt
+          )
+          VALUES (?, ?, ?, ?, ?, ?)
+        `
     );
     for (const attachment of attachments) {
       insertAttachment.run(
@@ -2200,7 +2200,7 @@ function createClientJob(userId, input) {
     sock.disconnect();
   } catch (e) {
   }
-  return getClientJobById(userId, jobId);
+  return await getClientJobById(userId, jobId);
 }
 async function getClientJobById(userId, jobId) {
   const job = await prisma.clientJob.findUnique({
@@ -2471,7 +2471,7 @@ async function updateClientJobStatus(userId, jobId, status) {
     ).run(status, timestamp, jobId, userId);
   });
   updateJobStatus();
-  return getClientJobById(userId, jobId);
+  return await getClientJobById(userId, jobId);
 }
 function clearReopenedJobRequestDrafts(db, jobId) {
   if (!tableExists$1(db, "ProjectRequest")) {
@@ -2496,10 +2496,10 @@ function clearReopenedJobRequestDrafts(db, jobId) {
     `
   ).run(jobId);
 }
-function updateClientJob(userId, jobId, input) {
+async function updateClientJob(userId, jobId, input) {
   const db = getDatabase$4();
   const timestamp = (/* @__PURE__ */ new Date()).toISOString();
-  const existing = getClientJobById(userId, jobId);
+  const existing = await getClientJobById(userId, jobId);
   if (!existing) {
     return null;
   }
@@ -2582,11 +2582,11 @@ function updateClientJob(userId, jobId, input) {
     sock.disconnect();
   } catch (e) {
   }
-  return getClientJobById(userId, jobId);
+  return await getClientJobById(userId, jobId);
 }
-function deleteClientJob(userId, jobId) {
+async function deleteClientJob(userId, jobId) {
   const db = getDatabase$4();
-  const job = getClientJobById(userId, jobId);
+  const job = await getClientJobById(userId, jobId);
   if (!job) {
     return false;
   }
@@ -3694,8 +3694,8 @@ function deleteProjectWorkUpload(professionalId, uploadId) {
   db.prepare(`DELETE FROM "ProjectWorkUpload" WHERE id = ?`).run(uploadId);
   return getProjectWorkUploads(upload.trackingId);
 }
-function createProjectRequest(input) {
-  const job = getOpenClientJobById(input.jobId);
+async function createProjectRequest(input) {
+  const job = await getOpenClientJobById(input.jobId);
   if (!job) {
     throw new Error("Project is not available for requests.");
   }
@@ -7415,7 +7415,7 @@ async function route(request, url) {
   if (method === "POST" && pathname === `${API_PREFIX}/client/jobs`) {
     const user = currentUser(request, ["CLIENT"]);
     return json(
-      createClientJob(user.id, parse(clientJobSchema, await body(request))),
+      await createClientJob(user.id, parse(clientJobSchema, await body(request))),
       201
     );
   }
@@ -7428,7 +7428,7 @@ async function route(request, url) {
   }
   if (routeMatch && method === "PATCH") {
     const user = currentUser(request, ["CLIENT"]);
-    const result = updateClientJob(
+    const result = await updateClientJob(
       user.id,
       Number(routeMatch[1]),
       parse(clientJobSchema, await body(request))
@@ -7438,7 +7438,7 @@ async function route(request, url) {
   }
   if (routeMatch && method === "DELETE") {
     const user = currentUser(request, ["CLIENT"]);
-    if (!deleteClientJob(user.id, Number(routeMatch[1]))) throw new ApiError(404, "Job not found.");
+    if (!await deleteClientJob(user.id, Number(routeMatch[1]))) throw new ApiError(404, "Job not found.");
     return json({ cancelled: true });
   }
   if (method === "GET" && pathname === `${API_PREFIX}/client/applications`) {
@@ -7480,7 +7480,7 @@ async function route(request, url) {
       }),
       await body(request)
     );
-    return json(createProjectRequest({ ...input, professionalId: user.id }), 201);
+    return json(await createProjectRequest({ ...input, professionalId: user.id }), 201);
   }
   if (method === "POST" && pathname === `${API_PREFIX}/professional/services`) {
     const user = currentUser(request, ["PROFESSIONAL"]);
@@ -8801,7 +8801,7 @@ const APIRoute = {
 let serverEntryPromise;
 async function getServerEntry() {
   if (!serverEntryPromise) {
-    serverEntryPromise = import("./assets/server-BvuapYYX.js").then((n) => n.s).then(
+    serverEntryPromise = import("./assets/server-KxTtotOh.js").then((n) => n.s).then(
       (m) => m.default ?? m
     );
   }
