@@ -1,2 +1,6 @@
 # Local NVM symlink. It points to a Windows-only path and must never be uploaded.
 nodejs
+api/server-bundle.js
+api/assets
+dist
+.tanstack

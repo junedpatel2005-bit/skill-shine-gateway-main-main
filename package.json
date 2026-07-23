@@ -15,8 +15,11 @@
     "backend:socket": "node server/socket-server.mjs",
     "backend:health": "node -e \"fetch('http://localhost:5173/api/health').then(async r => { console.log(r.status); console.log(await r.text()); }).catch(error => { console.error(error.message); process.exit(1); })\"",
     "socket": "node server/socket-server.mjs",
-    "build": "prisma generate && vite build && node ./scripts/copy-ssr-bundle.mjs",
-    "vercel-build": "prisma generate && vite build && node ./scripts/copy-ssr-bundle.mjs",
+ 
+  "build": "vite build",
+  "vercel-build": "prisma generate && vite build && node ./scripts/copy-ssr-bundle.mjs",
+
+  
     "build:dev": "node --max-old-space-size=8192 ./node_modules/vite/bin/vite.js build --mode development",
     "postinstall": "prisma generate",
     "preview": "vite preview",
