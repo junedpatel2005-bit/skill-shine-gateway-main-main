@@ -1,9 +1,20 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-function trimAndStripQuotes(value: string | undefined): string {
-  const trimmed = value?.trim() ?? '';
-  const match = trimmed.match(/^"(.*)"$/);
-  return match ? match[1] : trimmed;
+function cleanEnvValue(value: string | undefined): string {
+  const cleaned = value?.replace(/[\r\n]/g, '').trim() ?? '';
+  const quoted = cleaned.match(/^(['"])(.*)\1$/);
+  return quoted ? quoted[2].trim() : cleaned;
+}
+
+function validateUrl(url: string, name: string) {
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      throw new Error(`${name} must use http:// or https://`);
+    }
+  } catch (error) {
+    throw new Error(`Invalid ${name}: ${JSON.stringify(url)}. Must be a valid HTTP or HTTPS URL.`);
+  }
 }
 
 let cachedClient: SupabaseClient | null = null;
@@ -11,16 +22,14 @@ let cachedClient: SupabaseClient | null = null;
 export function getSupabaseServerClient() {
   if (cachedClient) return cachedClient;
 
-  const url = trimAndStripQuotes(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL);
-  const serviceRoleKey = trimAndStripQuotes(process.env.SUPABASE_SERVICE_ROLE_KEY);
+  const url = cleanEnvValue(process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL);
+  const serviceRoleKey = cleanEnvValue(process.env.SUPABASE_SERVICE_ROLE_KEY);
 
   if (!url || !serviceRoleKey) {
     throw new Error("Missing server-side Supabase environment variables. Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel or your local env file.");
   }
 
-  if (!/^https?:\/\//i.test(url)) {
-    throw new Error(`Invalid Supabase server URL: ${JSON.stringify(url)}. Must be a valid HTTP or HTTPS URL.`);
-  }
+  validateUrl(url, 'SUPABASE_URL');
 
   cachedClient = createClient(url, serviceRoleKey, {
     auth: {
