@@ -1,5 +1,5 @@
 import Database from "./supabase-compat";
-import path from "node:path";
+import * as path from "node:path";
 
 // Extract the type of the database instance created by your compatibility wrapper
 type BetterSqlite3Database = Database | any;

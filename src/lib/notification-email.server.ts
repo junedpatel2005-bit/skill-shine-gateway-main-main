@@ -1,4 +1,4 @@
-import path from "node:path";
+import * as path from "node:path";
 import Database from "./supabase-compat";
 
 const SMTP_HOST = process.env.SMTP_HOST || "smtp.gmail.com";

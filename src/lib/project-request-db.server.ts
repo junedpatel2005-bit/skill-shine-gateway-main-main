@@ -1,4 +1,4 @@
-import path from "node:path";
+import * as path from "node:path";
 import Database from "./supabase-compat";
 
 import { getOpenClientJobById } from "./job-db.server";
