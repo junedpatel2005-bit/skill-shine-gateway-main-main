@@ -20,6 +20,7 @@ export default defineConfig({
     },
     resolve: {
       alias: {
+        "@/": "/src/",
         "better-sqlite3": "./src/lib/shims/better-sqlite3.ts",
       },
     },

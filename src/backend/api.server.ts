@@ -1,6 +1,6 @@
 ﻿import { randomBytes, createHash, createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { mkdir, readFile, writeFile, unlink } from "node:fs/promises";
-import path from "node:path";
+import * as path from "node:path";
 import { z } from "zod";
 import { issueAccessToken, opaqueToken, readAccessToken, tokenHash } from "./auth.server";
 import { getApiDatabase } from "./database.server";
